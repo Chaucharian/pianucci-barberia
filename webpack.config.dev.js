@@ -43,8 +43,13 @@ export default {
       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
       {test: /\.(jpe?g|png|gif)$/i, loaders: ['file']},
       {test: /\.ico$/, loader: 'file?name=[name].[ext]'},
-      {test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'postcss']}
-    ]
+      {test: /(\.css|\.scss)$/, loaders: ['style', 'css?sourceMap', 'postcss']}, 
+    ///  {test: /\.less$/, loader: 'less-loader'}
+    ],
+    rules: [{
+      test: /\.less$/,
+      loader: 'less-loader' // compiles Less to CSS
+    }]
   },
   postcss: ()=> [autoprefixer]
 };

@@ -1,7 +1,7 @@
 {
-  "name": "async-redux-saga",
-  "version": "1.0.0",
-  "description": "Sample distributed calls using sagas",
+  "name": "pianucci-barberia",
+  "version": "0.0.1",
+  "description": "Barber appointment web",
   "engines": {
     "npm": ">=3"
   },
@@ -108,6 +108,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/andresmijares/distrbuted-asyn-react-redux-saga"
+    "url": "https://github.com/Chaucharian/pianucci-barberia"
   }
 }

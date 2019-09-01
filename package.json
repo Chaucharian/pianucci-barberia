@@ -2,15 +2,13 @@
   "name": "pianucci-barberia",
   "version": "0.0.1",
   "description": "Barber appointment web",
-  "engines": {
-    "npm": ">=3"
-  },
   "scripts": {
     "start": "parcel ./src/index.html"
   },
   "author": "AS",
   "license": "MIT",
   "dependencies": {
+    "babel-polyfill": "^6.26.0",
     "bootstrap": "3.3.7",
     "fetch": "1.1.0",
     "object-assign": "4.1.0",
@@ -20,7 +18,8 @@
     "react-router": "2.6.0",
     "react-router-redux": "4.0.5",
     "redux": "3.5.2",
-    "redux-saga": "0.11.0"
+    "redux-saga": "0.11.0",
+    "regenerator-runtime": "^0.13.3"
   },
   "devDependencies": {
     "babel-cli": "6.11.4",
@@ -30,10 +29,11 @@
     "babel-plugin-transform-react-constant-elements": "6.9.1",
     "babel-plugin-transform-react-remove-prop-types": "0.2.7",
     "babel-plugin-transform-runtime": "6.12.0",
-    "babel-preset-es2015": "6.9.0",
-    "babel-preset-react": "6.11.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
     "babel-preset-react-hmre": "1.1.1",
-    "babel-preset-stage-1": "6.5.0",
+    "babel-preset-stage-1": "^6.24.1",
     "babel-register": "6.11.5",
     "babel-runtime": "6.11.6",
     "browser-sync": "2.13.0"

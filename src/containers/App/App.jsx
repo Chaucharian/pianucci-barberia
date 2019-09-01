@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import Login from './Login';
+import styles from './App.less';
 
 class App extends React.Component {
     componentDidMount() {
@@ -8,12 +8,15 @@ class App extends React.Component {
 
     render() {
       return (
-        <div className="container-fluid">
-          <div className="container">
-            <div className="row">
-              asdsd
-              <Login />
-            </div>
+        <div className={styles.App}>
+          <div>
+            Hola GATO
+          </div>
+          <div>
+        PEDAZOD EE GIL
+          </div>
+          <div>
+          TE VA A MORI
           </div>
         </div>
       );

@@ -36,7 +36,8 @@
     "babel-preset-stage-1": "^6.24.1",
     "babel-register": "6.11.5",
     "babel-runtime": "6.11.6",
-    "browser-sync": "2.13.0"
+    "browser-sync": "2.13.0",
+    "less": "^3.10.3"
   },
   "keywords": [
     "react",

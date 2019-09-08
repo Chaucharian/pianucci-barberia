@@ -1,18 +1,9 @@
 /* eslint-disable import/default */
-import 'regenerator-runtime/runtime'
 import React from 'react';
-import {render} from 'react-dom';
-import { Provider } from 'react-redux';
-import { Router,  browserHistory } from 'react-router';
-import routes from './routes';
-import configureStore from './store/configureStore';
-import './styles/styles.less';
+import ReactDOM from 'react-dom';
+import App from './containers/app';
 
-const store = configureStore();
-
-render(
-  <Provider store={store}>
-    <Router history={browserHistory} routes={routes} />
-  </Provider>,
+ReactDOM.render(
+  <App></App>,
     document.getElementById('app')
 );

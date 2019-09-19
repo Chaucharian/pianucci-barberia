@@ -1,17 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { StateProvider, useStateValue } from '../state/rootState';
-
+import {Router} from './router';
 const Componnent = () => {
-  const [{theme}] = useStateValue();
+  const [{counter}, dispatch] = useStateValue();
+
+  const updateCounter = () => {
+    const newCounter = counter;
+    dispatch({ type: 'updateTime',counter: newCounter + 1 });
+  }
+
   return (
-    <p>{theme.primary}</p>
+    <button onClick={ () => updateCounter() } >{ counter }</button>
   );
 }
 
 const App = () => {
   const initialState = {
-    theme: { primary: 'green' }
+    counter: 0
   };
   
   const reducer = (state, action) => {
@@ -19,9 +25,13 @@ const App = () => {
       case 'changeTheme':
         return {
           ...state,
-          theme: action.newTheme
+          counter: action.counter
         };
-        
+        case 'updateTime':
+          return {
+            ...state,
+            counter: action.counter
+          };
       default:
         return state;
     }
@@ -29,7 +39,7 @@ const App = () => {
   
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-        <Componnent ></Componnent>
+      <Router></Router>
     </StateProvider>
   );
 }

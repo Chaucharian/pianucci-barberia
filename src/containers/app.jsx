@@ -1,19 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { StateProvider, useStateValue } from '../state/rootState';
 import {Router} from './router';
-const Componnent = () => {
-  const [{counter}, dispatch] = useStateValue();
-
-  const updateCounter = () => {
-    const newCounter = counter;
-    dispatch({ type: 'updateTime',counter: newCounter + 1 });
-  }
-
-  return (
-    <button onClick={ () => updateCounter() } >{ counter }</button>
-  );
-}
 
 const App = () => {
   const initialState = {

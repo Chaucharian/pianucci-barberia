@@ -1,3 +1,7 @@
 import React from 'react';
+import {navigate} from 'hookrouter';
 
-export const HomePage = () => <h1>EAAA</h1>;
+export const HomePage = () => {
+    //navigate('/login');
+    return <h1>HOMEPAGE</h1>;
+}

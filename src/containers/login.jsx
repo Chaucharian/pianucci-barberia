@@ -33,14 +33,15 @@ const Componnent = () => {
 
 const Login = (props) => {
     const { classes } = props;
-    return (<div className={classes.login}>
-        <h1 className={classes.title}>Pianucci Barberia</h1>
-        <AnimatedButton text={"Login"}></AnimatedButton>
-        <AnimatedButton text={"Iniciar sessión"}></AnimatedButton>
-        <AnimatedButton text={"Salir"}></AnimatedButton>
-        <AnimatedButton text={"RESERVAR TURNO"} strong={true}></AnimatedButton>
-
-    </div>);
+    return (
+        <div className={classes.login}>
+            <h1 className={classes.title}>Pianucci Barberia</h1>
+            <AnimatedButton text={"Login"}></AnimatedButton>
+            <AnimatedButton text={"Iniciar sessión"}></AnimatedButton>
+            <AnimatedButton text={"Salir"}></AnimatedButton>
+            <AnimatedButton text={"RESERVAR TURNO"} strong={true}></AnimatedButton>
+        </div>
+    );
 };
 
 export default withStyles(styles)(Login);

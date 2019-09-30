@@ -47,17 +47,41 @@ const styles = {
     stripe3Clicked: {
         transform: "rotate(-45deg)",
         top: "39px"
-        }
+    },
+    colorClicked: {
+        background: "#000"
+    }
 }
 
 const BugerButton = (props) => {
-    const { classes } = props;
+    const { classes, click } = props;
     const [clicked, changeState] = useState(false);
+
+    const addClasses = stripeNumber => {
+        let styleToAply = classes.stripe;
+        switch(stripeNumber) {
+            case 1:
+                styleToAply += " "+classes.stripe1 +" "+ (clicked ? classes.stripe1Clicked +" "+ classes.colorClicked : "" );
+                break;
+            case 2:
+                styleToAply += " "+ classes.stripe2 +" "+ (clicked ? classes.stripe2Clicked +" "+ classes.colorClicked : "" );
+                break;
+            case 3:
+                styleToAply += " "+ classes.stripe3 +" "+ (clicked ? classes.stripe3Clicked +" "+ classes.colorClicked : "" );
+                break;
+        }
+        return styleToAply;
+    }
+
     return (
-        <button className={classes.container} onClick={ () => changeState(!clicked) }>
-            <span className={classes.stripe +" "+ classes.stripe1 +" "+ (clicked ? classes.stripe1Clicked : "" )}></span>   
-            <span className={classes.stripe +" "+ classes.stripe2 +" "+ (clicked ? classes.stripe2Clicked : "" )}></span>
-            <span className={classes.stripe +" "+ classes.stripe3 +" "+ (clicked ? classes.stripe3Clicked : "" )}></span>
+        <button className={classes.container} onClick={ () => {
+            click(!clicked);
+            changeState(!clicked) 
+            }
+        }>
+            <span className={addClasses(1)}></span>   
+            <span className={addClasses(2)}></span>
+            <span className={addClasses(3)}></span>
         </button>   
     );
 }

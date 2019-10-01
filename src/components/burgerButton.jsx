@@ -3,6 +3,11 @@ import { withStyles } from '@material-ui/styles';
 
 const styles = {
     container: {
+        display: "flex",
+        position: "relative",
+        width: "50px"
+    },
+    button: {
         display: "block",
         backgroundColor: "transparent",
         outline: "none",
@@ -74,15 +79,17 @@ const BugerButton = (props) => {
     }
 
     return (
-        <button className={classes.container} onClick={ () => {
-            click(!clicked);
-            changeState(!clicked) 
-            }
-        }>
-            <span className={addClasses(1)}></span>   
-            <span className={addClasses(2)}></span>
-            <span className={addClasses(3)}></span>
-        </button>   
+        <div className={classes.container}>
+            <button className={classes.button} onClick={ () => {
+                click(!clicked);
+                changeState(!clicked) 
+                }
+            }>
+                <span className={addClasses(1)}></span>   
+                <span className={addClasses(2)}></span>
+                <span className={addClasses(3)}></span>
+            </button>   
+        </div>
     );
 }
 

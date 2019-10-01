@@ -3,16 +3,14 @@ import { withStyles } from '@material-ui/styles';
 import BurgerButton from './burgerButton';
 
 const styles = {
-    navBar: {
+    header: {
         position: "fixed",
         top: 0,
         left: 0, 
         overflow: "auto",
         display: "flex",
         width: "100%",
-        height: "100%",
         backgroundColor: "#000",
-        borderBottom: "solid 1px #FFF",
         transition: ".5s ease-in-out"
     },
     open: {
@@ -40,9 +38,10 @@ const Navbar = (props) => {
     console.log(open);
     
     return (
-        <div className={classes.navBar +' '+ (open ? classes.open : '')}>
+        <header className={classes.header +' '+ (open ? classes.open : '')}>
             <div className={classes.mainContent}>
                 <BurgerButton click={ clicked => showNavbar(clicked) } ></BurgerButton>
+                <div className={classes.trasitionContent}></div>
                 <nav>
                 {( open ? 
                     <ul>
@@ -53,7 +52,7 @@ const Navbar = (props) => {
                     : "")}
                 </nav>
             </div>
-        </div>
+        </header>
         
     );
 }

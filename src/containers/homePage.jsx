@@ -1,12 +1,12 @@
 import React from 'react';
 import {navigate} from 'hookrouter';
-import Navbar from '../components/navbar';
+import Header from '../components/header';
 import { withStyles } from '@material-ui/styles';
 
 const styles = {
     content: {
         backgroundColor: "#FFF",
-        height: "100%"
+        height: "100vh"
     }
 }
 
@@ -14,7 +14,7 @@ export const HomePage = (props) => {
     const { classes } = props;
     return (
         <div className={classes.content}>
-            <Navbar></Navbar>
+            <Header></Header>
         </div>
     );
 }

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
+import { colorScheme } from '../styles/styles';
 
 const styles = {
     container: {
@@ -13,8 +14,8 @@ const styles = {
         outline: "none",
         width: "60px",
         height: "45px",
+        margin: "0px",
         position: "relative",
-        margin: "50px auto",
         transform: "rotate(0deg)",
         transition: ".5s ease-in-out",
         cursor: "pointer",
@@ -23,14 +24,17 @@ const styles = {
     stripe: {
         display: "block",
         position: "absolute",
-        left: "8px",
-        height: "3px",
+        left: "0px",
+        height: "4px",
         width: "100%",
         background: "#FFF",
         borderRadius: "9px",
         opacity: "1",
         transition: ".25s ease-in-out",
-        transformOrigin: "left center"
+        transformOrigin: "left center",
+        "&:hover": {
+            background: colorScheme.buttonHover
+        }
     },
     stripe1: {
         top: "0px",
@@ -43,7 +47,7 @@ const styles = {
     },
     stripe1Clicked: {
         transform: "rotate(45deg)",
-        top: "-3px",
+        top: "3px",
     },
     stripe2Clicked: {
         width: "0%",
@@ -80,9 +84,10 @@ const BugerButton = (props) => {
 
     return (
         <div className={classes.container}>
-            <button className={classes.button} onClick={ () => {
+            <button className={classes.button} onClick={ 
+                () => {
                 click(!clicked);
-                changeState(!clicked) 
+                changeState(!clicked); 
                 }
             }>
                 <span className={addClasses(1)}></span>   

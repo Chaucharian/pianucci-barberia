@@ -1,9 +1,6 @@
 import React from 'react';
 import { withStyles} from '@material-ui/styles';
 
-// font-family: 'Raleway', sans-serif;
-// font-family: 'Source Sans Pro', sans-serif;
-
 const styles = {
     button: {
         border: "2px solid #2e2e2e",
@@ -55,9 +52,9 @@ const styles = {
 }
 
 const ReflectButton = (props) => {
-    const { classes, text } = props;
+    const { classes, text, clicked } = props;
     return (
-    <button className={classes.button +' '+ (props.strong ? classes.boldFont : '') }>
+    <button className={classes.button +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => clicked(true)}>
         <a>{ text }</a>
         <div className="mask"></div>
     </button>);

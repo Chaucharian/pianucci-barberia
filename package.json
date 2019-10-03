@@ -3,16 +3,21 @@
   "version": "0.0.1",
   "description": "Barber appointment web",
   "scripts": {
-    "start": "parcel ./src/index.html"
+    "start": "parcel ./src/index.html",
+    "api": "pm2 start ./api/server.js --watch"
   },
   "author": "AS",
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^4.4.3",
+    "express": "^4.17.1",
+    "express-crypto": "^1.0.5",
     "hookrouter": "^1.2.3",
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0",
-    "react-scripts": "1.1.4"
+    "react-scripts": "1.1.4",
+    "request": "^2.88.0",
+    "simple-oauth2": "^2.5.1"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-0",
@@ -20,6 +25,7 @@
     "@babel/preset-react": "^7.0.0",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "cookie-parser": "^1.4.4",
     "react-hot-loader": "^4.12.14"
   },
   "keywords": [

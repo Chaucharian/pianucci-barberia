@@ -1,7 +1,8 @@
 import React from 'react';
 import { withStyles} from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
-import AnimatedButton from '../components/animatedButton';
+import ReflectButton from '../components/reflectButton';
+import { enviroment } from '../enviroment';
 
 const styles = {
     login: {
@@ -33,13 +34,15 @@ const Componnent = () => {
 
 const Login = (props) => {
     const { classes } = props;
+
+    const logginWithInstagram = () => {
+        window.open(enviroment.baseUrl+ '/instagram', 'firebaseAuth', 'height=315,width=400');
+    }
+
     return (
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
-            <AnimatedButton text={"Login"}></AnimatedButton>
-            <AnimatedButton text={"Iniciar sessión"}></AnimatedButton>
-            <AnimatedButton text={"Salir"}></AnimatedButton>
-            <AnimatedButton text={"RESERVAR TURNO"} strong={true}></AnimatedButton>
+            <ReflectButton text="Ingresar con Instagram" clicked={ () => logginWithInstagram() }></ReflectButton>
         </div>
     );
 };

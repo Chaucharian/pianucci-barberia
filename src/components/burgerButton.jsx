@@ -5,7 +5,8 @@ import { colorScheme } from '../styles/styles';
 const styles = {
     container: {
         display: "flex",
-        position: "relative",
+        flexDirection: "column",
+        justifyContent: "center",
         width: "50px"
     },
     button: {
@@ -33,7 +34,7 @@ const styles = {
         transition: ".25s ease-in-out",
         transformOrigin: "left center",
         "&:hover": {
-            background: colorScheme.buttonHover
+            background: colorScheme.grey
         }
     },
     stripe1: {
@@ -47,7 +48,7 @@ const styles = {
     },
     stripe1Clicked: {
         transform: "rotate(45deg)",
-        top: "3px",
+        top: "-3px",
     },
     stripe2Clicked: {
         width: "0%",

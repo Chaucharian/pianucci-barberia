@@ -13,6 +13,7 @@
     "express": "^4.17.1",
     "express-crypto": "^1.0.5",
     "hookrouter": "^1.2.3",
+    "instafeed.js": "^1.4.1",
     "react": "^15.0.0 || ^16.0.0",
     "react-dom": "^15.0.0 || ^16.0.0",
     "react-scripts": "1.1.4",

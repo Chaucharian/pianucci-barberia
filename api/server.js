@@ -9,8 +9,8 @@ const port = process.env.PORT || 2345;
 // Instagram OAuth 2 setup
 const credentials = {
     client: {
-      id: '6630f184387c425e8912e1495be328c9', // Change this!
-      secret: '6d61d7e4b38f4b0e828091f01b16f46b', // Change this!
+      id: '6630f184387c425e8912e1495be328c9', 
+      secret: '6d61d7e4b38f4b0e828091f01b16f46b',
     },
     auth: {
       tokenHost: 'https://api.instagram.com',
@@ -53,6 +53,6 @@ app.get('/instagram-redirect', (req, res) => {
 	httpRequest(options, (error, response, body) => {
 		if (!error && response.statusCode == 200) {
       res.json(JSON.parse(body));
-		}
+    }
   });
 });

@@ -3,6 +3,10 @@ import {navigate} from 'hookrouter';
 import Header from '../components/header';
 import ReflectButton from '../components/reflectButton';
 import { withStyles } from '@material-ui/styles';
+import ImageSlider from '../components/imageSlider';
+import corte1 from '../assets/corte1.jpg';
+import corte2 from '../assets/corte2.jpg';
+import corte3 from '../assets/corte3.jpg';
 
 const styles = {
     content: {
@@ -18,9 +22,7 @@ export const HomePage = (props) => {
         <div>
             <Header></Header>
             <div className={classes.content}>
-                <ReflectButton text="ENTRAR"></ReflectButton>
-                <ReflectButton text="SALIR"></ReflectButton>
-                <ReflectButton text="ANDATE A LA CONCHA DE TU MADRE"></ReflectButton>
+               <ImageSlider images={[corte1,corte2,corte3]} ></ImageSlider>
             </div>
         </div>
     );

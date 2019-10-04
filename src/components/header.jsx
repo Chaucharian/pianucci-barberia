@@ -49,6 +49,8 @@ const styles = {
         "& li": {
             "&:hover": {
                 textDecoration: "line-through",
+            },
+            "& a": {
                 cursor: "pointer"
             }
         }

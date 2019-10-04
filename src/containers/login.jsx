@@ -42,7 +42,8 @@ const Login = (props) => {
     return (
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
-            <ReflectButton text="Ingresar con Instagram" clicked={ () => logginWithInstagram() }></ReflectButton>
+            <ReflectButton text="Ingresar con Instagram" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
+            <ReflectButton text="Ingresar con Instagram" ></ReflectButton>
         </div>
     );
 };

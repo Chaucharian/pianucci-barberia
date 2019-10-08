@@ -16,6 +16,7 @@ const styles = {
             willChange: "transform",
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
             width: "100%",
             height: "100%",
         }   

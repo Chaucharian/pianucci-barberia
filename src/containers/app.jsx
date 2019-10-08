@@ -4,21 +4,15 @@ import {Router} from './router';
 
 const App = () => {
   const initialState = {
-    counter: 0
+    scrollY: 0
   };
   
   const reducer = (state, action) => {
     switch (action.type) {
-      case 'changeTheme':
+      case 'moveScroll':
         return {
           ...state,
-          counter: action.counter
         };
-        case 'updateTime':
-          return {
-            ...state,
-            counter: action.counter
-          };
       default:
         return state;
     }

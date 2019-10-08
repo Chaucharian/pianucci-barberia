@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles} from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
 import ReflectButton from '../components/reflectButton';
+import RealBarberButton from '../components/realBarberButton';
 import { enviroment } from '../enviroment';
 
 const styles = {
@@ -43,7 +44,7 @@ const Login = (props) => {
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
             <ReflectButton text="Ingresar con Instagram" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
-            <ReflectButton text="Ingresar con Instagram" ></ReflectButton>
+            <RealBarberButton text="RESERVAR TURNO" ></RealBarberButton>
         </div>
     );
 };

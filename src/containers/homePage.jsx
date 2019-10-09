@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStateValue } from '../state/rootState';
+import * as actionTypes from '../actions/types';
+import * as appActions from '../actions/app';
 import Header from '../components/header';
 import ReflectButton from '../components/reflectButton';
 import ReactPageScroller from "react-page-scroller";
@@ -42,15 +44,19 @@ const styles = {
 export const HomePage = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { isDealing } = state;
-
+    const { isDealing, currentPage } = state;
+    console.log(state);
     let pageScroller = null;
-    const pageOnChange = scroll => {
 
+    const pageOnChange = scroll => {
+        dispatch( appActions.changePage({ payload: scroll }) );
     }
+
     const goToPage = (page) => {
         pageScroller.goToPage(page);
+        dispatch( appActions.changePage({ payload: page }) );
     }
+
     const setScrollHandler = scroll => {
         if(scroll) {
             pageScroller = scroll;
@@ -71,7 +77,9 @@ export const HomePage = (props) => {
                         </div>
                     </div>
                     <BookingList></BookingList>
-                    <BookingHandler></BookingHandler>
+                    {
+                        isDealing ? <BookingHandler></BookingHandler> : null
+                    }
                 </ReactPageScroller>
             </div>
         </div>

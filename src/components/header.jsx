@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import BurgerButton from './burgerButton';
 import { fonts, colorScheme } from '../styles/styles';
-import logo from '../assets/logo.png';
+import logoImage from '../assets/logo.png';
+import darkLogoImage from '../assets/dark_logo.png';
 
 const styles = {
     header: {
@@ -67,13 +68,38 @@ const styles = {
             width: "100%",
             height: "100%",
             display: "flex",
-            background: `url(${logo})`,
+            background: `url(${logoImage})`,
             backgroundPosition: "-5px -6px",
         }
     },
     logoHidden: {
         opacity: 0,
         transform: "translateY(-10px)",
+        transition: ".1s ease-in-out"
+    },
+    logoBlack: {
+        width: "150px",
+        height: "70px",
+        marginTop: "86%",
+        opacity: 0,
+        transition: "1s ease-in-out",
+        // display: "none",
+        "& span": {
+            display: "block",
+            width: "100%",
+            height: "100%",
+            background: "url("+darkLogoImage+")",
+        }
+    },
+    logoBlackVisible: {
+        opacity: 1,
+        // display: "block",
+        transform: "translateY(-15px)",
+        transition: "1s ease-in-out"
+    },
+    logoBlackHidden: {
+        opacity: 0,
+        transform: "translateX(-400px)",
         transition: ".1s ease-in-out"
     }
 }
@@ -97,6 +123,9 @@ const Header = (props) => {
                     <li><a>SALIR</a></li>
                 </ul> 
             </nav>
+            <div className={classes.logoBlack +' '+ (open ?  classes.logoBlackVisible  :  classes.logoBlackHidden) }>
+                <span></span>
+            </div>
         </header>
         
     );

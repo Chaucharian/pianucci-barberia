@@ -1,8 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useStateValue } from '../state/rootState';
+import * as actionTypes from '../actions/types';
+import * as appActions from '../actions/app';
 import { withStyles } from '@material-ui/styles'
 import RealBarberButton from '../components/realBarberButton';
-
+import * as userActions from '../actions/user';
+import ButtonAnimated from '../components/animatedButton';
 const styles = {
     container: {
         width: "100%",
@@ -28,7 +31,8 @@ const BookingList = (props) => {
     const [state, dispatch] = useStateValue();
     const bookingList = state.user.bookings;
 
-    
+    const createAppointment = () => dispatch( appActions.showBookingHandlerView() );
+
     return (
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>
@@ -37,7 +41,8 @@ const BookingList = (props) => {
                 <BookingItem data={booking}></BookingItem>) :
                 <div><h2>Nunca reservaste :(</h2></div>  
             }
-            <RealBarberButton text={'reservar turno'} clicked={() => {}}></RealBarberButton>
+            <RealBarberButton text={'reservar turno'} clicked={() => createAppointment()}></RealBarberButton>
+            <ButtonAnimated text="GUACHOO"></ButtonAnimated>
         </div>
     );  
   }

@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { withStyles } from '@material-ui/styles'
+import RealBarberButton from '../components/realBarberButton';
 
 const styles = {
     container: {
@@ -7,7 +8,7 @@ const styles = {
         height: "100%", 
         backgroundColor: "#000",
         textAlign: "center",
-        padding: "5px"
+        paddingTop: "76px"
     }
 }
 
@@ -17,6 +18,7 @@ const BookingList = (props) => {
     return (
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>
+            <RealBarberButton text={'reservar turno'}></RealBarberButton>
         </div>
     );  
   }

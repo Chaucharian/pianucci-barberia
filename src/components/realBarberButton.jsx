@@ -38,7 +38,7 @@ const styles = {
                     transform: "translate3d(130%, -100px, 0) rotate3d(0, 0, 1, 90deg)"
                 },
                 "& .mask3": {
-                    backgroundColor: "#081e5d",
+                    backgroundColor: "#012ea1",
                     transform: "translate3d(115%, -100px, 0) rotate3d(0, 0, 1, 90deg)"
                 }
             }

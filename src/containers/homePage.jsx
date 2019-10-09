@@ -59,7 +59,7 @@ export const HomePage = (props) => {
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange}>
                     <div>
-                        <ImageSlideGalery images={['http://localhost:1234'+corte1,'http://localhost:1234'+corte2,'http://localhost:1234'+corte3]}></ImageSlideGalery>
+                        <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
                         <div className={classes.buttonContainer}>
                             <button className={classes.nextPageButton} onClick={() => goToPage(1)}>
                                 <i className="fas fa-arrow-circle-down"></i>

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
+import { useStateValue } from '../state/rootState';
 import { withStyles } from '@material-ui/styles'
 import RealBarberButton from '../components/realBarberButton';
 
@@ -14,7 +15,8 @@ const styles = {
 
 const BookingList = (props) => {
     const { classes } = props;
-
+    const [state, setState] = useStateValue();
+    console.log(state)
     return (
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>

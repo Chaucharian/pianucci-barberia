@@ -1,10 +1,12 @@
 import React from 'react';
 import { StateProvider, useStateValue } from '../state/rootState';
-import {Router} from './router';
+import {Router} from '../components/router';
 
 const App = () => {
   const initialState = {
-    scrollY: 0
+    currentPage: 0,
+    isDealing: false,
+    user: { bookings: [] }
   };
   
   const reducer = (state, action) => {

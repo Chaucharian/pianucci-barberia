@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {navigate} from 'hookrouter';
+import { useStateValue } from '../state/rootState';
 import Header from '../components/header';
 import ReflectButton from '../components/reflectButton';
 import ReactPageScroller from "react-page-scroller";
@@ -9,6 +9,7 @@ import corte2 from '../assets/corte2.jpg';
 import corte3 from '../assets/corte3.jpg';
 import ImageSlideGalery from '../components/imageSlideGalery';
 import BookingList from './bookingList';
+import BookingHandler from './bookingHandler';
 
 const styles = {
     content: {
@@ -20,7 +21,7 @@ const styles = {
     },
     buttonContainer: {
         position: "fixed",
-        top: "90%",
+        top: "85%",
         left: "45%"
     },
     nextPageButton: {
@@ -40,6 +41,9 @@ const styles = {
 
 export const HomePage = (props) => {
     const { classes } = props; 
+    const [state, dispatch] = useStateValue();
+    const { isDealing } = state;
+
     let pageScroller = null;
     const pageOnChange = scroll => {
 
@@ -67,6 +71,7 @@ export const HomePage = (props) => {
                         </div>
                     </div>
                     <BookingList></BookingList>
+                    <BookingHandler></BookingHandler>
                 </ReactPageScroller>
             </div>
         </div>

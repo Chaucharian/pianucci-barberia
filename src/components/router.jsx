@@ -1,8 +1,8 @@
 import React from 'react';
 import {useRoutes} from 'hookrouter';
-import {NotFoundPage} from '../components/notFoundPage';
-import HomePage from './homePage';
-import Login from './login';
+import {NotFoundPage} from './notFoundPage';
+import HomePage from '../containers/homePage';
+import Login from '../containers/login';
 
 const routes = {
     '/': () => <HomePage />,

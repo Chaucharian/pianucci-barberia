@@ -58,7 +58,7 @@ const styles = {
                 fontSize: "18px"
             },
             "& .mask1": {
-                backgroundColor: "#fff",
+                backgroundColor: "#d00909",
                 backgroundColor: "rgba(255, 255, 255, 0.5)",
                 height: "100px",
                 position: "absolute",
@@ -71,16 +71,15 @@ const styles = {
                 backgroundColor: "rgba(255, 255, 255, 0.5)",
                 height: "100px",
                 position: "absolute",
-                transform: "translate3d(-150%, -50px, 0) rotate3d(0, 0, 1, 45deg)",
+                transform: "translate3d(-120%, -50px, 0) rotate3d(0, 0, 1, 45deg)",
                 transition: "all 1.1s cubic-bezier(0.19, 1, 0.22, 1)",
                 width: "200px"
             },
             "& .mask3": {
-                backgroundColor: "#fff",
                 backgroundColor: "rgba(255, 255, 255, 0.5)",
                 height: "100px",
                 position: "absolute",
-                transform: "translate3d(-150%, -50px, 0) rotate3d(0, 0, 1, 45deg)",
+                transform: "translate3d(-120%, -50px, 0) rotate3d(0, 0, 1, 45deg)",
                 transition: "all 1.1s cubic-bezier(0.19, 1, 0.22, 1)",
                 width: "200px"
             }

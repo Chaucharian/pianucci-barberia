@@ -42,7 +42,6 @@ const BookingList = (props) => {
                 <div><h2>Nunca reservaste :(</h2></div>  
             }
             <RealBarberButton text={'reservar turno'} clicked={() => createAppointment()}></RealBarberButton>
-            <ButtonAnimated text="GUACHOO"></ButtonAnimated>
         </div>
     );  
   }

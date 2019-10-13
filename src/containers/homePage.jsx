@@ -44,8 +44,7 @@ const styles = {
 export const HomePage = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { isDealing, currentPage } = state;
-    console.log(state);
+    const { isDealing, showBookingSection, goToBookingSection, currentPage } = state;
     let pageScroller = null;
 
     const pageOnChange = scroll => {
@@ -63,11 +62,20 @@ export const HomePage = (props) => {
         }
     }
 
+    const allowScroll = (!showBookingSection && currentPage === 2); 
+
+    useEffect(()=> {
+        console.log(pageScroller);
+        // if(!goToBookingSection && currentPage !== 3) {
+        //     goToPage(currentPage);
+        // }
+    });
+
     return (
         <div>
             <Header></Header>
             <div className={classes.content}>
-                <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange}>
+                <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={allowScroll}>
                     <div>
                         <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
                         <div className={classes.buttonContainer}>
@@ -78,7 +86,7 @@ export const HomePage = (props) => {
                     </div>
                     <BookingList></BookingList>
                     {
-                        isDealing ? <BookingHandler></BookingHandler> : null
+                        showBookingSection ? <BookingHandler></BookingHandler> : ''
                     }
                 </ReactPageScroller>
             </div>

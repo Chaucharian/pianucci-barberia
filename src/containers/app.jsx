@@ -7,6 +7,8 @@ const App = () => {
   const initialState = {
     currentPage: 0,
     isDealing: false,
+    showBookingSection: false,
+    goToBookingSection: false,
     user: { bookings: [] }
   };
   
@@ -15,7 +17,8 @@ const App = () => {
         case actionTypes.CHANGE_PAGE:
             return {
                 ...state,
-                currentPage: action.payload
+                currentPage: action.payload,
+                goToBookingSection: action.payload === 3 ? false : false
             };
         case actionTypes.CREATE_APPOINTMENT:
             return {
@@ -25,12 +28,13 @@ const App = () => {
         case actionTypes.SHOW_BOOKING_HANDLER:
             return {
                 ...state,
-                isDealing: true,
+                showBookingSection: true,
+                goToBookingSection: true
             };
         case actionTypes.HIDE_BOOKING_HANDLER:
             return {
                 ...state,
-                isDealing: false,
+                showBookingSection: false,
             };
       default:
         return state;

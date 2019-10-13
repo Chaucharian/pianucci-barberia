@@ -95,7 +95,7 @@ const styles = {
         opacity: 1,
         // display: "block",
         transform: "translateY(-15px)",
-        transition: "1s ease-in-out"
+        transition: ".5s ease-in-out"
     },
     logoBlackHidden: {
         opacity: 0,

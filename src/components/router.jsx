@@ -1,11 +1,11 @@
 import React from 'react';
 import {useRoutes} from 'hookrouter';
 import {NotFoundPage} from './notFoundPage';
-import HomePage from '../containers/homePage';
+import MainViewer from '../containers/mainViewer';
 import Login from '../containers/login';
 
 const routes = {
-    '/': () => <HomePage />,
+    '/': () => <MainViewer />,
     '/login': () => <Login />,
 };
 	

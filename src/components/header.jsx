@@ -81,6 +81,8 @@ const styles = {
         width: "150px",
         height: "70px",
         marginTop: "86%",
+        marginLeft: "auto",
+        marginRight: "auto",
         opacity: 0,
         transition: "1s ease-in-out",
         // display: "none",

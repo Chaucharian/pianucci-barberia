@@ -41,7 +41,7 @@ const styles = {
     }
 }
 
-export const HomePage = (props) => {
+export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
     const { isDealing, showBookingSection, goToBookingSection, currentPage } = state;
@@ -98,6 +98,6 @@ export const HomePage = (props) => {
     );
 }
 
-export default withStyles(styles)(HomePage);
+export default withStyles(styles)(MainViewer);
 
 

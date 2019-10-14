@@ -4,7 +4,10 @@ import * as appActions from '../actions/app';
 import { withStyles } from '@material-ui/styles';
 import Calendar from '@lls/react-light-calendar'
 import '@lls/react-light-calendar/dist/index.css' // Default Style
-
+import StepIndicator from '../components/stepIndicator';
+import ScheduleList from '../components/scheduleList';
+import ViewSwitcher from '../components/viewSwitcher';
+import ServiceTypeSelector from '../components/serviceTypeSelector';
 
 const styles = {
     container: {
@@ -19,22 +22,28 @@ const styles = {
         width: "100%",
         display: "flex",
         justifyContent: "center"
-    }
+    },
 }
 
 export const BookingHandler = (props) => {
     const { classes, booking } = props; 
+    const [internalState, changeInternalState] = useState({currentStep: 1});
     const [state, dispatch] = useStateValue();
-    const { isDealing } = state;
+    const { currentStep } = internalState;
+
     const startDate = new Date().getTime();
     const endDate = new Date().getDate()+3;
     const onChange = data => console.log(data);
+    let mainContent = null;
+
     return (
         <div className={classes.container}>
-            <h2>BOOKING HANDLER PAPA!</h2>
-            <div className={classes.content}>
-                <Calendar startDate={startDate} endDate={endDate} onChange={onChange} />
-            </div>
+            <h2>RESERVA UN TURNO</h2>
+            <StepIndicator currentStep={currentStep}></StepIndicator>
+            <ViewSwitcher targetView={currentStep}>
+                <ServiceTypeSelector serviceSelected={ service => console.log(service)}></ServiceTypeSelector>
+                <ScheduleList items={[{ date: new Date()}, { date: new Date()}, { date: new Date()}]}></ScheduleList>
+            </ViewSwitcher>
         </div>
     );
 }

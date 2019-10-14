@@ -13,3 +13,7 @@ export const showBookingHandlerView = action => ({
 export const hideBookingHandlerView = action => ({
     type: actionTypes.HIDE_BOOKING_HANDLER,
 }); 
+
+export const bookingHandlerVisited = () => ({
+    type: actionTypes.BOOKING_HANDLER_VISITED,
+}); 

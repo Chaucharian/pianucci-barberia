@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../state/rootState';
-import Header from '../components/header';
-import ReflectButton from '../components/reflectButton';
-import ReactPageScroller from "react-page-scroller";
+import * as appActions from '../actions/app';
 import { withStyles } from '@material-ui/styles';
-import corte1 from '../assets/corte1.jpg';
-import corte2 from '../assets/corte2.jpg';
-import corte3 from '../assets/corte3.jpg';
-import ImageSlideGalery from '../components/imageSlideGalery';
-import BookingList from './bookingList';
 
 const styles = {
     container: {

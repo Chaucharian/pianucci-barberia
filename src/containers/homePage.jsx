@@ -49,10 +49,12 @@ export const HomePage = (props) => {
 
     const pageOnChange = scroll => {
         dispatch( appActions.changePage({ payload: scroll }) );
+        if(scroll === 3) {
+            dispatch( appActions.bookingHandlerVisited() );
+        }
     }
 
     const goToPage = (page) => {
-        pageScroller.goToPage(page);
         dispatch( appActions.changePage({ payload: page }) );
     }
 
@@ -65,10 +67,12 @@ export const HomePage = (props) => {
     const allowScroll = (!showBookingSection && currentPage === 2); 
 
     useEffect(()=> {
-        console.log(pageScroller);
-        // if(!goToBookingSection && currentPage !== 3) {
-        //     goToPage(currentPage);
-        // }
+        pageScroller.goToPage(currentPage);
+        setTimeout(()=> {
+            if(goToBookingSection) {
+                goToPage(3);
+            }    
+        },2000)
     });
 
     return (

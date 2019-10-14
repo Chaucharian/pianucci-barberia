@@ -36,6 +36,11 @@ const App = () => {
                 ...state,
                 showBookingSection: false,
             };
+        case actionTypes.BOOKING_HANDLER_VISITED:
+          return {
+              ...state,
+              goToBookingSection: false,
+            };
       default:
         return state;
     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/styles';
+import { colorScheme } from '../styles/styles';
 
 const styles = {
     container: {
@@ -8,7 +9,7 @@ const styles = {
         alignItems: "center",
         width: "40px",
         height: "40px", 
-        backgroundColor: "#635e5e",
+        backgroundColor: colorScheme.disabledOptions,
         color: "#000",
         borderRadius: "30px",
         fontFamily: "'Abril Fatface', cursive"

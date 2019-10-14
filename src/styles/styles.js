@@ -3,7 +3,8 @@ export const colorScheme = {
     lightColor: "#FFF",
     buttonHover: "#641b22",
     buttonActive: "#000",
-    grey: "#737373"
+    grey: "#737373",
+    disabledOptions: "#635e5e"
 };
 
 export const fonts = {

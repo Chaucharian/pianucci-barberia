@@ -27,9 +27,9 @@ const styles = {
 
 export const BookingHandler = (props) => {
     const { classes, booking } = props; 
-    const [internalState, changeInternalState] = useState({currentStep: 1});
+    const [internalState, changeInternalState] = useState({currentStep: 0, serviceSelected: ''});
     const [state, dispatch] = useStateValue();
-    const { currentStep } = internalState;
+    const { currentStep, serviceSelected } = internalState;
 
     const startDate = new Date().getTime();
     const endDate = new Date().getDate()+3;
@@ -41,7 +41,7 @@ export const BookingHandler = (props) => {
             <h2>RESERVA UN TURNO</h2>
             <StepIndicator currentStep={currentStep}></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
-                <ServiceTypeSelector serviceSelected={ service => console.log(service)}></ServiceTypeSelector>
+                <ServiceTypeSelector serviceSelected={ service => changeInternalState({ currentStep: 2, serviceSelected: service })}></ServiceTypeSelector>
                 <ScheduleList items={[{ date: new Date()}, { date: new Date()}, { date: new Date()}]}></ScheduleList>
             </ViewSwitcher>
         </div>

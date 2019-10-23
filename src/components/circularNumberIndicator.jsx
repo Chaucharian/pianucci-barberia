@@ -12,7 +12,8 @@ const styles = {
         backgroundColor: colorScheme.disabledOptions,
         color: "#000",
         borderRadius: "30px",
-        fontFamily: "'Abril Fatface', cursive"
+        fontFamily: "'Abril Fatface', cursive",
+        transition: "all 1s ease-in-out"
     },
     on: {
         backgroundColor: "#FFF", 

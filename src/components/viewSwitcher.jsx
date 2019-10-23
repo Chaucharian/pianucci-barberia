@@ -15,7 +15,7 @@ export const ViewSwitcher = (props) => {
 
     return (
         <div className={classes.container}>
-            { children[targetView] }
+            { children[targetView-1] }
         </div>
     );
 }

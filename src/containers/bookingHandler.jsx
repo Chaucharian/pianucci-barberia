@@ -27,7 +27,7 @@ const styles = {
 
 export const BookingHandler = (props) => {
     const { classes, booking } = props; 
-    const [internalState, changeInternalState] = useState({currentStep: 0, serviceSelected: ''});
+    const [internalState, changeInternalState] = useState({currentStep: 1, serviceSelected: ''});
     const [state, dispatch] = useStateValue();
     const { currentStep, serviceSelected } = internalState;
 

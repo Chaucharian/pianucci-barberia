@@ -6,6 +6,7 @@ import { withStyles } from '@material-ui/styles'
 import RealBarberButton from '../components/realBarberButton';
 import * as userActions from '../actions/user';
 import ButtonAnimated from '../components/animatedButton';
+
 const styles = {
     container: {
         width: "100%",

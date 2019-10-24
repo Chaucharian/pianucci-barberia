@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import { withStyles } from '@material-ui/styles';
-import Calendar from '@lls/react-light-calendar'
-import '@lls/react-light-calendar/dist/index.css' // Default Style
 import StepIndicator from '../components/stepIndicator';
-import ScheduleList from '../components/scheduleList';
 import ViewSwitcher from '../components/viewSwitcher';
 import ServiceTypeSelector from '../components/serviceTypeSelector';
 import BookingConfirmation from '../components/bookingConfirmation';
+import BookingDateSelector from '../components/bookingDateSelector';
 import * as userActions from '../actions/user';
 
 const styles = {
@@ -29,14 +27,10 @@ const styles = {
 
 export const BookingHandler = (props) => {
     const { classes, booking } = props; 
-    const [internalState, changeInternalState] = useState({currentStep: 1, serviceSelected: '', date: null });
+    const [internalState, changeInternalState] = useState({currentStep: 1, serviceSelected: { duration: 0, name: '' }, date: null });
     const [state, dispatch] = useStateValue();
+    const { availableDates } = state;
     const { currentStep, serviceSelected, date } = internalState;
-
-    const startDate = new Date().getTime();
-    const endDate = new Date().getDate()+3;
-    const onChange = data => console.log(data);
-    let mainContent = null;
 
     const handleBookingConfirmation = response => {
         if (response === 'confirm') {
@@ -62,7 +56,7 @@ export const BookingHandler = (props) => {
             <StepIndicator currentStep={currentStep} clicked={ step => changeStep(step) }></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector serviceSelected={ service => changeInternalState({ currentStep: 2, serviceSelected: service })}></ServiceTypeSelector>
-                <ScheduleList serviceSelected={ serviceSelected } items={[{ date: new Date()}, { date: new Date()}, { date: new Date()}]}></ScheduleList>
+                <BookingDateSelector dates={ availableDates } serviceDuration={ serviceSelected.duration } dateSelected={ date => console.log(date) }></BookingDateSelector>
                 <BookingConfirmation booking={ { date, serviceSelected } } response={ response => handleBookingConfirmation(response) }  ></BookingConfirmation>
             </ViewSwitcher>
         </div>

@@ -9,7 +9,8 @@ const App = () => {
     isDealing: false,
     showBookingSection: false,
     goToBookingSection: false,
-    user: { bookings: [] }
+    user: { bookings: [] },
+    availableDates: []
   };
   
   const reducer = (state, action) => {

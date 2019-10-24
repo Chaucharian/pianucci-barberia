@@ -12,13 +12,13 @@ const styles = {
 }
 
 export const stepIndicator = (props) => {
-    const { classes, currentStep } = props; 
+    const { classes, currentStep, clicked } = props; 
 
     return (
         <div className={classes.container}>
-            <CircularNumberIndicator number={1} on={currentStep === 1}></CircularNumberIndicator>
-            <CircularNumberIndicator number={2} on={currentStep === 2}></CircularNumberIndicator>
-            <CircularNumberIndicator number={3} on={currentStep === 3}></CircularNumberIndicator>
+            <CircularNumberIndicator number={1} on={currentStep === 1} clicked={ number => clicked(number) } ></CircularNumberIndicator>
+            <CircularNumberIndicator number={2} on={currentStep === 2} clicked={ number => clicked(number) }></CircularNumberIndicator>
+            <CircularNumberIndicator number={3} on={currentStep === 3} clicked={ number => clicked(number) }></CircularNumberIndicator>
         </div>
     );
 }

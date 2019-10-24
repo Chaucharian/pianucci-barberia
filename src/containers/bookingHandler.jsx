@@ -50,10 +50,16 @@ export const BookingHandler = (props) => {
         dispatch(userActions.createBooking(booking));
     }
 
+    const changeStep = (newStep) => {
+        if(newStep < currentStep) {
+            changeInternalState({ currentStep: newStep });
+        }
+    } 
+
     return (
         <div className={classes.container}>
             <h2>RESERVA UN TURNO</h2>
-            <StepIndicator currentStep={currentStep}></StepIndicator>
+            <StepIndicator currentStep={currentStep} clicked={ step => changeStep(step) }></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector serviceSelected={ service => changeInternalState({ currentStep: 2, serviceSelected: service })}></ServiceTypeSelector>
                 <ScheduleList serviceSelected={ serviceSelected } items={[{ date: new Date()}, { date: new Date()}, { date: new Date()}]}></ScheduleList>

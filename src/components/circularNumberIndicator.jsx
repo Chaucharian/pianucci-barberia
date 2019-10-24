@@ -13,7 +13,8 @@ const styles = {
         color: "#000",
         borderRadius: "30px",
         fontFamily: "'Abril Fatface', cursive",
-        transition: "all 1s ease-in-out"
+        transition: "all 1s ease-in-out",
+        cursor: "pointer"
     },
     on: {
         backgroundColor: "#FFF", 
@@ -23,10 +24,10 @@ const styles = {
 }
 
 export const CicularNumberIndicator = (props) => {
-    const { classes, number, on } = props; 
+    const { classes, number, on, clicked } = props; 
     
     return (
-        <div className={classes.container + ' ' + (on ? classes.on : '')}>
+        <div className={classes.container + ' ' + (on ? classes.on : '')} onClick={ () => clicked(number) }>
            <p>{number}</p>
         </div>
     );

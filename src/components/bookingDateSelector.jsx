@@ -24,6 +24,11 @@ export const BookingDateSelector = (props) => {
     const { classes, dates, dateSelected, serviceDuration } = props; 
     const [state, dispatch] = useState({ defaultDay: null});
      
+    const setDefaultDay = () => {
+
+    }
+
+    
     return (
         <div className={classes.container}>
             BOOKING DATE SELECTOR

@@ -29,7 +29,7 @@ export const BookingHandler = (props) => {
     const { classes, booking } = props; 
     const [internalState, changeInternalState] = useState({currentStep: 1, serviceSelected: { duration: 0, name: '' }, date: null });
     const [state, dispatch] = useStateValue();
-    const { availableDates } = state;
+    const { activeBookings } = state;
     const { currentStep, serviceSelected, date } = internalState;
 
     const handleBookingConfirmation = response => {
@@ -56,7 +56,7 @@ export const BookingHandler = (props) => {
             <StepIndicator currentStep={currentStep} clicked={ step => changeStep(step) }></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector serviceSelected={ service => changeInternalState({ currentStep: 2, serviceSelected: service })}></ServiceTypeSelector>
-                <BookingDateSelector dates={ availableDates } serviceDuration={ serviceSelected.duration } dateSelected={ date => console.log(date) }></BookingDateSelector>
+                <BookingDateSelector dates={ activeBookings } serviceDuration={ serviceSelected.duration } dateSelected={ date => console.log(date) }></BookingDateSelector>
                 <BookingConfirmation booking={ { date, serviceSelected } } response={ response => handleBookingConfirmation(response) }  ></BookingConfirmation>
             </ViewSwitcher>
         </div>

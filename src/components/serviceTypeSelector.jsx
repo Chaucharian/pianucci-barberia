@@ -10,8 +10,7 @@ const styles = {
         flexGrow: 1,
         color: "#FFF",
         "& div": {
-            width: "35%",
-            height: "60px",
+       
             "& button": {
                 border: "2px solid #2e2e2e",
                 cursor: "pointer",
@@ -34,6 +33,18 @@ const styles = {
                 }
             },
         }
+    },
+    option1: {
+        width: "200px",
+        height: "150px"
+    },
+    option2: {
+        width: "100px",
+        height: "150px"
+    },
+    option3: {
+        width: "100px",
+        height: "150px"
     }
 }
 

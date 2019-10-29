@@ -55,14 +55,22 @@ export const BookingHandler = (props) => {
             <h2>RESERVA UN TURNO</h2>
             <StepIndicator currentStep={currentStep} clicked={ step => changeStep(step) }></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
-                <ServiceTypeSelector serviceSelected={ service => changeInternalState({ currentStep: 2, serviceSelected: service })}></ServiceTypeSelector>
-                <BookingDateSelector dates={ activeBookings } serviceDuration={ serviceSelected.duration } dateSelected={ date => console.log(date) }></BookingDateSelector>
-                <BookingConfirmation booking={ { date, serviceSelected } } response={ response => handleBookingConfirmation(response) }  ></BookingConfirmation>
+                <ServiceTypeSelector 
+                    serviceSelected={ serviceSelected => changeInternalState({ currentStep: 2, serviceSelected }) }
+                ></ServiceTypeSelector>
+                <BookingDateSelector 
+                    dates={ activeBookings }
+                    serviceDuration={ serviceSelected.duration } 
+                    dateSelected={ date => changeInternalState({ currentStep: 3, date }) }
+                ></BookingDateSelector>
+                <BookingConfirmation 
+                    booking={ { date, serviceSelected } } 
+                    response={ response => handleBookingConfirmation(response) }  
+                ></BookingConfirmation>
             </ViewSwitcher>
         </div>
     );
 }
 
 export default withStyles(styles)(BookingHandler);
-
 

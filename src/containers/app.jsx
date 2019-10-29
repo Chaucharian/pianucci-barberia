@@ -1,18 +1,21 @@
 import React from 'react';
 import { StateProvider, useStateValue } from '../state/rootState';
 import {Router} from '../components/router';
+import { useRedirect, navigate } from 'hookrouter';
 import * as actionTypes from '../actions/types'
 
 const App = () => {
+  // sessionStorage.setItem('userSession', { bookings: [] });
+
   const initialState = {
     currentPage: 0,
     isDealing: false,
     showBookingSection: false,
     goToBookingSection: false,
-    user: { bookings: [] },
+    user: sessionStorage.getItem('userSession') ||  null,
     activeBookings: []
   };
-  
+
   const reducer = (state, action) => {
     switch (action.type) {
         case actionTypes.CHANGE_PAGE:
@@ -46,6 +49,12 @@ const App = () => {
         return state;
     }
   };
+
+  if(initialState.user) {
+    navigate('/');
+  } else{
+    navigate('/login');
+  }
   
   return (
     <StateProvider initialState={initialState} reducer={reducer}>

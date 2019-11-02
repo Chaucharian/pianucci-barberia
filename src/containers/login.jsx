@@ -3,11 +3,13 @@ import { withStyles} from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
 import * as firebase from "firebase/app";
 import "firebase/auth";
-import ReflectButton from '../components/reflectButton';
-import RealBarberButton from '../components/realBarberButton';
 import { enviroment } from '../enviroment';
 import * as appActions from '../actions/app';
 import { useRedirect, navigate } from 'hookrouter';
+
+import ReflectButton from '../components/reflectButton';
+import RealBarberButton from '../components/realBarberButton';
+import WhiteTextField from '../components/textField';
 
 
 const firebaseConfig = {
@@ -41,7 +43,11 @@ const Login = (props) => {
     const [state, dispatch] = useStateValue();
 
     firebase.initializeApp(firebaseConfig);
-    
+    // firebase.auth().signOut().then(function() {
+    //     // Sign-out successful.
+    //   }).catch(function(error) {
+    //     // An error happened.
+    //   });
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             navigate('/');
@@ -66,6 +72,7 @@ const Login = (props) => {
         .then( response => {
             let user = { id: '', bookings: [] };
             const { email, uid } = response.user;
+            // retrieve user related data from db
             firebase.database().ref('/users/' + uid).once('value').then( (snapshot) => {
                 user.bookings = snapshot.bookings | [];
                 user.email = email;
@@ -83,8 +90,24 @@ const Login = (props) => {
     return (
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
-            <ReflectButton text="Ingresar con Instagram" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
-            <RealBarberButton text="RESERVAR TURNO" clicked={() => loginWithEmail()}></RealBarberButton>
+            <div className={classes.loginContainer}>
+            <WhiteTextField
+                id="standard-basic"
+                className={classes.textField}
+                label="Standard"
+                margin="normal"
+                />
+                <ReflectButton text="Ingresar con Instagram" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
+                <RealBarberButton text="RESERVAR TURNO" clicked={() => loginWithEmail()}></RealBarberButton>
+            </div>
+            <div className={classes.signUpContainer}>
+                <WhiteTextField
+                id="standard-basic"
+                className={classes.textField}
+                label="Standard"
+                margin="normal"
+                />
+            </div>
         </div>
     );
 };

@@ -4,7 +4,7 @@ import { colorScheme } from '../styles/styles';
 
 const styles = {
     button: {
-        maxWidth: "400px",
+        maxWidth: "380px",
         border: "2px solid #2e2e2e",
         cursor: "pointer",
         letterSpacing: "0.2125rem",

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StateProvider, useStateValue } from '../state/rootState';
 import {Router} from '../components/router';
-import { useRedirect, navigate } from 'hookrouter';
 import * as actionTypes from '../actions/types'
+import { enviroment } from '../enviroment';
 
 const App = () => {
   // sessionStorage.setItem('userSession', { bookings: [] });
@@ -12,12 +12,18 @@ const App = () => {
     isDealing: false,
     showBookingSection: false,
     goToBookingSection: false,
-    user: sessionStorage.getItem('userSession') ||  null,
+    user: { id: '', bookings: [] },
     activeBookings: []
   };
 
   const reducer = (state, action) => {
     switch (action.type) {
+        case actionTypes.USER_LOGGED_IN:
+            const { user } = action.payload;
+            return {
+              ...state,
+              user
+            }
         case actionTypes.CHANGE_PAGE:
             return {
                 ...state,
@@ -49,12 +55,6 @@ const App = () => {
         return state;
     }
   };
-
-  if(initialState.user) {
-    navigate('/');
-  } else{
-    navigate('/login');
-  }
   
   return (
     <StateProvider initialState={initialState} reducer={reducer}>

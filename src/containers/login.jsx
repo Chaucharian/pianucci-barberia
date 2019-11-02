@@ -6,6 +6,9 @@ import "firebase/auth";
 import ReflectButton from '../components/reflectButton';
 import RealBarberButton from '../components/realBarberButton';
 import { enviroment } from '../enviroment';
+import * as appActions from '../actions/app';
+import { useRedirect, navigate } from 'hookrouter';
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyD2y6eJmIuI-aT0muEMFtURhsXSev0HLhA",
@@ -35,17 +38,47 @@ const styles = {
 
 const Login = (props) => {
     const { classes } = props;
+    const [state, dispatch] = useStateValue();
+
     firebase.initializeApp(firebaseConfig);
+    
+    firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+            navigate('/');
+        }
+    });
 
     const logginWithInstagram = () => {
         window.open(enviroment.baseUrl+ '/instagram', 'firebaseAuth', 'height=315,width=400');
     }
 
-    const loginWithEmail = () => {
-        firebase.auth().createUserWithEmailAndPassword('asas@asds.com', 'asdasdas').catch(function(error) {
+    const createUserWithEmail = user => {
+        firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+        .then( response => console.log(response)
+        )
+        .catch(function(error) {
             
         });
     }
+
+    const loginWithEmail = () => {
+        firebase.auth().signInWithEmailAndPassword('chaucharian@gmail.com', '123.ea')
+        .then( response => {
+            let user = { id: '', bookings: [] };
+            const { email, uid } = response.user;
+            firebase.database().ref('/users/' + uid).once('value').then( (snapshot) => {
+                user.bookings = snapshot.bookings | [];
+                user.email = email;
+                user.id = uid;
+
+                dispatch( appActions.userLoggedIn(user) );
+            });
+        })
+        .catch(function(error) {
+            console.log(error);
+        });
+    }
+        
 
     return (
         <div className={classes.login}>

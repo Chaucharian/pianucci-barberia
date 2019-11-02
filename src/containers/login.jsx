@@ -6,6 +6,7 @@ import "firebase/auth";
 import { enviroment } from '../enviroment';
 import * as appActions from '../actions/app';
 import { useRedirect, navigate } from 'hookrouter';
+import ReactPageScroller from "react-page-scroller";
 
 import ReflectButton from '../components/reflectButton';
 import RealBarberButton from '../components/realBarberButton';
@@ -31,6 +32,16 @@ const styles = {
         backgroundColor: "#000",
         textAlign: "center"
     },
+    loginContainer: {
+        display: "flex",
+        jiustifyContent: "center",
+        flexDirection: "column"
+    },
+    signUpContainer: {
+        display: "flex",
+        jiustifyContent: "center",
+        flexDirection: "column"
+    },
     title: {
         width: "1fr",
         fontFamily: "'Alegreya Sans SC', sans-serif",
@@ -41,6 +52,7 @@ const styles = {
 const Login = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
+    let pageScroller = null;
 
     firebase.initializeApp(firebaseConfig);
     // firebase.auth().signOut().then(function() {
@@ -86,28 +98,65 @@ const Login = (props) => {
         });
     }
         
+    const pageOnChange = scroll => {
+        // dispatch( appActions.changePage({ payload: scroll }) );
+        // if(scroll === 3) {
+        //     dispatch( appActions.bookingHandlerVisited() );
+        // }
+    }
+
+    const goToPage = (page) => {
+        // dispatch( appActions.changePage({ payload: page }) );
+    }
+
+    const setScrollHandler = scroll => {
+        if(scroll) {
+            pageScroller = scroll;
+        }
+    }
 
     return (
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
-            <div className={classes.loginContainer}>
-            <WhiteTextField
-                id="standard-basic"
-                className={classes.textField}
-                label="Standard"
-                margin="normal"
-                />
-                <ReflectButton text="Ingresar con Instagram" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
-                <RealBarberButton text="RESERVAR TURNO" clicked={() => loginWithEmail()}></RealBarberButton>
-            </div>
-            <div className={classes.signUpContainer}>
-                <WhiteTextField
-                id="standard-basic"
-                className={classes.textField}
-                label="Standard"
-                margin="normal"
-                />
-            </div>
+            <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={false}>
+                <div className={classes.loginContainer}>
+                    <WhiteTextField
+                    id="standard-basic"
+                    className={classes.textField}
+                    label="Email"
+                    margin="normal"
+                    />
+                    <WhiteTextField
+                    id="standard-basic"
+                    className={classes.textField}
+                    label="Contraseña"
+                    margin="normal"
+                    />
+                    <ReflectButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
+                    <RealBarberButton text="RESERVAR TURNO" clicked={() => loginWithEmail()}></RealBarberButton>
+                </div>
+                <div className={classes.signUpContainer}>
+                    <WhiteTextField
+                    id="standard-basic"
+                    className={classes.textField}
+                    label="Nombre"
+                    margin="normal"
+                    />
+                    <WhiteTextField
+                    id="standard-basic"
+                    className={classes.textField}
+                    label="Email"
+                    margin="normal"
+                    />
+                    <WhiteTextField
+                    id="standard-basic"
+                    className={classes.textField}
+                    label="Contraseña"
+                    margin="normal"
+                    />
+                    <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} clicked={ () => logginWithInstagram() }></ReflectButton>
+                </div>
+            </ReactPageScroller>
         </div>
     );
 };

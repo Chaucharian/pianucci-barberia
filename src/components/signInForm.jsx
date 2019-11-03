@@ -19,6 +19,15 @@ const SignInForm = (props) => {
     const setPassword = value => user.password = value;
     const newUser= () => onAction(user);
 
+    const validatePassword = (password, callbackSuccess, callbackError) => {
+        const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+        if(strongRegex.test(password)) {
+            callbackSuccess(password);
+        } else {
+            callbackError(password);
+        }
+    }
+
     return (
         <div className={classes.container}>
             <WhiteTextField
@@ -40,7 +49,7 @@ const SignInForm = (props) => {
             className={classes.textField}
             label="Contraseña"
             margin="normal"
-            onChange={ event => setPassword(event.target.value)}
+            onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
             />
             <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></ReflectButton>
         </div>

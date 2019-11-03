@@ -46,20 +46,20 @@ const Login = (props) => {
     let pageScroller = null;
 
     firebase.initializeApp(firebaseConfig);
-    // firebase.auth().signOut().then(function() {
-    //     // Sign-out successful.
-    //   }).catch(function(error) {
-    //     // An error happened.
-    //   });
+    firebase.auth().signOut().then(function() {
+        // Sign-out successful.
+      }).catch(function(error) {
+        // An error happened.
+      });
     firebase.auth().onAuthStateChanged(function(user) {
         if (user) {
             navigate('/');
         }
     });
 
-    const logginWithInstagram = () => {
-        window.open(enviroment.baseUrl+ '/instagram', 'firebaseAuth', 'height=315,width=400');
-    }
+    // const logginWithInstagram = () => {
+    //     window.open(enviroment.baseUrl+ '/instagram', 'firebaseAuth', 'height=315,width=400');
+    // }
 
     const createUserWithEmail = user => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
@@ -70,8 +70,8 @@ const Login = (props) => {
         });
     }
 
-    const loginWithEmail = () => {
-        firebase.auth().signInWithEmailAndPassword('chaucharian@gmail.com', '123.ea')
+    const loginWithEmail = user => {
+        firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then( response => {
             let user = { id: '', bookings: [] };
             const { email, uid } = response.user;
@@ -109,6 +109,8 @@ const Login = (props) => {
     const loginFormActions = action => {
         if(action === 'changeView') {
             pageScroller.goToPage(1);
+        } else {
+            loginWithEmail(action.user);
         }
     }
 
@@ -117,7 +119,7 @@ const Login = (props) => {
             <h1 className={classes.title}>Pianucci Barberia</h1>
             <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={false}>
                 <LogInForm onAction={ action => loginFormActions(action) }></LogInForm>
-                <SignInForm onAction={ value => console.log(value) }></SignInForm>
+                <SignInForm onAction={ action => createUserWithEmail(action.user) }></SignInForm>
             </ReactPageScroller>
         </div>
     );

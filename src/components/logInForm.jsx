@@ -46,6 +46,15 @@ const LogInForm = (props) => {
     const setPassword = value => user.password = value;
     const newUser = () => onAction(user);
     const goToSigInView = () => onAction('changeView');
+    const validateEmail = (email, callbackSuccess, callbackError) => {
+        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if(re.test(email)) {
+            callbackSuccess(email);
+        } else {
+            callbackError(email);
+        }
+        
+    }
 
     return (
         <div className={classes.container}>
@@ -55,7 +64,7 @@ const LogInForm = (props) => {
                 className={classes.textField}
                 label="Email"
                 margin="normal"
-                onChange={ event => setEmail(event.target.value)}
+                onChange={ event => validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROr") ) }
                 />
                 <WhiteTextField
                 id="standard-basic"

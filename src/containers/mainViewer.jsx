@@ -23,11 +23,11 @@ const styles = {
     },
     buttonContainer: {
         position: "fixed",
-        top: "85%",
+        top: "75%",
         left: "45%"
     },
     nextPageButton: {
-        color: "#000",
+        color: "#FFF",
         fontSize: "40px",
         border: "none",
         outline: "0px",
@@ -35,7 +35,7 @@ const styles = {
         transition: "1s all ease-in-out",
 
         "&:hover": {
-            color: "#FFF",
+            color: "#000",
             paddingTop: "10px"
         }
     }

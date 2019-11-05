@@ -4,11 +4,27 @@ import WhiteTextField from './textField';
 import ReflectButton from './reflectButton';
 
 const styles = {
-    container: {
+    centerContainer: {
+        display: "flex",
+        justifyContent: "center"
+    },
+    contentContainer: {
+        padding: "10px",
+        maxWidth: "450px",
+        width: "100%"
+    },
+    formContainer: {
         display: "flex",
         justifyContent: "center",
         flexDirection: "column"
-    }
+    },
+    fieldsContainer: {
+        display: "flex",
+        flexDirection: "column",
+        marginBottom: "60px",
+        paddingLeft: "10px",
+        paddingRight: "10px"
+    },
 }
 
 const SignInForm = (props) => {
@@ -29,29 +45,35 @@ const SignInForm = (props) => {
     }
 
     return (
-        <div className={classes.container}>
-            <WhiteTextField
-            id="standard-basic"
-            className={classes.textField}
-            label="Nombre"
-            margin="normal"
-            onChange={ event => setName(event.target.value)}
-            />
-            <WhiteTextField
-            id="standard-basic"
-            className={classes.textField}
-            label="Email"
-            margin="normal"
-            onChange={ event => setEmail(event.target.value)}
-            />
-            <WhiteTextField
-            id="standard-basic"
-            className={classes.textField}
-            label="Contraseña"
-            margin="normal"
-            onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
-            />
-            <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></ReflectButton>
+        <div className={classes.centerContainer}>
+            <div className={classes.contentContainer}>
+                <div className={classes.formContainer}>
+                    <div className={classes.fieldsContainer}>
+                        <WhiteTextField
+                        id="standard-basic"
+                        className={classes.textField}
+                        label="Nombre"
+                        margin="normal"
+                        onChange={ event => setName(event.target.value)}
+                        />
+                        <WhiteTextField
+                        id="standard-basic"
+                        className={classes.textField}
+                        label="Email"
+                        margin="normal"
+                        onChange={ event => setEmail(event.target.value)}
+                        />
+                        <WhiteTextField
+                        id="standard-basic"
+                        className={classes.textField}
+                        label="Contraseña"
+                        margin="normal"
+                        onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
+                        />
+                    </div>
+                    <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></ReflectButton>
+                </div>
+            </div>
         </div>
     );
 }

@@ -25,7 +25,7 @@ const firebaseConfig = {
 const styles = {
     login: {
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gridTemplateColumns: "repeat(1, minmax(240px, 1fr))",
         gridTemplateRows: "repeat(4, 100px)",
         backgroundColor: "#000",
         textAlign: "center"

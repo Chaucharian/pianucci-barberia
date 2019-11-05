@@ -36,7 +36,7 @@ const SignInForm = (props) => {
     const newUser= () => onAction(user);
 
     const validatePassword = (password, callbackSuccess, callbackError) => {
-        const strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+        const strongRegex =  { test: () => password.length > 6 }; // :D new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
         if(strongRegex.test(password)) {
             callbackSuccess(password);
         } else {

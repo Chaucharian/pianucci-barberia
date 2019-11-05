@@ -1,7 +1,7 @@
 import React from 'react';
 import { withStyles} from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
-import * as firebase from "firebase/app";
+import firebase from "firebase";
 import "firebase/auth";
 import { enviroment } from '../enviroment';
 import * as appActions from '../actions/app';
@@ -62,11 +62,21 @@ const Login = (props) => {
     // }
 
     const createUserWithEmail = user => {
+        const firebaseDB = firebase.database();
+        console.log(firebase);
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-        .then( response => console.log(response)
-        )
+        .then( response => {
+            const {name } = user;
+            const { email, uid } = response.user;
+            firebaseDB.ref('users/' + uid).set({
+                name,
+                email,
+                uid,
+                bookings: []
+            });
+        })
         .catch(function(error) {
-            
+            console.log(error);
         });
     }
 
@@ -80,7 +90,7 @@ const Login = (props) => {
                 user.bookings = snapshot.bookings | [];
                 user.email = email;
                 user.id = uid;
-
+                
                 dispatch( appActions.userLoggedIn(user) );
             });
         })
@@ -119,7 +129,7 @@ const Login = (props) => {
             <h1 className={classes.title}>Pianucci Barberia</h1>
             <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={false}>
                 <LogInForm onAction={ action => loginFormActions(action) }></LogInForm>
-                <SignInForm onAction={ action => createUserWithEmail(action.user) }></SignInForm>
+                <SignInForm onAction={ action => createUserWithEmail(action) }></SignInForm>
             </ReactPageScroller>
         </div>
     );

@@ -6,6 +6,14 @@ const app = express();
 const router = express.Router();
 const path = __dirname + '/dist';
 const port = process.env.PORT || 2345;
+const admin = require("firebase-admin");
+const serviceAccount = require("./firebaseCredentials.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://pianucci-barberia.firebaseio.com"
+});
+const firebaseDB = admin.database();
+
 // Instagram OAuth 2 setup
 const credentials = {
     client: {
@@ -55,4 +63,13 @@ app.get('/instagram-redirect', (req, res) => {
       res.json(JSON.parse(body));
     }
   });
+});
+
+app.get('createUser', () => {
+  const ref = firebaseDB.ref('users');
+  ref.set({
+    name: 'test',
+    email: 'adsad@asds.com',
+    bookings: []
+  })
 });

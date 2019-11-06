@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "pianucci-barberia",
+  "private_key_id": "1e446b184e6bdf49c92e0ed3864ac9336f49ea3b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDWhcuHRYzgSa6v\nWkifBzpu8ZX0JgUc5zUjL0Jl1MeC2t+jdIR4XMEZtLZC34nLPXW3KtsBdr5Zrqbr\nybf3iI3fvgemiLlOxs8IK5PYWjTq+zvTUv5i556WCBwtl5LWpjBYo8wdOX/nRbD7\nh0CCjCSRnweHR6S0IywpQEo/j+7qWzEkjSN8RjVJjRF3EUOnvP1Kam/uK6UMcIDG\nIZfW/lVow6Hi/uxmzsMaktr9EelnpUBfdH4NMKsyhnv4X094YDN21P2EOT2lqrSf\np8k85dqbRC5MgdhWg0KiN6oDVlJF2JCJlzZdj0vz7vv3OfLdXtNx8A3SVu5ZEGGa\niAqKhnPfAgMBAAECggEAJ4HVdVCgPLAlLSMV67+ziboRMTkNSQDlnti1xDY3FgjE\nFgC/4sDGSTsoM9GiOV1UwApy8eaR8MdC83qfWEV8R1/iXc+hPPpNJ4aLAFXAmCPz\npRwMQF/Cq4PL2LOo9cH+dlyYGyu7O/bwPKpwfXpcw7rDcq0Fjq1JlUFDS0hxKhSR\n2lOQa1zRe2Ol1TXi/WyE8QOnqaOV7gfy6KSbDbOq8hVLFTD0opwVcFOnp97PJGvQ\n73jSDLHK+dTOxTkNM6fuEpL+tPaaKQ2HqH76dcl1fxKVXZGTl+5jBzjnS/VaU1MA\nPkkgSGaflCptQdaitaV5mHWRZQsLHpAbvIOR9lkC5QKBgQD3lgYw9gA5R3qI8CQK\nSoUFw5VIHgQpoqrkG2BnwseU+KNd79nfm46Zix6BiUS4E0XCXUCRR//i9gFmOVvT\naMZKCWQ9l5xwpQLhn0mHEDCYafFcT7bYJO+k+KJH7YWS9HzDg/bEWqP8jblPRtU8\nQigyxz/Ot6/SvGWtRO7aOupaywKBgQDd0B9RfESAwpjlpOR1u7NXL27KOeeKpoK/\nR9Qf5kG0LEox7oqOc8jXekjQtTG4M8NE961P4vZ7RYHQ/d/qjXYir2ScgO5PYVF+\nOPnheyKy3LPcDHKSHyUnClua+YR36LBCdVhcLLSxjiYeSWsz5AO06d78pjgWtckq\nvUTNpDrEvQKBgQCxR/Rw9IUefqcoDMPRtqBfizeGZy/V3Et/gHbcdWVRr2PTLJ6W\ndZ17JlmWqYLSR8KItRs5rBN3IW3JE8NDst9hPi5PyBLVueJBSjxtANO7Hwkbb1ze\nkjwipYIV/ObLXlND8GcvHDQV8ClDsdWYC0sbaP6wd2jnfc1Ub2qUSuFqVwKBgC6u\n27iJn909l3JVhuOkcnU5/WZAU5PhwYjCdEmWa2OhIqhpnO2oPq/jA6oxSFqNQl6k\nhexXRyrgkRbMJ7E0vpVENredhwpb4Avhr+2dvcrJGm2IjSBlv6r8yhTOyOt3pIkI\nK2WS3yCzWyBqsU5FgeY0hoLD9PAKqGD/XpitJNU9AoGAI+Igf01gd+Yucklb7jAE\nTD1Yrp4dR2QG2h2HY7TmyXfjxe58fOghOddLgf6sArTy2wV6Ny2C6OzT33+xJ2qu\nid/dFdvo5+Fbp6rQMc/0xyl7g5X4nYV0FYGx9KN/2s3i4zn0wa035Tsi4gm9bJND\n/L4egrHmpeS0jVHFwreLpVw=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-wqzc4@pianucci-barberia.iam.gserviceaccount.com",
+  "client_id": "100848027705652365258",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-wqzc4%40pianucci-barberia.iam.gserviceaccount.com"
+}

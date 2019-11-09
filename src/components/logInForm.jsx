@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
+import RealBarberButton from './realBarberButton';
 
 const styles = {
     centerContainer: {
@@ -95,6 +96,7 @@ const LogInForm = (props) => {
                         onChange={ event => setPassword(event.target.value)}
                         />
                     </div>
+                    <RealBarberButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></RealBarberButton>
                     <ReflectButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></ReflectButton>
                 </div>
                 <div className={classes.buttonContainer}>

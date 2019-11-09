@@ -1,20 +1,13 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
-const crypto = require('express-crypto');
 const httpRequest = require('request');
 const app = express();
+const cors = require('cors');
+const admin = require('firebase-admin');
+const serviceAccount = require('./firebaseCredentials.json');
 const router = express.Router();
 const path = __dirname + '/dist';
 const port = process.env.PORT || 2345;
-const admin = require("firebase-admin");
-const serviceAccount = require("./firebaseCredentials.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://pianucci-barberia.firebaseio.com"
-});
-const firebaseDB = admin.database();
-
-// Instagram OAuth 2 setup
 const credentials = {
     client: {
       id: '6630f184387c425e8912e1495be328c9', 
@@ -26,12 +19,20 @@ const credentials = {
     }
 };
 const oauth2 = require('simple-oauth2').create(credentials);
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://pianucci-barberia.firebaseio.com"
+});
+const firebaseDB = admin.database();
 
 app.use(express.static(path));
 app.use(cookieParser());
+app.use(cors());
+app.use(express.json());
 app.use('/', router);
+
 router.use(function (req,res,next) {
-  console.log(`GET ${req.originalUrl}`);
+  console.log(`${req.method} ${req.originalUrl}`);
   next();
 });
 
@@ -65,11 +66,11 @@ app.get('/instagram-redirect', (req, res) => {
   });
 });
 
-app.get('createUser', () => {
+app.post('/createUser', (request, response) => {
+  const { name, email, id } = request.body;
   const ref = firebaseDB.ref('users');
-  ref.set({
-    name: 'test',
-    email: 'adsad@asds.com',
-    bookings: []
-  })
+  const newUser = { name, email, id }; 
+
+  ref.push(newUser);
+  response.json({ status: 'user created successfully!' });
 });

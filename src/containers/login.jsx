@@ -62,18 +62,19 @@ const Login = (props) => {
     // }
 
     const createUserWithEmail = user => {
-        const firebaseDB = firebase.database();
-        console.log(firebase);
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then( response => {
-            const {name } = user;
+            const { name } = user;
             const { email, uid } = response.user;
-            firebaseDB.ref('users/' + uid).set({
-                name,
-                email,
-                uid,
-                bookings: []
-            });
+            const newUser = { email, id: uid, name };
+                fetch(enviroment.baseUrl + '/createUser', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newUser)
+                }).then( res => console.log(res))
         })
         .catch(function(error) {
             console.log(error);

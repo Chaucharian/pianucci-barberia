@@ -15,14 +15,8 @@ const styles = {
         textAlign: "center",
         paddingTop: "76px",
         color: "#FFF",
-        "& div": {
-            height: "60%",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            "& h2": {
-                fontWeight: "lighter",
-            }
+        "& h2": {
+            fontWeight: "lighter"
         }
     }
 }
@@ -42,7 +36,9 @@ const BookingList = (props) => {
                 <BookingItem data={booking}></BookingItem>) :
                 <div><h2>Nunca reservaste :(</h2></div>  
             }
-            <RealBarberButton text={'reservar turno'} clicked={() => createAppointment()}></RealBarberButton>
+            <div>
+                <RealBarberButton text={'reservar turno'} clicked={() => createAppointment()}></RealBarberButton>
+            </div>
         </div>
     );  
   }

@@ -58,6 +58,7 @@ const LogInForm = (props) => {
     const setEmail = value => user.email = value;
     const setPassword = value => user.password = value;
     const newUser = () => {
+        console.log(user);
         if(user.email !== '' && user.password !== '') {
             onAction(user);
         } else {
@@ -70,7 +71,7 @@ const LogInForm = (props) => {
         if(re.test(email)) {
             callbackSuccess(email);
         } else {
-            callbackError(email);
+            callbackError(`there is and error with this email: ${email} }`);
         }
         
     }
@@ -85,13 +86,15 @@ const LogInForm = (props) => {
                         className={classes.textField}
                         label="Email"
                         margin="normal"
-                        onChange={ event => validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROr") ) }
+                        type="email"
+                        onChange={ event => validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROR") ) }
                         />
                         <WhiteTextField
                         id="standard-basic"
                         className={classes.textField}
                         label="Contraseña"
                         margin="normal"
+                        type="password"
                         onChange={ event => setPassword(event.target.value)}
                         />
                     </div>

@@ -68,6 +68,7 @@ const SignInForm = (props) => {
                         className={classes.textField}
                         label="Contraseña"
                         margin="normal"
+                        type="password"
                         onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
                         />
                     </div>

@@ -121,7 +121,7 @@ const Login = (props) => {
         if(action === 'changeView') {
             pageScroller.goToPage(1);
         } else {
-            loginWithEmail(action.user);
+            loginWithEmail(action);
         }
     }
 

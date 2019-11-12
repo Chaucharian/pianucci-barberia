@@ -11,6 +11,9 @@ import ButtonAnimated from '../components/animatedButton';
 
 const styles = {
     container: {
+        // display: "flex",
+        // justifyContent: "center",
+        // flexDirection: "column",
         width: "100%",
         height: "100vh", 
         backgroundColor: "#000",
@@ -23,6 +26,10 @@ const styles = {
     },
     bookingListContainer: {
         height: "calc(100vh / 2)"
+    },
+    bookingButton: {
+        display: "flex",
+        justifyContent: "center",
     }
 }
 
@@ -44,7 +51,7 @@ const BookingList = (props) => {
                 <h2>Nunca reservaste :(</h2>  
             }
             </div>
-            <div className={classes.bookingButton} style={!matches ? {width: "310px" } : {}} >
+            <div className={classes.bookingButton} >
                 <RealBarberButton text={'reservar turno'} clicked={() => createAppointment()}></RealBarberButton>
             </div>
         </div>

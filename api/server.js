@@ -66,11 +66,33 @@ app.get('/instagram-redirect', (req, res) => {
   });
 });
 
+app.post('/getUserData', (request, response) => {
+  const { id } = request.body;
+  const ref = firebaseDB.ref('/users');
+
+  ref.once('value', snapshot => {
+    snapshot.forEach( user => {
+      const userBookings = user.val().bookings;
+      const userId = user.val().id;
+      if(userId === id) {
+          response.json({ status: 'user loged in successfullt!', user: user.val() })
+      }
+      // TODO MAP BOOKINGS
+      // Object.keys((user.val().bookings)).map( key => {
+      //   console.log(userBookings[key].type);
+      // });
+    });
+  });
+});
+
 app.post('/createUser', (request, response) => {
   const { name, email, id } = request.body;
   const ref = firebaseDB.ref('users');
-  const newUser = { name, email, id }; 
+  const newUserForDb = { name, email, id, bookings: [] }; 
+  const userResponse = { name, id, bookings: [] };
 
-  ref.push(newUser);
-  response.json({ status: 'user created successfully!' });
+  const newUserCreated = firebaseDB.ref('users/'+ref.push(newUserForDb).key+'/bookings');
+  newUserCreated.push({ "type": "classic" }); // TODO FOR EXAMPLE 
+
+  response.json({ status: 'user created successfully!', user: userResponse });
 });

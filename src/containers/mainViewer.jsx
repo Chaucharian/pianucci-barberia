@@ -44,8 +44,11 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
+    const { user } = state;
     const { isDealing, showBookingSection, goToBookingSection, currentPage } = state;
     let pageScroller = null;
+
+    console.log(state.user);
 
     const pageOnChange = scroll => {
         dispatch( appActions.changePage({ payload: scroll }) );

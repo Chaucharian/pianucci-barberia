@@ -12,14 +12,14 @@ const App = () => {
     isDealing: false,
     showBookingSection: false,
     goToBookingSection: false,
-    user: { id: '', bookings: [] },
+    user: { id: '', bookings: [], name: '' },
     activeBookings: []
   };
 
   const reducer = (state, action) => {
     switch (action.type) {
         case actionTypes.USER_LOGGED_IN:
-            const { user } = action.payload;
+            const user = action.payload;
             return {
               ...state,
               user

@@ -64,17 +64,20 @@ const Login = (props) => {
     const createUserWithEmail = user => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then( response => {
-            const { name } = user;
             const { email, uid } = response.user;
+            const { name } = user;
             const newUser = { email, id: uid, name };
-                fetch(enviroment.baseUrl + '/createUser', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(newUser)
-                }).then( res => console.log(res))
+
+            fetch(enviroment.baseUrl + '/createUser', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser)
+            })
+            .then( response => response.json() )
+            .then( response => dispatch(appActions.userLoggedIn(response.user)) );
         })
         .catch(function(error) {
             console.log(error);
@@ -84,16 +87,26 @@ const Login = (props) => {
     const loginWithEmail = user => {
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then( response => {
-            let user = { id: '', bookings: [] };
-            const { email, uid } = response.user;
+            const { uid } = response.user;
+            let user = { id: uid };
             // retrieve user related data from db
-            firebase.database().ref('/users/' + uid).once('value').then( (snapshot) => {
-                user.bookings = snapshot.bookings | [];
-                user.email = email;
-                user.id = uid;
+            fetch(enviroment.baseUrl + '/getUserData', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(user)
+            })
+            .then( response => response.json() )
+            .then( response => dispatch(appActions.userLoggedIn(response.user)) );
+            // firebase.database().ref('/users/' + uid).once('value').then( (snapshot) => {
+            //     user.bookings = snapshot.bookings | [];
+            //     user.email = email;
+            //     user.id = uid;
                 
-                dispatch( appActions.userLoggedIn(user) );
-            });
+            //     dispatch( appActions.userLoggedIn(user) );
+            // });
         })
         .catch(function(error) {
             console.log(error);

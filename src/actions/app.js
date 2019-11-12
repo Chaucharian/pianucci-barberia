@@ -3,7 +3,7 @@ import * as actionTypes from './types';
 
 export const userLoggedIn = user => ({
     type: actionTypes.USER_LOGGED_IN,
-    user
+    payload: user
 }); 
 
 export const changePage = action => ({

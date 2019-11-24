@@ -1,61 +1,35 @@
 import React from 'react';
-import { StateProvider, useStateValue } from '../state/rootState';
 import {Router} from '../components/router';
-import * as actionTypes from '../actions/types'
+import { useRedirect, navigate } from 'hookrouter';
+import firebase from "firebase";
+import "firebase/auth";
+
 import { enviroment } from '../enviroment';
+import { StateProvider, useStateValue } from '../state/rootState';
+import { reducer, initialState } from '../reducers/mainReducer';
 
 const App = () => {
-  // sessionStorage.setItem('userSession', { bookings: [] });
 
-  const initialState = {
-    currentPage: 0,
-    isDealing: false,
-    showBookingSection: false,
-    goToBookingSection: false,
-    user: { id: '', bookings: [], name: '' },
-    activeBookings: []
+  const firebaseConfig = {
+    apiKey: "AIzaSyD2y6eJmIuI-aT0muEMFtURhsXSev0HLhA",
+    authDomain: "pianucci-barberia.firebaseapp.com",
+    databaseURL: "https://pianucci-barberia.firebaseio.com",
+    projectId: "pianucci-barberia",
+    storageBucket: "pianucci-barberia.appspot.com",
+    messagingSenderId: "276894270634",
+    appId: "1:276894270634:web:663b249fd6a3c0e5827cd3",
+    measurementId: "G-3BBYNVTEQR"
   };
 
-  const reducer = (state, action) => {
-    switch (action.type) {
-        case actionTypes.USER_LOGGED_IN:
-            const user = action.payload;
-            return {
-              ...state,
-              user
-            }
-        case actionTypes.CHANGE_PAGE:
-            return {
-                ...state,
-                currentPage: action.payload,
-                goToBookingSection: action.payload === 3 ? false : false
-            };
-        case actionTypes.CREATE_APPOINTMENT:
-            return {
-                ...state,
-                isDealing: true,
-            };
-        case actionTypes.SHOW_BOOKING_HANDLER:
-            return {
-                ...state,
-                showBookingSection: true,
-                goToBookingSection: true
-            };
-        case actionTypes.HIDE_BOOKING_HANDLER:
-            return {
-                ...state,
-                showBookingSection: false,
-            };
-        case actionTypes.BOOKING_HANDLER_VISITED:
-          return {
-              ...state,
-              goToBookingSection: false,
-            };
-      default:
-        return state;
-    }
-  };
-  
+  firebase.initializeApp(firebaseConfig);
+  firebase.auth().onAuthStateChanged( user => {
+      if (user) {
+        navigate('/');
+      } else {
+        navigate('/login');
+      }
+  });
+
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
       <Router></Router>

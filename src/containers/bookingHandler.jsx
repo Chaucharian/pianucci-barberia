@@ -27,16 +27,16 @@ const styles = {
 
 export const BookingHandler = (props) => {
     const { classes, booking } = props; 
-    const [internalState, changeInternalState] = useState({currentStep: 1, serviceSelected: { duration: 0, name: '' }, date: null });
+    const [internalState, setState] = useState({currentStep: 1, serviceSelected: { duration: 0, name: '' }, date: null });
     const [state, dispatch] = useStateValue();
     const { activeBookings } = state;
     const { currentStep, serviceSelected, date } = internalState;
 
-    const handleBookingConfirmation = response => {
+    const bookingConfirmationHandler = response => {
         if (response === 'confirm') {
             createBooking({ serviceSelected, date });
         } else {
-            changeInternalState({ currentStep: 2 });
+            setState({ ...internalState, currentStep: 2 });
         }
     }
 
@@ -46,7 +46,7 @@ export const BookingHandler = (props) => {
 
     const changeStep = (newStep) => {
         if(newStep < currentStep) {
-            changeInternalState({ currentStep: newStep });
+            setState({ ...internalState, currentStep: newStep });
         }
     } 
 
@@ -56,16 +56,16 @@ export const BookingHandler = (props) => {
             <StepIndicator currentStep={currentStep} clicked={ step => changeStep(step) }></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector 
-                    serviceSelected={ serviceSelected => changeInternalState({ currentStep: 2, serviceSelected }) }
+                    serviceSelected={ serviceSelected => setState({ ...internalState, currentStep: 2, serviceSelected }) }
                 ></ServiceTypeSelector>
                 <BookingDateSelector 
                     dates={ activeBookings }
                     serviceDuration={ serviceSelected.duration } 
-                    dateSelected={ date => changeInternalState({ currentStep: 3, date }) }
+                    dateSelected={ date => setState({ ...internalState, currentStep: 3, date }) }
                 ></BookingDateSelector>
                 <BookingConfirmation 
                     booking={ { date, serviceSelected } } 
-                    response={ response => handleBookingConfirmation(response) }  
+                    response={ response => bookingConfirmationHandler(response) }  
                 ></BookingConfirmation>
             </ViewSwitcher>
         </div>

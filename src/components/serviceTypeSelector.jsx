@@ -7,11 +7,14 @@ const styles = {
         height: "100%", 
         backgroundColor: "#000",
         display: "flex",
-        flexGrow: 1,
+        paddingTop: "100px",
+        justifyContent: "center",
         color: "#FFF",
         "& div": {
        
             "& button": {
+                height: "100%",
+                width: "100%",
                 border: "2px solid #2e2e2e",
                 cursor: "pointer",
                 letterSpacing: "0.2125rem",
@@ -35,16 +38,24 @@ const styles = {
         }
     },
     option1: {
-        width: "200px",
-        height: "150px"
+        width: "100%",
+        height: "200px"
     },
     option2: {
-        width: "100px",
-        height: "150px"
+        width: "50%",
+        height: "150px",
+        marginRight: "5px"
     },
     option3: {
-        width: "100px",
+        width: "50%",
         height: "150px"
+    },
+    servicesContainer: {
+        width: "400px",
+    },
+    secondButtonsRow: {
+        display: "flex",
+        marginTop: "5px"
     }
 }
 
@@ -53,20 +64,24 @@ export const ServiceTypeSelector = (props) => {
 
     return (
         <div className={classes.container}>
-            <div className={classes.option1}>
-                <button onClick={() => serviceSelected({ name: 'classic', time: 30})}>
-                    CLASSIC
-                </button>    
-            </div>
-            <div className={classes.option2}>
-                <button onClick={() => serviceSelected({ name: 'complete', time: 60})}>
-                    COMPLETE
-                </button>    
-            </div>
-            <div className={classes.option3}>
-                <button onClick={() => serviceSelected({ name: 'custom', time: 120})}>
-                    CUSTOM
-                </button>    
+            <div className={classes.servicesContainer}>
+                <div className={classes.option1}>
+                    <button onClick={() => serviceSelected({ name: 'classic', duration: 30})}>
+                        CLASSIC
+                    </button>    
+                </div>
+                <div className={classes.secondButtonsRow}>
+                    <div className={classes.option2}>
+                        <button onClick={() => serviceSelected({ name: 'complete', duration: 60})}>
+                            COMPLETE
+                        </button>    
+                    </div>
+                    <div className={classes.option3}>
+                        <button onClick={() => serviceSelected({ name: 'custom', duration: 120})}>
+                            CUSTOM
+                        </button>    
+                    </div>
+                </div>
             </div>
         </div>
     );

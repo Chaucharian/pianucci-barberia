@@ -15,7 +15,7 @@ const styles = {
         height: "100vh", 
         backgroundColor: "#000",
         textAlign: "center",
-        paddingTop: "76px",
+        paddingTop: "50px",
         color: "#FFF"
     },
     content: {

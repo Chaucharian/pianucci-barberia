@@ -23,15 +23,15 @@ const styles = {
 export const BookingDateSelector = (props) => {
     const { classes, dates, dateSelected, serviceDuration } = props; 
     const [state, dispatch] = useState({ defaultDay: null});
-     
+    let availableDays = [];
+
     const setDefaultDay = () => {
 
     }
-
     
     return (
         <div className={classes.container}>
-            BOOKING DATE SELECTOR
+            {dates.map( day => day.name )}
             <ScheduleList serviceDuration={ serviceDuration } items={[{ date: new Date()}, { date: new Date()}, { date: new Date()}]}></ScheduleList>
         </div>
     );

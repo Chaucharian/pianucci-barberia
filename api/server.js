@@ -85,6 +85,36 @@ app.post('/getUserData', (request, response) => {
   });
 });
 
+app.post('/getSchedule', (request, response) => {
+  const ref = firebaseDB.ref('/bookings');
+  let schedule = [];
+  ref.once('value', snapshot => {
+
+    schedule = snapshot;
+  });
+  response.json({ status: "EA", schedule});
+});
+
+app.post('/createBooking', (request, response) => {
+  const { userId, type, duration, date } = request.body;
+  const bookingRef = firebaseDB.ref('bookings');
+  const booking = { type: "classic", date: Date.now(), duration: 30, status: "pending", clientId: userId };
+  let bookingResponse = { };
+
+  bookingResponse = bookingRef.push(booking); // TODO FOR EXAMPLE 
+
+  response.json({ status: 'booking created!', booking: bookingResponse });
+});
+
+app.post('/updateBooking', (request, response) => {
+  const { userId, bookingId, type, duration, date } = request.body;
+  const bookingRef = firebaseDB.ref('bookings/'+bookingId);
+
+  bookingRef.set({ type, date, duration, status: "pending", clientId: userId }); // TODO FOR EXAMPLE 
+
+  response.json({ status: 'booking updated!' });
+});
+
 app.post('/createUser', (request, response) => {
   const { name, email, id } = request.body;
   const ref = firebaseDB.ref('users');

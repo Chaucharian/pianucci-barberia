@@ -87,21 +87,24 @@ app.post('/getUserData', (request, response) => {
 
 app.post('/getSchedule', (request, response) => {
   const ref = firebaseDB.ref('/bookings');
-  let schedule = [];
+  const schedule = [];
   ref.once('value', snapshot => {
-
-    schedule = snapshot;
+    snapshot.forEach( booking => {
+      if(booking.val().status === 'pending') {
+        schedule.push(booking.val());
+      } 
+    });
+    response.json({ status: "schedule", schedule});
   });
-  response.json({ status: "EA", schedule});
 });
 
 app.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
-  const booking = { type: "classic", date: Date.now(), duration: 30, status: "pending", clientId: userId };
+  const booking = { type, date, duration, status: "pending", clientId: userId };
   let bookingResponse = { };
 
-  bookingResponse = bookingRef.push(booking); // TODO FOR EXAMPLE 
+  bookingResponse = bookingRef.push(booking);
 
   response.json({ status: 'booking created!', booking: bookingResponse });
 });

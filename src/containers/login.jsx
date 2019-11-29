@@ -3,7 +3,8 @@ import { withStyles} from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
 import firebase from "firebase";
 import "firebase/auth";
-import { enviroment } from '../enviroment';
+
+import * as api from '../services/api';
 import * as appActions from '../actions/app';
 import { useRedirect, navigate } from 'hookrouter';
 import ReactPageScroller from "react-page-scroller";
@@ -55,16 +56,8 @@ const Login = (props) => {
             const { email, uid } = response.user;
             const { name } = user;
             const newUser = { email, id: uid, name };
-
-            fetch(enviroment.baseUrl + '/createUser', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newUser)
-            })
-            .then( response => response.json() )
+            
+            api.createUser(newUser)
             .then( response => dispatch(appActions.userLoggedIn(response.user)) );
         })
         .catch(function(error) {
@@ -77,16 +70,8 @@ const Login = (props) => {
         .then( response => {
             const { uid } = response.user;
             let user = { id: uid };
-            // retrieve user related data from db
-            fetch(enviroment.baseUrl + '/getUserData', {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(user)
-            })
-            .then( response => response.json() )
+
+            api.getUserData(user)
             .then( response => dispatch(appActions.userLoggedIn(response.user)) );
             // firebase.database().ref('/users/' + uid).once('value').then( (snapshot) => {
             //     user.bookings = snapshot.bookings | [];

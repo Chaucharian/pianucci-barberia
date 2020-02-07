@@ -44,7 +44,6 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { user } = state;
     const { isDealing, showBookingSection, goToBookingSection, currentPage } = state;
     let pageScroller = null;
 

@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const httpRequest = require('request');
+const { format, getHours,  differenceInHours, compareAsc } = require('date-fns');
 const app = express();
 const cors = require('cors');
 const admin = require('firebase-admin');
@@ -24,6 +25,28 @@ admin.initializeApp({
   databaseURL: "https://pianucci-barberia.firebaseio.com"
 });
 const firebaseDB = admin.database();
+
+const setDefaultTodayTimeSchedule = () => {
+  const timeRangeRef = firebaseDB.ref('/timeRange');
+  let morningScheduleTime, afternoonScheduleTime, scheduleForDate;
+
+  timeRangeRef.once('value', timeSnapshot => {
+    timeSnapshot.forEach( scheduleDate => {
+      if(compareAsc(scheduleDate.val(),  new Date()) !== 0) {
+        morningScheduleTime = [ new Date(new Date().setHours(9, 00, 00)), new Date(new Date().setHours(13, 00, 00)) ];
+        afternoonScheduleTime = [ new Date(new Date().setHours(17, 00, 00)), new Date(new Date().setHours(21, 00, 00)) ];
+        scheduleForDate = { morningScheduleTime, afternoonScheduleTime };
+      }
+    });
+  });
+
+  timeRangeRef.push(scheduleForDate);
+}
+
+
+console.log("COMPARE ",compareAsc(new Date().setHours(9), new Date().setHours(9)) );
+
+setInterval( () => setDefaultTodayTimeSchedule(), 1000*60*60*24); // set schedule daily
 
 app.use(express.static(path));
 app.use(cookieParser());
@@ -85,23 +108,56 @@ app.post('/getUserData', (request, response) => {
   });
 });
 
-app.post('/getSchedule', (request, response) => {
-  const ref = firebaseDB.ref('/bookings');
-  const schedule = [];
-  ref.once('value', snapshot => {
-    snapshot.forEach( booking => {
-      if(booking.val().status === 'pending') {
-        schedule.push(booking.val());
-      } 
-    });
-    response.json({ status: "schedule", schedule});
-  });
+app.post('/updateDailyTimeSchedule', (request, response) => {
+  const { date, morinigSchueduleTime, afternoonScheduleTime } = request.body;
+  setTimeScheduleForDate(morningScheduleTime, afternoonScheduleTime);
 });
+
+// TODO MAKE IT WORK!
+// app.post('/getScheduleForDate', (request, response) => {
+//   const { userDate, bookingDuration } = request.body;
+//   const bookingRef = firebaseDB.ref('/bookings');
+//   const timeRangeRef = firebaseDB.ref('/timeRange');
+//   const filteredSchedule = [];
+//   let morningScheduleTime, afternoonScheduleTime;
+
+//   timeRangeRef.once('value', timeSnapshot => {
+//     timeSnapshot.forEach( timeForDate => {
+//       if(compareAsc(timeForDate.morinigSchuedule[1], userDate) === 0) { // 0 means equal
+//         morningAvailableHours = differenceInHours(timeForDate.val().morinigSchuedule[1], timeForDate.val().morinigSchuedule[0]);
+//         afternoonAvailableHours = differenceInHours(timeForDate.val().afternoonSchedule[1], timeForDate.val().afternoonSchedule[0]);
+//       }
+
+//     });
+
+//       response.json({ status: { morningAvailableHours, afternoonAvailableHours }});
+
+//     // bookingRef.once('value', bookingSnapshot => {
+//     //   let schedule = [];
+//     //   const bookingsAmount = morningScheduleTime + afternoonScheduleTime;
+//     //   if(bookingSnapshot.lenght === 0) {
+//     //     for(let i = 0; i < bookingsAmount; i++) {
+
+//     //     }
+//     //   } else {
+//     //     bookingSnapshot.forEach( booking => {
+//     //       const bookingDate = format(new Date(booking.date), 'MM/dd/yyyy');
+//     //       if(booking.val().date === 'pending') {
+//     //         schedule.push(booking.val());
+//     //       } 
+//     //     });
+//     //   }
+//     //   schedule = schedule.filter( booking => {
+        
+//     //   });
+//     // });
+
+// // });
 
 app.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
-  const booking = { type, date, duration, status: "pending", clientId: userId };
+  const booking = { type, date, duration, status: "active", clientId: userId };
   let bookingResponse = { };
 
   bookingResponse = bookingRef.push(booking);
@@ -110,10 +166,10 @@ app.post('/createBooking', (request, response) => {
 });
 
 app.post('/updateBooking', (request, response) => {
-  const { userId, bookingId, type, duration, date } = request.body;
+  const { userId, bookingId, type, duration, date, status } = request.body;
   const bookingRef = firebaseDB.ref('bookings/'+bookingId);
 
-  bookingRef.set({ type, date, duration, status: "pending", clientId: userId }); // TODO FOR EXAMPLE 
+  bookingRef.set({ type, date, duration, status, clientId: userId }); // TODO FOR EXAMPLE 
 
   response.json({ status: 'booking updated!' });
 });

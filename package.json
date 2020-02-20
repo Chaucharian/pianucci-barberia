@@ -26,6 +26,7 @@
     "react-page-scroller": "^1.5.1",
     "react-scripts": "1.1.4",
     "react-spring": "^8.0.27",
+    "react-transition-group": "^4.3.0",
     "react-use-gesture": "^6.0.3",
     "request": "^2.88.2",
     "simple-oauth2": "^2.5.2"
@@ -37,6 +38,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "cookie-parser": "^1.4.4",
+    "parcel": "^2.0.0-alpha.3.2",
     "react-hot-loader": "^4.12.19"
   },
   "keywords": [

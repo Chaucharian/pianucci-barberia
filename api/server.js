@@ -103,10 +103,10 @@ app.post('/updateDailyTimeSchedule', (request, response) => {
 
 // TODO MAKE IT WORK!
 app.post('/getScheduleForDate', (request, response) => {
-  const { userDate, bookingDuration } = request.body;
+  const { userDate, bookingDuration = 60 } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const timeRangeRef = firebaseDB.ref('/timeRange');
-  const bookingModel = { status: "available",  duration: 60, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
+  const bookingModel = { status: "available",  duration: bookingDuration, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
   const bookings = [];
 
   bookingRef.once('value', bookingSnapshot => {
@@ -124,7 +124,7 @@ app.post('/getScheduleForDate', (request, response) => {
     reservedBookings.sort( (firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
 
     timeRangeRef.once('value', timeRangeSnapshot => {
-      // create bookings for whole schedule
+      // calculate schedule range for date
       const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
       const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map( unixDate => Number(unixDate) );
       const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map( unixDate => Number(unixDate) );
@@ -132,7 +132,7 @@ app.post('/getScheduleForDate', (request, response) => {
       let hoursCount = 0;
       let currentHour = new Date(Number(mStartingTime)).getHours();
 
-      // no bookings've reserved then popule empty ones
+      // create spaces to set up bookings for any date
       while(hoursCount < hoursAmount) {
         const bookingDate = new Date(mStartingTime).setHours(currentHour);
         bookings.push({ ...bookingModel, date: bookingDate });
@@ -143,18 +143,17 @@ app.post('/getScheduleForDate', (request, response) => {
         currentHour += 1;
         hoursCount += 1;
       }
-      // if there're any booking reserved populate it into response bookings
+      // populate reserved bookings is there any
       if(reservedBookings.length !== 0) {
         bookings.map( (bookingTemplate, index) => {
           reservedBookings.map( bookingReserved => {
             if(new Date(bookingReserved.date).getHours() === new Date(bookingTemplate.date).getHours()) {
-              console.log(" RESERVER AT ",new Date(bookingTemplate.date).getHours())
               bookings[index] = bookingReserved;
             }
           });
         }); 
       }
-      response.json({ status: "bookings retrived!", bookings, currentDate: Date.now() });
+      response.json({ status: "bookings retrived!", bookings });
     });
   }); 
 });

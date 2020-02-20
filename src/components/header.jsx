@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import BurgerButton from './burgerButton';
 import { fonts, colorScheme } from '../styles/styles';
+import otra from "../assets/a.png";
 import logoImage from '../assets/logo.png';
 import darkLogoImage from '../assets/dark_logo.png';
 

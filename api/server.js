@@ -1,7 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const httpRequest = require('request');
-const { format, getHours,  differenceInHours, compareAsc } = require('date-fns');
+const { format, getHours,  differenceInHours, compareAsc, isSameDay } = require('date-fns');
 const app = express();
 const cors = require('cors');
 const admin = require('firebase-admin');
@@ -26,28 +26,6 @@ admin.initializeApp({
 });
 const firebaseDB = admin.database();
 
-const setDefaultTodayTimeSchedule = () => {
-  const timeRangeRef = firebaseDB.ref('/timeRange');
-  let morningScheduleTime, afternoonScheduleTime, scheduleForDate;
-
-  timeRangeRef.once('value', timeSnapshot => {
-    timeSnapshot.forEach( scheduleDate => {
-      if(compareAsc(scheduleDate.val(),  new Date()) !== 0) {
-        morningScheduleTime = [ new Date(new Date().setHours(9, 00, 00)), new Date(new Date().setHours(13, 00, 00)) ];
-        afternoonScheduleTime = [ new Date(new Date().setHours(17, 00, 00)), new Date(new Date().setHours(21, 00, 00)) ];
-        scheduleForDate = { morningScheduleTime, afternoonScheduleTime };
-      }
-    });
-  });
-
-  timeRangeRef.push(scheduleForDate);
-}
-
-
-console.log("COMPARE ",compareAsc(new Date().setHours(9), new Date().setHours(9)) );
-
-setInterval( () => setDefaultTodayTimeSchedule(), 1000*60*60*24); // set schedule daily
-
 app.use(express.static(path));
 app.use(cookieParser());
 app.use(cors());
@@ -60,6 +38,16 @@ router.use(function (req,res,next) {
 });
 
 app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`));
+
+const updateDailyTimeRange = (morningStartHour = 9, afternoonStartHour = 17) => {
+  const timeRangeRef = firebaseDB.ref('timeRange');
+  morningScheduleTime = new Date().setHours(morningStartHour, 00, 00) + "/" + new Date().setHours(13, 00, 00);
+  afternoonScheduleTime = new Date().setHours(afternoonStartHour, 00, 00) + "/" + new Date().setHours(21, 00, 00);
+  scheduleForDate = { morningScheduleTime, afternoonScheduleTime };
+
+  timeRangeRef.set(scheduleForDate);
+}
+setInterval( () => updateDailyTimeRange(), 1000*60*60*24); // set schedule daily
 
 app.get('/instagram', (req, res) => {
     const redirectUri = oauth2.authorizationCode.authorizeURL({
@@ -114,50 +102,67 @@ app.post('/updateDailyTimeSchedule', (request, response) => {
 });
 
 // TODO MAKE IT WORK!
-// app.post('/getScheduleForDate', (request, response) => {
-//   const { userDate, bookingDuration } = request.body;
-//   const bookingRef = firebaseDB.ref('/bookings');
-//   const timeRangeRef = firebaseDB.ref('/timeRange');
-//   const filteredSchedule = [];
-//   let morningScheduleTime, afternoonScheduleTime;
+app.post('/getScheduleForDate', (request, response) => {
+  const { userDate, bookingDuration } = request.body;
+  const bookingRef = firebaseDB.ref('/bookings');
+  const timeRangeRef = firebaseDB.ref('/timeRange');
+  const bookingModel = { status: "available",  duration: 60, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
+  const bookings = [];
 
-//   timeRangeRef.once('value', timeSnapshot => {
-//     timeSnapshot.forEach( timeForDate => {
-//       if(compareAsc(timeForDate.morinigSchuedule[1], userDate) === 0) { // 0 means equal
-//         morningAvailableHours = differenceInHours(timeForDate.val().morinigSchuedule[1], timeForDate.val().morinigSchuedule[0]);
-//         afternoonAvailableHours = differenceInHours(timeForDate.val().afternoonSchedule[1], timeForDate.val().afternoonSchedule[0]);
-//       }
+  bookingRef.once('value', bookingSnapshot => {
+    const bookingsRaw = [];
+    bookingSnapshot.forEach( booking => {
+      bookingsRaw.push(booking.val());
+    });
+    // filtered by request date
+    const reservedBookings = bookingsRaw.map( bookingReserved => {
+      if(isSameDay(bookingReserved.date, userDate)) {
+        return bookingReserved;
+      }
+    }).filter( bookingReserved => bookingReserved !== undefined);
+    // filtered asc order
+    reservedBookings.sort( (firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
 
-//     });
+    timeRangeRef.once('value', timeRangeSnapshot => {
+      // create bookings for whole schedule
+      const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
+      const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map( unixDate => Number(unixDate) );
+      const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map( unixDate => Number(unixDate) );
+      const hoursAmount = (new Date(mEndingTime).getHours() - new Date(mStartingTime).getHours()) + (new Date(aEndingTime).getHours() - new Date(aStartingTime).getHours());
+      let hoursCount = 0;
+      let currentHour = new Date(Number(mStartingTime)).getHours();
 
-//       response.json({ status: { morningAvailableHours, afternoonAvailableHours }});
+      // no bookings've reserved then popule empty ones
+      while(hoursCount < hoursAmount) {
+        const bookingDate = new Date(mStartingTime).setHours(currentHour);
+        bookings.push({ ...bookingModel, date: bookingDate });
 
-//     // bookingRef.once('value', bookingSnapshot => {
-//     //   let schedule = [];
-//     //   const bookingsAmount = morningScheduleTime + afternoonScheduleTime;
-//     //   if(bookingSnapshot.lenght === 0) {
-//     //     for(let i = 0; i < bookingsAmount; i++) {
-
-//     //     }
-//     //   } else {
-//     //     bookingSnapshot.forEach( booking => {
-//     //       const bookingDate = format(new Date(booking.date), 'MM/dd/yyyy');
-//     //       if(booking.val().date === 'pending') {
-//     //         schedule.push(booking.val());
-//     //       } 
-//     //     });
-//     //   }
-//     //   schedule = schedule.filter( booking => {
-        
-//     //   });
-//     // });
-
-// // });
+        if(currentHour === new Date(mEndingTime).getHours()) {
+          currentHour = new Date(aStartingTime).getHours();
+        }
+        currentHour += 1;
+        hoursCount += 1;
+      }
+      // if there're any booking reserved populate it into response bookings
+      if(reservedBookings.length !== 0) {
+        bookings.map( (bookingTemplate, index) => {
+          reservedBookings.map( bookingReserved => {
+            if(new Date(bookingReserved.date).getHours() === new Date(bookingTemplate.date).getHours()) {
+              console.log(" RESERVER AT ",new Date(bookingTemplate.date).getHours())
+              bookings[index] = bookingReserved;
+            }
+          });
+        }); 
+      }
+      response.json({ status: "bookings retrived!", bookings, currentDate: Date.now() });
+    });
+  }); 
+});
 
 app.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
-  const booking = { type, date, duration, status: "active", clientId: userId };
+  const booking = { type, date, duration, status: "available", clientId: userId };
   let bookingResponse = { };
 
   bookingResponse = bookingRef.push(booking);

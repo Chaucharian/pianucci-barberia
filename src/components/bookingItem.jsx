@@ -1,33 +1,19 @@
 import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import AnimatedButton from './animatedButton';
+import  { getHours, format } from 'date-fns';
 
 const styles = {
-    header: {
-        position: "fixed",
-        top: 0,
-        left: 0, 
-        overflow: "auto",
-        display: "block",
-        zIndex: "1000",
-        width: "100%",
-        height: "65px",
-        minHeight: "50px",
-        backgroundColor: "#000",
-        borderBottom: "1px solid #FFF",
-        transition: ".5s ease-in-out",
-        padding: "10px 0px 0px 10px"
-    }
 }
 
 const BookingItem = (props) => {
-    const { classes } = props;
-    const [open, showNavbar] = useState(false);
-    
+    const { classes, booking, reserved, onSelect } = props;
+    const { date, status } = booking;
+    const hour = getHours(date) >= 10 ? getHours(date)+":00" : "0"+getHours(date)+":00";
+    const isBookingReserved = status === 'reserved';
+
     return (
-        <section>
-            <AnimatedButton ></AnimatedButton>
-        </section>
+        <AnimatedButton reserved={reserved} text={hour} strong={true} disabled={isBookingReserved}></AnimatedButton>
     );
 }
 

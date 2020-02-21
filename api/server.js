@@ -149,6 +149,7 @@ app.post('/getScheduleForDate', (request, response) => {
           reservedBookings.map( bookingReserved => {
             if(new Date(bookingReserved.date).getHours() === new Date(bookingTemplate.date).getHours()) {
               bookings[index] = bookingReserved;
+              console.log(" RESERVED ",bookingReserved);
             }
           });
         }); 
@@ -161,12 +162,12 @@ app.post('/getScheduleForDate', (request, response) => {
 app.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
-  const booking = { type, date, duration, status: "available", clientId: userId };
+  const booking = { type, date, duration, status: "reserved", clientId: userId };
   let bookingResponse = { };
 
   bookingResponse = bookingRef.push(booking);
 
-  response.json({ status: 'booking created!', booking: bookingResponse });
+  response.json({ status: 'booking created!', bookingId: bookingResponse });
 });
 
 app.post('/updateBooking', (request, response) => {

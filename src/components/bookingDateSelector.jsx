@@ -2,10 +2,13 @@ import React, {useState} from 'react';
 import { withStyles } from '@material-ui/styles';
 import ScheduleList from './scheduleList';
 import Calendar from '@lls/react-light-calendar'
+import BookingItem from './bookingItem';
 import '@lls/react-light-calendar/dist/index.css' // Default Style
 
 const styles = {
     container: {
+        display: "flex",
+        justifyContent: "center",
         width: "100%",
         height: "100vh", 
         backgroundColor: "#000",
@@ -13,26 +16,28 @@ const styles = {
         paddingTop: "76px",
         color: "#FFF"
     },
-    content: {
-        width: "100%",
+    bookings: {
+        width: "60%",
         display: "flex",
-        justifyContent: "center"
+        flexDirection: "column",
+        "& button": {
+            marginBottom: "10px"
+        }
     },
 }
 
 export const BookingDateSelector = (props) => {
-    const { classes, dates, dateSelected, serviceDuration } = props; 
-    const [state, dispatch] = useState({ defaultDay: null});
-    let availableDays = [];
+    const { classes, bookings, onBookingSelect } = props; 
+    const [state, setState] = useState({ defaultDay: null});
 
-    const setDefaultDay = () => {
-
-    }
-    
     return (
         <div className={classes.container}>
-            {dates.map( day => day.name )}
-            <ScheduleList serviceDuration={ serviceDuration } items={[{ date: new Date()}, { date: new Date()}, { date: new Date()}]}></ScheduleList>
+            <div className={classes.bookings}>
+                { bookings.map( (booking, index) => (
+                    <BookingItem key={index} booking={booking} onSelect={onBookingSelect}/>
+                )) 
+                }
+            </div>
         </div>
     );
 }

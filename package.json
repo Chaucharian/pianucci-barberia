@@ -38,7 +38,6 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "cookie-parser": "^1.4.4",
-    "parcel": "^2.0.0-alpha.3.2",
     "react-hot-loader": "^4.12.19"
   },
   "keywords": [

@@ -1,13 +1,20 @@
 import React, {useState} from 'react';
 import { withStyles } from '@material-ui/styles';
+import Calendar from '@lls/react-light-calendar';
+import '@lls/react-light-calendar/dist/index.css' // Default Style
 import  { addDays, isToday, isTomorrow, format } from 'date-fns';
 
 const styles = {
     container: {
-        display: "flex",
-        justifyContent: "center",
-        textAlign: "center",
+        display: "block",
         color: "#FFF"
+    },
+    days: {
+        display: "flex",
+        cursor: "pointer",
+        "& h2": {
+            transition: "all 200ms ease",
+        }
     },
     selected: {
         color: "red"
@@ -15,18 +22,42 @@ const styles = {
 }
 
 export const DaysListSelector = (props) => {
-    const { classes, date, onDateSelected, onCalendarChange } = props; 
+    const { classes, date, onDateSelected } = props; 
+    const [state, setState] = useState({ calendarSelectionDone: false });
+    const { calendarSelectionDone } = state;
+    const isOtherDay = !isTomorrow(date) && !isToday(date);
     const dateToUnix = date => date.getTime();
+    const daySelection = date => {
+        setState({ calendarSelectionDone: false });
+        onDateSelected( date, { showBookings: true });
+    }
+    const calendarSelection = date => {
+        setState({ calendarSelectionDone: true });
+        onDateSelected(date, { showBookings: true })
+    }
 
     return (
         <div className={classes.container}>
-            <h2 className={isToday(date) ? classes.selected : ''} onClick={() => onDateSelected( dateToUnix(new Date()) )}>HOY</h2>
-            <h2 className={isTomorrow(date) ? classes.selected : ''} onClick={() => onDateSelected( dateToUnix(addDays(new Date(), 1)) )}>MAÑANA</h2>
-            <h2 className={(!isTomorrow(date) && !isToday(date)) ? classes.selected : ''} onClick={ () => {
-                // set different day
-                onDateSelected( dateToUnix(addDays(new Date(), 2)) );
-                onCalendarChange(true);
-                }}>OTRO DIA</h2>
+            <div className={classes.days}>
+                <h2 className={isToday(date) ? classes.selected : ''} 
+                    onClick={() => !isToday(date) && daySelection( dateToUnix(new Date()) ) }
+                >
+                    HOY
+                </h2>
+                <h2 className={isTomorrow(date) ? classes.selected : ''} 
+                    onClick={() => !isTomorrow(date) && daySelection( dateToUnix(addDays(new Date(), 1)), { showBookings: true })}
+                >
+                    MAÑANA
+                </h2>
+                <h2 className={isOtherDay ? classes.selected : ''} 
+                    onClick={() => !isOtherDay && onDateSelected(dateToUnix(addDays(new Date(), 2)), { showBookings: false })}
+                >
+                    OTRO DIA
+                </h2>
+            </div>
+            { (isOtherDay && !calendarSelectionDone) && 
+                <Calendar onChange={calendarSelection}/>
+            }
         </div>
     );
 }

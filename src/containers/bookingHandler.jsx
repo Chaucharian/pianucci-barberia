@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useStateValue } from '../state/rootState';
-import * as api from '../services/api';
 import * as appActions from '../actions/app';
 import { withStyles } from '@material-ui/styles';
 import StepIndicator from '../components/stepIndicator';
@@ -27,11 +26,10 @@ const styles = {
 }
 
 export const BookingHandler = (props) => {
-    const { classes, booking } = props; 
-    const [internalState, setState] = useState({currentStep: 1, serviceSelected: '', bookings: [] });
+    const { classes, onChangeScrollStatus } = props; 
+    const [internalState, setState] = useState({currentStep: 1, serviceSelected: ''});
     const [state, dispatch] = useStateValue();
-    const { activeBookings } = state;
-    const { currentStep, serviceSelected, bookings } = internalState;
+    const { currentStep, serviceSelected } = internalState;
 
     const bookingConfirmationHandler = response => {
         if (response === 'confirm') {
@@ -41,33 +39,26 @@ export const BookingHandler = (props) => {
         }
     }
 
-    const createBooking = (booking) => {
-        dispatch(userActions.createBooking(booking));
-    }
+    const createBooking = booking => dispatch(userActions.createBooking(booking));
 
-    const changeStep = (newStep) => {
-        if(newStep < currentStep) {
-            setState({ ...internalState, currentStep: newStep });
+    const changeStep = (newStep, serviceSelected) => {
+        setState({ ...internalState, currentStep: newStep, serviceSelected });
+        if(newStep === 2) {
+            onChangeScrollStatus(false);
+        } else {
+            onChangeScrollStatus(true);
         }
     } 
-
-    useEffect( () => {
-        api.getSchedule(Date.now()).then( ({bookings}) => {
-            console.log("RESPONSE ",bookings);
-            setState({ ...internalState, bookings });
-        });
-    }, []);
 
     return (
         <div className={classes.container}>
             <h2>RESERVA UN TURNO</h2>
-            <StepIndicator currentStep={currentStep} clicked={ step => changeStep(step) }></StepIndicator>
+            <StepIndicator currentStep={currentStep} clicked={changeStep}></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector 
-                    serviceSelected={ serviceSelected => setState({ ...internalState, currentStep: 2, serviceSelected }) }
+                    serviceSelected={ serviceSelected => changeStep(2, serviceSelected) }
                 ></ServiceTypeSelector>
                 <BookingDateSelector 
-                    bookings={bookings}
                     onBookingSelect={ bookingSelected => setState({ ...internalState, currentStep: 3, bookingSelected }) }
                 ></BookingDateSelector>
                 {/* <BookingConfirmation 

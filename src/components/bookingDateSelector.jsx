@@ -1,25 +1,30 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { withStyles } from '@material-ui/styles';
+import * as api from '../services/api';
 import ScheduleList from './scheduleList';
-import Calendar from '@lls/react-light-calendar'
-import BookingItem from './bookingItem';
+import Calendar from '@lls/react-light-calendar';
 import '@lls/react-light-calendar/dist/index.css' // Default Style
+import BookingItem from './bookingItem';
+import DaysListSelector from './daysListSelector';
 
 const styles = {
     container: {
         display: "flex",
-        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
         width: "100%",
         height: "100vh", 
         backgroundColor: "#000",
         textAlign: "center",
-        paddingTop: "76px",
         color: "#FFF"
     },
     bookings: {
         width: "60%",
+        height: "300px",
         display: "flex",
+        overflow: "auto",
         flexDirection: "column",
+        alignItems: "center",
         "& button": {
             marginBottom: "10px"
         }
@@ -27,17 +32,29 @@ const styles = {
 }
 
 export const BookingDateSelector = (props) => {
-    const { classes, bookings, onBookingSelect } = props; 
-    const [state, setState] = useState({ defaultDay: null});
+    const { classes, onBookingSelect } = props; 
+    const [state, setState] = useState({ currentDate: Date.now(), bookings: [], showBookings: true});
+    const { currentDate, showBookings, bookings } = state;
+    const changeBookingListVisibility = showBookings => setState({ ...state, showBookings});
+    const changeCurrentDate = date => setState({ ...state, currentDate: date });
+    
+    useEffect( () => {
+        api.getSchedule(currentDate).then( ({bookings}) => {
+            console.log("RESPONSE ",bookings);
+            setState({ ...state, bookings });
+        });
+    }, [currentDate]);
 
     return (
         <div className={classes.container}>
-            <div className={classes.bookings}>
+            <DaysListSelector date={currentDate} onDateSelected={changeCurrentDate} onCalendarChange={changeBookingListVisibility}/>
+            { showBookings && <div className={classes.bookings}>
                 { bookings.map( (booking, index) => (
                     <BookingItem key={index} booking={booking} onSelect={onBookingSelect}/>
                 )) 
                 }
             </div>
+            }
         </div>
     );
 }

@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useStateValue } from '../state/rootState';
-import * as actionTypes from '../actions/types';
 import * as appActions from '../actions/app';
 import Header from '../components/header';
 import ReflectButton from '../components/reflectButton';
@@ -44,19 +43,14 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { isDealing, showBookingSection, goToBookingSection, currentPage } = state;
+    const { isDealing, isScrollEnabled, showBookingSection, goToBookingSection, currentPage } = state;
     let pageScroller = null;
 
-    console.log(state.user);
-
     const pageOnChange = scroll => {
-        dispatch( appActions.changePage({ payload: scroll }) );
-        if(scroll === 3) {
-            dispatch( appActions.bookingHandlerVisited() );
-        }
+        goToPage(scroll);
     }
 
-    const goToPage = (page) => {
+    const goToPage = page => {
         dispatch( appActions.changePage({ payload: page }) );
     }
 
@@ -66,22 +60,28 @@ export const MainViewer = (props) => {
         }
     }
 
-    const allowScroll = (!showBookingSection && currentPage === 2); 
+    const changeScrollStatus = status => dispatch(appActions.changeScrollStatus({ payload: status }));  
 
     useEffect(()=> {
-        pageScroller.goToPage(currentPage);
-        setTimeout(()=> {
-            if(goToBookingSection) {
-                goToPage(3);
-            }    
-        },2000)
+        if(showBookingSection && currentPage !== 3) {
+            goToPage(3);
+        }
     });
+    
+    useEffect(()=> {       
+        pageScroller.goToPage(currentPage);
+        if(!showBookingSection && currentPage === 2) {
+            dispatch(appActions.changeScrollStatus({ payload: false }));
+        } else {
+            dispatch(appActions.changeScrollStatus({ payload: true }));
+        }
+    }, [currentPage, showBookingSection]);
 
     return (
         <div>
             <Header></Header>
             <div className={classes.content}>
-                <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={allowScroll}>
+                <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={!isScrollEnabled} blockScrollUp={!isScrollEnabled} >
                     <div>
                         <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
                         <div className={classes.buttonContainer}>
@@ -92,7 +92,7 @@ export const MainViewer = (props) => {
                     </div>
                     <BookingList></BookingList>
                     {
-                        showBookingSection ? <BookingHandler></BookingHandler> : ''
+                        showBookingSection ? <BookingHandler onChangeScrollStatus={changeScrollStatus}></BookingHandler> : ''
                     }
                 </ReactPageScroller>
             </div>

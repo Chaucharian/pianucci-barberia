@@ -6,11 +6,18 @@ export const initialState = {
     showBookingSection: false,
     goToBookingSection: false,
     user: { id: '', bookings: [], name: '' },
-    activeBookings: []
+    activeBookings: [],
+    isScrollEnabled: true 
 };
 
 export const reducer = (state, action) => {
     switch (action.type) {
+        case actionTypes.CHANGE_SCROLL_STATUS:
+            const isScrollEnabled = action.payload;
+            return {
+              ...state,
+              isScrollEnabled
+            }
         case actionTypes.USER_LOGGED_IN:
             const user = action.payload;
             return {
@@ -42,7 +49,7 @@ export const reducer = (state, action) => {
         case actionTypes.BOOKING_HANDLER_VISITED:
           return {
               ...state,
-              goToBookingSection: false,
+              showBookingSection: false,
             };
       default:
         return state;

@@ -7,13 +7,17 @@ const styles = {
 }
 
 const BookingItem = (props) => {
-    const { classes, booking, reserved, onSelect } = props;
+    const { classes, booking, onSelect } = props;
     const { date, status } = booking;
     const hour = getHours(date) >= 10 ? getHours(date)+":00" : "0"+getHours(date)+":00";
     const isBookingReserved = status === 'reserved';
 
     return (
-        <AnimatedButton reserved={reserved} text={hour} strong={true} disabled={isBookingReserved}></AnimatedButton>
+        <AnimatedButton onSelect={() => {
+            if(!isBookingReserved) {
+                onSelect(booking);
+            }
+        }} text={hour} strong={true} disabled={isBookingReserved}></AnimatedButton>
     );
 }
 

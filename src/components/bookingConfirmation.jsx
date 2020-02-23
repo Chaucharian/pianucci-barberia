@@ -18,11 +18,10 @@ const styles = {
 }
 
 export const BookingConfirmation = (props) => {
-    const { classes, booking, response } = props; 
-     
+    const { classes, bookingSelected, serviceSelected } = props; 
+    console.log(new Date(bookingSelected.date));
     return (
         <div className={classes.container}>
-            { booking.serviceSelected.name }
             <button className="button" onClick={() => response('confirm')} >CONFIRMAR</button>
             <button className="button" onClick={() => response('cancel')}>CANCELAR</button>
         </div>

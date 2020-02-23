@@ -56,13 +56,13 @@ const styles = {
 }
 
 const AnimatedButton = (props) => {
-    const { classes, text, strong, disabled } = props;
+    const { classes, text, strong, disabled, onSelect } = props;
     return ( 
         disabled 
         ? 
-        <button className={classes.buttonDisabled +' '+ (strong ? classes.boldFont : '')}>{ text }</button> 
+        <button onClick={() => onSelect()} className={classes.buttonDisabled +' '+ (strong ? classes.boldFont : '')}>{ text }</button> 
         :
-        <button className={classes.buttonActive +' '+ (strong ? classes.boldFont : '')}>{ text }</button>
+        <button onClick={() => onSelect()}className={classes.buttonActive +' '+ (strong ? classes.boldFont : '')}>{ text }</button>
     );
 };
 

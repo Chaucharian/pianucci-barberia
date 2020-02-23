@@ -24,7 +24,7 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         "& button": {
-            marginBottom: "10px"
+            marginBottom: "15px"
         }
     },
 }
@@ -36,7 +36,6 @@ export const BookingDateSelector = (props) => {
     const changeCurrentDate = (date, { showBookings }) => setState({ ...state, currentDate: date, showBookings });
     
     useEffect( () => {
-        console.log(" NEW DATE ",new Date(currentDate));
         api.getSchedule(currentDate).then( ({bookings}) => {
             console.log("RESPONSE ",bookings);
             setState({ ...state, bookings });

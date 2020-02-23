@@ -15,7 +15,7 @@ const styles = {
         height: "100vh", 
         backgroundColor: "#000",
         textAlign: "center",
-        paddingTop: "50px",
+        paddingTop: "76px",
         color: "#FFF"
     },
     content: {
@@ -27,9 +27,9 @@ const styles = {
 
 export const BookingHandler = (props) => {
     const { classes, onChangeScrollStatus } = props; 
-    const [internalState, setState] = useState({currentStep: 1, serviceSelected: ''});
+    const [internalState, setState] = useState({currentStep: 1, serviceSelected: '', bookingSelected: {} });
     const [state, dispatch] = useStateValue();
-    const { currentStep, serviceSelected } = internalState;
+    const { currentStep, serviceSelected, bookingSelected } = internalState;
 
     const bookingConfirmationHandler = response => {
         if (response === 'confirm') {
@@ -59,12 +59,16 @@ export const BookingHandler = (props) => {
                     serviceSelected={ serviceSelected => changeStep(2, serviceSelected) }
                 ></ServiceTypeSelector>
                 <BookingDateSelector 
-                    onBookingSelect={ bookingSelected => setState({ ...internalState, currentStep: 3, bookingSelected }) }
+                    onBookingSelect={ bookingSelected => {
+                        console.log(" BOOKING SELECTED ",bookingSelected)
+                        setState({ ...internalState, currentStep: 3, bookingSelected });
+                    }}
                 ></BookingDateSelector>
-                {/* <BookingConfirmation 
-                    booking={ { date, serviceSelected } } 
+                <BookingConfirmation 
+                    bookingSelected={bookingSelected} 
+                    serviceSelected={serviceSelected}
                     response={ response => bookingConfirmationHandler(response) }  
-                ></BookingConfirmation> */}
+                ></BookingConfirmation>
             </ViewSwitcher>
         </div>
     );

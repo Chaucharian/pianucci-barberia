@@ -134,7 +134,7 @@ app.post('/getScheduleForDate', (request, response) => {
 
       // create spaces to set up bookings for any date
       while(hoursCount < hoursAmount) {
-        const bookingDate = new Date(mStartingTime).setHours(currentHour);
+        const bookingDate = new Date(userDate).setHours(currentHour,00,00);
         bookings.push({ ...bookingModel, date: bookingDate });
 
         if(currentHour === new Date(mEndingTime).getHours()) {

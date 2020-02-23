@@ -14,6 +14,7 @@ const styles = {
         cursor: "pointer",
         "& h2": {
             transition: "all 200ms ease",
+            marginRight: "5px"
         }
     },
     selected: {
@@ -42,7 +43,7 @@ export const DaysListSelector = (props) => {
                 <h2 className={isToday(date) ? classes.selected : ''} 
                     onClick={() => !isToday(date) && daySelection( dateToUnix(new Date()) ) }
                 >
-                    HOY
+                    HOY 
                 </h2>
                 <h2 className={isTomorrow(date) ? classes.selected : ''} 
                     onClick={() => !isTomorrow(date) && daySelection( dateToUnix(addDays(new Date(), 1)), { showBookings: true })}
@@ -56,7 +57,11 @@ export const DaysListSelector = (props) => {
                 </h2>
             </div>
             { (isOtherDay && !calendarSelectionDone) && 
-                <Calendar onChange={calendarSelection}/>
+                <Calendar 
+                    startDate={dateToUnix(addDays(new Date(), 2))} 
+                    endDate={new Date().setDate(new Date().getDate() + 14)} 
+                    disableDates={date => date < new Date().getTime() && date > new Date().getTime() + 14}
+                    onChange={calendarSelection}/>
             }
         </div>
     );

@@ -14,7 +14,7 @@ const styles = {
         cursor: "pointer",
         "& h2": {
             transition: "all 200ms ease",
-            marginRight: "5px"
+            marginRight: "10px"
         }
     },
     selected: {
@@ -34,7 +34,7 @@ export const DaysListSelector = (props) => {
     }
     const calendarSelection = date => {
         setState({ calendarSelectionDone: true });
-        onDateSelected(date, { showBookings: true })
+        onDateSelected(addDays(date, 1), { showBookings: true });
     }
 
     return (

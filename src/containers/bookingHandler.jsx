@@ -41,8 +41,14 @@ export const BookingHandler = (props) => {
 
     const createBooking = booking => dispatch(userActions.createBooking(booking));
 
-    const changeStep = (newStep, serviceSelected) => {
-        setState({ ...internalState, currentStep: newStep, serviceSelected });
+    const selectService = service => {
+        setState({ ...internalState, serviceSelected: service, currentStep: 2 });
+    }
+
+    const changeStep = (newStep) => {
+        if(newStep < currentStep) {
+            setState({ ...internalState, currentStep: newStep });
+        } 
         if(newStep === 2) {
             onChangeScrollStatus(false);
         } else {
@@ -56,7 +62,7 @@ export const BookingHandler = (props) => {
             <StepIndicator currentStep={currentStep} clicked={changeStep}></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector 
-                    serviceSelected={ serviceSelected => changeStep(2, serviceSelected) }
+                    serviceSelected={selectService}
                 ></ServiceTypeSelector>
                 <BookingDateSelector 
                     onBookingSelect={ bookingSelected => {

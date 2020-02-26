@@ -22,10 +22,7 @@ const styles = {
         display: "flex",
         overflow: "auto",
         flexDirection: "column",
-        alignItems: "center",
-        "& button": {
-            marginBottom: "15px"
-        }
+        alignItems: "center"
     },
 }
 
@@ -33,18 +30,21 @@ export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [state, setState] = useState({ currentDate: Date.now(), bookings: [], showBookings: true});
     const { currentDate, showBookings, bookings } = state;
-    const changeCurrentDate = (date, { showBookings }) => setState({ ...state, currentDate: date, showBookings });
+    const changeCurrentDate = (date, { showBookings }) => {
+        console.log(" NEW DATE ",date);
+        setState({ ...state, currentDate: date, showBookings });
+    }
     
     useEffect( () => {
         api.getSchedule(currentDate).then( ({bookings}) => {
-            console.log("RESPONSE ",bookings);
+            console.log("CURRENT DATE ",new Date(currentDate)," RESPONSE ",bookings);
             setState({ ...state, bookings });
         });
     }, [currentDate]);
 
     return (
         <div className={classes.container}>
-            <DaysListSelector date={currentDate} onDateSelected={changeCurrentDate}/>
+            <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeCurrentDate}/>
             { showBookings && <div className={classes.bookings}>
                 { bookings.map( (booking, index) => (
                     <BookingItem key={index} booking={booking} onSelect={onBookingSelect}/>

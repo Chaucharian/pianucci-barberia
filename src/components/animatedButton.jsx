@@ -25,6 +25,7 @@ const styles = {
         transition: "all 200ms ease",
         width: "80%",
         height: "40px",
+        marginBottom: "15px",
         "&:hover": {
             boxShadow: "10px -10px 0 0 #FFF",
             transform: "translate(-5px, 5px)"
@@ -48,7 +49,8 @@ const styles = {
         color: "#636161",
         transition: "all 200ms ease",
         width: "80%",
-        height: "40px"
+        height: "40px",
+        marginBottom: "15px"
     },
     boldFont: {
         fontWeight: "bold"

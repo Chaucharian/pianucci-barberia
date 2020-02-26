@@ -16,13 +16,18 @@ const styles = {
         display: "flex",
         justifyContent: "center"
     },
+    description: {
+        "& ul": {
+            listStyle: "none"
+        }
+    }
 }
 
 export const BookingConfirmation = (props) => {
     const { classes, bookingSelected, serviceSelected } = props; 
     const { date } = bookingSelected;
     const { name: serviceName, duration } = serviceSelected;
-    const dateFormated = format(date,"dd/mm/yyyy");
+    const dateFormated = format(date,"dd/MM/yyyy");
     const hours = new Date(date).getHours();
     console.log(serviceSelected);
     return (

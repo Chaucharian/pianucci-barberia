@@ -2,6 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import { format } from 'date-fns';
 import AnimatedButton from './animatedButton';
+import ReflectButton from './reflectButton';
 
 const styles = {
     container: {
@@ -29,7 +30,7 @@ export const BookingConfirmation = (props) => {
     const { name: serviceName, duration } = serviceSelected;
     const dateFormated = format(date,"dd/MM/yyyy");
     const hours = new Date(date).getHours();
-    console.log(serviceSelected);
+
     return (
         <div className={classes.container}>
             <div className={classes.description}>
@@ -44,8 +45,8 @@ export const BookingConfirmation = (props) => {
                     </li>
                 </ul>
             </div>
-            <AnimatedButton text="CONFIRMAR"/> 
-            <AnimatedButton text="CANCELAR"/> 
+            <ReflectButton text="CONFIRMAR" clicked={() => {}} />
+            <ReflectButton text="CANCELAR" clicked={() => {}} />
         </div>
     );
 }

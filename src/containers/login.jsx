@@ -73,13 +73,6 @@ const Login = (props) => {
 
             api.getUserData(user)
             .then( response => dispatch(appActions.userLoggedIn(response.user)) );
-            // firebase.database().ref('/users/' + uid).once('value').then( (snapshot) => {
-            //     user.bookings = snapshot.bookings | [];
-            //     user.email = email;
-            //     user.id = uid;
-                
-            //     dispatch( appActions.userLoggedIn(user) );
-            // });
         })
         .catch(function(error) {
             console.log(error);

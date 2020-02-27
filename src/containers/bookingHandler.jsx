@@ -8,6 +8,7 @@ import ServiceTypeSelector from '../components/serviceTypeSelector';
 import BookingConfirmation from '../components/bookingConfirmation';
 import BookingDateSelector from '../components/bookingDateSelector';
 import * as userActions from '../actions/user';
+import * as api from '../services/api';
 
 const styles = {
     container: {
@@ -27,19 +28,20 @@ const styles = {
 
 export const BookingHandler = (props) => {
     const { classes, onChangeScrollStatus } = props; 
-    const [internalState, setState] = useState({currentStep: 1, serviceSelected: '', bookingSelected: {} });
+    const [internalState, setState] = useState({currentStep: 1, serviceSelected: '', bookingSelected: {}, confirmBookingCreation: false });
     const [state, dispatch] = useStateValue();
-    const { currentStep, serviceSelected, bookingSelected } = internalState;
-
+    const { user } = state;
+    const { currentStep, serviceSelected, bookingSelected, confirmBookingCreation } = internalState;
+    console.log(" USER ",user);
     const bookingConfirmationHandler = response => {
         if (response === 'confirm') {
-            createBooking({ serviceSelected, date });
+            setState({ ...internalState, confirmBookingCreation: true });
         } else {
-            setState({ ...internalState, currentStep: 2 });
+            setState({ serviceSelected: '', currentStep: 1, bookingSelected: {} });
         }
     }
 
-    const createBooking = booking => dispatch(userActions.createBooking(booking));
+    // const createBooking = booking => dispatch(userActions.createBooking(booking));
 
     const selectService = service => {
         setState({ ...internalState, serviceSelected: service, currentStep: 2 });
@@ -55,6 +57,17 @@ export const BookingHandler = (props) => {
             onChangeScrollStatus(true);
         }
     } 
+
+    useEffect( () => {
+        if(confirmBookingCreation) {
+            const requestPayload = {
+
+            };
+            api.createBooking(bookingSelected).then( AuthenticatorAssertionResponse => {
+                console.log(" RESPONSE ",response);
+            })
+        }
+    }, [confirmBookingCreation]);
 
     return (
         <div className={classes.container}>

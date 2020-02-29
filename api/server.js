@@ -78,14 +78,14 @@ app.get('/instagram-redirect', (req, res) => {
 });
 
 app.post('/getUserData', (request, response) => {
-  const { id } = request.body;
+  const { userId } = request.body;
   const ref = firebaseDB.ref('/users');
 
   ref.once('value', snapshot => {
     snapshot.forEach( user => {
-      const userBookings = user.val().bookings;
-      const userId = user.val().id;
-      if(userId === id) {
+      // const userBookings = user.val().bookings;
+      const userIdTemp = user.val().id;
+      if(userIdTemp === userId) {
           response.json({ status: 'user loged in successfullt!', user: user.val() })
       }
       // TODO MAP BOOKINGS
@@ -93,6 +93,20 @@ app.post('/getUserData', (request, response) => {
       //   console.log(userBookings[key].type);
       // });
     });
+  });
+});
+
+app.post('/getActiveBookings', (request, response) => {
+  const { userId } = request.body;
+  const bookingsRef = firebaseDB.ref('/bookings');
+
+  bookingsRef.once('value', bookingRef => {
+    const bookings = [];
+    bookingRef.forEach( booking => {
+      bookings.push(booking.val());
+    });
+    const filterdBookings = bookings.filter( booking => booking.status === "reserved" && booking.clientId === userId);
+    response.json({ status: "bookings retrived!", bookings: filterdBookings });
   });
 });
 

@@ -69,7 +69,7 @@ const Login = (props) => {
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then( response => {
             const { uid } = response.user;
-            let user = { id: uid };
+            let user = { userId: uid };
 
             api.getUserData(user)
             .then( response => dispatch(appActions.userLoggedIn(response.user)) );

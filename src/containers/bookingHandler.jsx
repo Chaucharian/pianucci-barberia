@@ -27,20 +27,19 @@ const styles = {
 }
 
 export const BookingHandler = (props) => {
-    const { classes, onChangeScrollStatus } = props; 
+    const { classes, onDisableScroll, onGoUp } = props; 
     const [internalState, setState] = useState({currentStep: 1, serviceSelected: '', bookingSelected: {}, confirmBookingCreation: false });
     const [state, dispatch] = useStateValue();
     const { user } = state;
     const { currentStep, serviceSelected, bookingSelected, confirmBookingCreation } = internalState;
-    console.log(" USER ",user);
-    const bookingConfirmationHandler = response => {
+
+    const submitBooking = response => {
         if (response === 'confirm') {
             setState({ ...internalState, confirmBookingCreation: true });
         } else {
             setState({ serviceSelected: '', currentStep: 1, bookingSelected: {} });
         }
     }
-
     // const createBooking = booking => dispatch(userActions.createBooking(booking));
 
     const selectService = service => {
@@ -51,23 +50,29 @@ export const BookingHandler = (props) => {
         if(newStep < currentStep) {
             setState({ ...internalState, currentStep: newStep });
         } 
-        if(newStep === 2) {
-            onChangeScrollStatus(false);
-        } else {
-            onChangeScrollStatus(true);
-        }
     } 
 
     useEffect( () => {
         if(confirmBookingCreation) {
             const requestPayload = {
-
+                userId: user.id,
+                type: serviceSelected.name,
+                duration: serviceSelected.duration,
+                date: bookingSelected.date
             };
-            api.createBooking(bookingSelected).then( AuthenticatorAssertionResponse => {
-                console.log(" RESPONSE ",response);
-            })
+            api.createBooking(requestPayload).then( response => {
+                onGoUp();
+            });
         }
     }, [confirmBookingCreation]);
+
+    useEffect( () => {
+        if(currentStep === 2) {
+            onDisableScroll(true);
+        } else {
+            onDisableScroll(false);
+        }
+    }, [currentStep]);
 
     return (
         <div className={classes.container}>
@@ -86,7 +91,7 @@ export const BookingHandler = (props) => {
                 <BookingConfirmation 
                     bookingSelected={bookingSelected} 
                     serviceSelected={serviceSelected}
-                    response={ response => bookingConfirmationHandler(response) }  
+                    onSubmit={ response => submitBooking(response) }  
                 ></BookingConfirmation>
             </ViewSwitcher>
         </div>

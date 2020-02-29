@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import Header from '../components/header';
-import ReflectButton from '../components/reflectButton';
 import ReactPageScroller from "react-page-scroller";
 import { withStyles } from '@material-ui/styles';
 import corte1 from '../assets/corte1.jpg';
@@ -43,15 +42,17 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { isDealing, isScrollEnabled, showBookingSection, goToBookingSection, currentPage } = state;
+    const { scrollDownDisabled, scrollUpDisabled, showBookingSection, currentPage } = state;
     let pageScroller = null;
 
     const pageOnChange = scroll => {
         goToPage(scroll);
     }
 
-    const goToPage = page => {
-        dispatch( appActions.changePage({ payload: page }) );
+    const goToPage = pageNumber => {
+        if(pageNumber !== currentPage) {
+            dispatch( appActions.changePage(pageNumber) );
+        }
     }
 
     const setScrollHandler = scroll => {
@@ -60,28 +61,43 @@ export const MainViewer = (props) => {
         }
     }
 
-    const changeScrollStatus = status => dispatch(appActions.changeScrollStatus({ payload: status }));  
+    const disableScroll = disable => {
+        dispatch(appActions.disableScrollUp(disable));
+        dispatch(appActions.disableScrollDown(disable));
+    }
+
+    const changePageAndHideSection = () => {
+        goToPage(1);
+        setTimeout( () => {
+            dispatch(appActions.showBookingHandlerView(false));
+            dispatch(appActions.disableScrollDown(true));
+        }, 1000);
+    }
+
+    useEffect(() => {
+        pageScroller.goToPage(currentPage);
+        if(currentPage === 2) {
+            if(!showBookingSection) {
+                dispatch(appActions.disableScrollDown(true));
+            } else {
+                dispatch(appActions.disableScrollDown(false));
+            }
+        } else if(currentPage === 1) {
+            dispatch(appActions.disableScrollDown(false));
+        }
+    }, [currentPage]);
 
     useEffect(()=> {
-        if(showBookingSection && currentPage !== 3) {
-            goToPage(3);
+        if(showBookingSection) {
+            goToPage(2);
         }
-    });
-    
-    useEffect(()=> {       
-        pageScroller.goToPage(currentPage);
-        if(!showBookingSection && currentPage === 2) {
-            dispatch(appActions.changeScrollStatus({ payload: false }));
-        } else {
-            dispatch(appActions.changeScrollStatus({ payload: true }));
-        }
-    }, [currentPage, showBookingSection]);
+    }, [showBookingSection]);
 
     return (
         <div>
             <Header></Header>
             <div className={classes.content}>
-                <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={!isScrollEnabled} blockScrollUp={!isScrollEnabled} >
+                <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
                     <div>
                         <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
                         <div className={classes.buttonContainer}>
@@ -92,7 +108,7 @@ export const MainViewer = (props) => {
                     </div>
                     <BookingList></BookingList>
                     {
-                        showBookingSection ? <BookingHandler onChangeScrollStatus={changeScrollStatus}></BookingHandler> : ''
+                        showBookingSection ? <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection}></BookingHandler> : ''
                     }
                 </ReactPageScroller>
             </div>

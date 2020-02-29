@@ -39,7 +39,10 @@ const BookingList = (props) => {
     const matches = useMediaQuery('(min-width:600px)');
     const bookingList = state.user.bookings;
 
-    const createAppointment = () => dispatch( appActions.showBookingHandlerView() );
+    const createAppointment = () => {
+        dispatch( appActions.showBookingHandlerView(true) );
+        dispatch( appActions.changePage(3) );
+    }
 
     return (
         <div className={classes.container}>
@@ -48,7 +51,7 @@ const BookingList = (props) => {
             { 
                 bookingList.length > 0 ? bookingList.map( booking => 
                 <BookingItem data={booking}></BookingItem>) :
-                <h2>Nunca reservaste :(</h2>  
+                <h2>No tienes ningun turno activo :(</h2>  
             }
             </div>
             <div className={classes.bookingButton} >

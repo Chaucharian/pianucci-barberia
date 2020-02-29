@@ -25,7 +25,7 @@ const styles = {
 }
 
 export const BookingConfirmation = (props) => {
-    const { classes, bookingSelected, serviceSelected } = props; 
+    const { classes, bookingSelected, serviceSelected, onSubmit } = props; 
     const { date } = bookingSelected;
     const { name: serviceName, duration } = serviceSelected;
     const dateFormated = format(date,"dd/MM/yyyy");
@@ -45,8 +45,8 @@ export const BookingConfirmation = (props) => {
                     </li>
                 </ul>
             </div>
-            <ReflectButton text="CONFIRMAR" clicked={() => {}} />
-            <ReflectButton text="CANCELAR" clicked={() => {}} />
+            <ReflectButton text="CONFIRMAR" clicked={() => onSubmit("confirm")} />
+            <ReflectButton text="CANCELAR" clicked={() => onSubmit("cancel")} />
         </div>
     );
 }

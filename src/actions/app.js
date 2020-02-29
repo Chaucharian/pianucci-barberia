@@ -6,18 +6,29 @@ export const userLoggedIn = user => ({
     payload: user
 });
 
-export const changePage = action => ({
+export const changePage = pageNumber => ({
     type: actionTypes.CHANGE_PAGE,
+    payload: pageNumber
+});
+
+export const bookingCreated = action => ({
+    type: actionTypes.BOOKING_CREATED,
     payload: action.payload
 });
 
-export const changeScrollStatus = action => ({
-    type: actionTypes.CHANGE_SCROLL_STATUS,
-    payload: action.payload
+export const disableScrollDown = disable => ({
+    type: actionTypes.DISABLE_SCROLL_DOWN,
+    payload: disable
 });
 
-export const showBookingHandlerView = action => ({
+export const disableScrollUp = disable => ({
+    type: actionTypes.DISABLE_SCROLL_UP,
+    payload: disable
+});
+
+export const showBookingHandlerView = show => ({
     type: actionTypes.SHOW_BOOKING_HANDLER,
+    payload: show 
 });
 
 export const hideBookingHandlerView = action => ({

@@ -105,7 +105,7 @@ app.post('/getActiveBookings', (request, response) => {
     bookingRef.forEach( booking => {
       bookings.push(booking.val());
     });
-    const filterdBookings = bookings.filter( booking => booking.status === "reserved" && booking.clientId === userId);
+    const filterdBookings = bookings.filter( booking => (booking.status === "reserved" && booking.clientId === userId));
     response.json({ status: "bookings retrived!", bookings: filterdBookings });
   });
 });

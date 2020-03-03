@@ -24,17 +24,30 @@ export const createBooking = booking => (
     .then( response => response.json() )
 );
 
-export const getUserData = user => (
+export const getUserData = userId => (
     fetch(enviroment.baseUrl + '/getUserData', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(user)
+        body: JSON.stringify({ userId })
     })
     .then( response => response.json() )
 );
+
+export const getUserBookings = userId => (
+    fetch(enviroment.baseUrl + '/getActiveBookings', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId })
+    })
+    .then( response => response.json() )
+);
+
 
 export const getSchedule = userDate => (
     fetch(enviroment.baseUrl + '/getScheduleForDate', {

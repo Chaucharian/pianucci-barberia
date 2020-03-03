@@ -84,7 +84,6 @@ export const BookingHandler = (props) => {
                 ></ServiceTypeSelector>
                 <BookingDateSelector 
                     onBookingSelect={ bookingSelected => {
-                        console.log(" BOOKING SELECTED ",bookingSelected)
                         setState({ ...internalState, currentStep: 3, bookingSelected });
                     }}
                 ></BookingDateSelector>

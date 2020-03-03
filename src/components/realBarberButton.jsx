@@ -171,15 +171,53 @@ const styles = {
             }
         }
     },
+    disabledButton: {
+        maxWidth: "360px",
+        width: "100%",
+        border: "2px solid #2e2e2e",
+        cursor: "default",
+        letterSpacing: "0.2125rem",
+        overflow: "hidden",
+        margin: "5px",
+        padding: "20px 30px",
+        position: "relative",
+        backgroundColor: "#000",
+        textAlign: "center",
+        textTransform: "uppercase",
+        outline: "0px",
+        "& div a": {
+            color: "#969696",
+            fontFamily: "Varela Round",
+            fontSize: "14px",
+            textDecoration: "none"
+        }
+    },
     boldFont: {
         fontWeight: "bold"
     }    
 }
 
 const RealBarberButton = (props) => {
-    const { classes, text, icon, clicked } = props;
+    const { classes, text, icon, disabled, clicked } = props;
     return (
-    <button className={classes.button +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => clicked(true)}>
+    disabled ? 
+    <button className={classes.disabledButton +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => !disabled && clicked(true)}>
+    <div>
+        <a>{ text }</a>
+        { icon }
+        <div className="mask1"></div>
+        <div className="mask2"></div>
+        <div className="mask3"></div>
+        <div className="mask4"></div>
+        <div className="mask5"></div>
+        <div className="mask6"></div>
+        <div className="mask7"></div>
+        <div className="mask8"></div>
+        <div className="mask9"></div>
+    </div>
+    </button> 
+    :
+    <button className={classes.button +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => !disabled && clicked(true)}>
         <div>
             <a>{ text }</a>
             { icon }

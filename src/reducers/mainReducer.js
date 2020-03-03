@@ -13,6 +13,13 @@ export const initialState = {
 
 export const reducer = (state, action) => {
     switch (action.type) {
+        case actionTypes.BOOKINGS_FETCHED:
+            const { user: userState } = state;
+            const bookings = action.payload;
+            return {
+              ...state,
+              user: { ...userState, bookings }
+            }
         case actionTypes.DISABLE_SCROLL_UP:
             const scrollUpDisabled = action.payload;
             return {

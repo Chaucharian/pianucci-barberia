@@ -6,6 +6,11 @@ export const userLoggedIn = user => ({
     payload: user
 });
 
+export const bookingsFetched = bookings => ({
+    type: actionTypes.BOOKINGS_FETCHED,
+    payload: bookings
+});
+
 export const changePage = pageNumber => ({
     type: actionTypes.CHANGE_PAGE,
     payload: pageNumber

@@ -108,7 +108,7 @@ export const MainViewer = (props) => {
                     </div>
                     <BookingList></BookingList>
                     {
-                        showBookingSection ? <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection}></BookingHandler> : ''
+                        showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection}></BookingHandler>
                     }
                 </ReactPageScroller>
             </div>

@@ -3,13 +3,10 @@ import { withStyles } from '@material-ui/styles'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import { useStateValue } from '../state/rootState';
-import * as actionTypes from '../actions/types';
 import * as api from '../services/api';
 import * as appActions from '../actions/app';
 import RealBarberButton from '../components/realBarberButton';
-import * as userActions from '../actions/user';
-import ButtonAnimated from '../components/animatedButton';
-import BookingItem from '../components/bookingItem';
+import UserBooking from '../components/userBooking';
 
 const styles = {
     container: {
@@ -66,7 +63,7 @@ const BookingList = (props) => {
             <div className={classes.bookingListContainer}>
             { 
                 hasBookings() ? bookings.map( (booking, index) => 
-                <BookingItem key={index} booking={booking}></BookingItem>) :
+                <UserBooking key={index} booking={booking} onDelete={() => {}}/>) :
                 <h2>No tienes ningun turno activo :(</h2>  
             }
             </div>

@@ -37,7 +37,7 @@ export const getUserData = userId => (
 );
 
 export const getUserBookings = userId => (
-    fetch(enviroment.baseUrl + '/getActiveBookings', {
+    fetch(enviroment.baseUrl + '/getUserBookings', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

@@ -42,7 +42,7 @@ const styles = {
 const BookingList = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
-    const { user: { id: userId, bookings } } = state;
+    const { user: { id: userId, bookings }, showBookingSection } = state;
     const matches = useMediaQuery('(min-width:600px)');
 
     const createBooking = () => {
@@ -58,7 +58,7 @@ const BookingList = (props) => {
                 dispatch(appActions.bookingsFetched(response.bookings));
             });
         }
-    }, [userId]); 
+    }, [userId, showBookingSection]); 
 
     return (
         <div className={classes.container}>

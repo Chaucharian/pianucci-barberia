@@ -4,30 +4,59 @@ import  { getHours, format } from 'date-fns';
 
 const styles = {
     container: {
+        display: "flex",
+        justifyContent: "space-between",
+        margin: "0px",
+        padding: "0px",
         outline: "none",
-        display: "inline-flex",
         alignItems: "center",
-        justifyContent: "center",
         fontFamily: "'Raleway', sans-serif",
         fontSize: "calc(16px + (14 - 16) * (100vw - 400px) / (1440 - 400))",
         textDecoration: "none",
         textTransform: "uppercase",
         textAlign: "center",
-        paddingBottom: "30px",
-        paddingTop: "10px",
         border: "1px solid rgb(256, 256, 256)",
         backgroundColor: "#000",
         color: "#FFF",
         transition: "all 200ms ease",
         width: "80%",
         height: "40px",
-        marginBottom: "15px",
+        transition: "background 5s cubic-bezier(0.19, 1, 0.22, 1)," +
+        "border 1s cubic-bezier(0.19, 1, 0.22, 1)," +
+        "color 0.6s cubic-bezier(0.19, 1, 0.22, 1)",
     },
     active: {
         boxShadow: "-5px 5px 0 0 white"
     },
     inactive: {
         boxShadow: "-5px 5px 0 0 #636161"
+    },
+    description: {
+        width: "100%",
+        fontSize: "20px",
+        display: "flex",
+        justifyContent: "center",
+        "& p": {
+            margin: "0px"
+        }
+    },
+    crossButton: {
+        outline: "none",
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        height: "100%",
+        width: "70px",
+        border: "none",
+        backgroundColor: "#FFF",
+        fontSize: "40px",
+        transition: "background 5s cubic-bezier(0.19, 1, 0.22, 1)," +
+        "border 1s cubic-bezier(0.19, 1, 0.22, 1)," +
+        "color 0.6s cubic-bezier(0.19, 1, 0.22, 1)",
+        "& :hover": {
+            color: "#e21111"
+        }
     }
 }
 
@@ -40,9 +69,11 @@ const UserBooking = (props) => {
 
     return (
         <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>
-            { dateFormated }
-            { hour }
-            { isBookingReserved && <button onClick={onDelete(booking)}>X</button> }
+            <div className={classes.description}>
+                <p>{ dateFormated }</p>
+                <strong>{ hour }</strong>
+            </div>
+            { isBookingReserved && <button className={classes.crossButton} onClick={onDelete(booking)}><i className="fas fa-times"></i></button> }
         </div>
     );
 }

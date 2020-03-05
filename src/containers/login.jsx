@@ -35,16 +35,16 @@ const Login = (props) => {
     const [state, dispatch] = useStateValue();
     let pageScroller = null;
 
-    firebase.auth().signOut().then(function() {
-        // Sign-out successful.
-      }).catch(function(error) {
-        // An error happened.
-      });
-    firebase.auth().onAuthStateChanged(function(user) {
-        if (user) {
-            navigate('/');
-        }
-    });
+    // firebase.auth().signOut().then(function() {
+    //     // Sign-out successful.
+    //   }).catch(function(error) {
+    //     // An error happened.
+    //   });
+    // firebase.auth().onAuthStateChanged(function(user) {
+    //     if (user) {
+    //         navigate('/');
+    //     }
+    // });
 
     // const logginWithInstagram = () => {
     //     window.open(enviroment.baseUrl+ '/instagram', 'firebaseAuth', 'height=315,width=400');
@@ -71,7 +71,10 @@ const Login = (props) => {
             const { uid } = response.user;
             
             api.getUserData(uid)
-            .then( response => dispatch(appActions.userLoggedIn(response.user)) );
+            .then( response => {
+                window.localStorage.setItem("user", JSON.stringify(response.user));
+                dispatch(appActions.userLoggedIn(response.user));
+            });
         })
         .catch(function(error) {
             console.log(error);

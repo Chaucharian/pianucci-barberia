@@ -74,6 +74,12 @@ export const MainViewer = (props) => {
         }, 1000);
     }
 
+    const actionHeaderHandler = action => {
+        if(action === "logout") {
+            dispatch(appActions.logoutUser(true));
+        }
+    }
+
     useEffect(() => {
         pageScroller.goToPage(currentPage);
         if(currentPage === 2) {
@@ -95,7 +101,7 @@ export const MainViewer = (props) => {
 
     return (
         <div>
-            <Header></Header>
+            <Header onAction={actionHeaderHandler}></Header>
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
                     <div>

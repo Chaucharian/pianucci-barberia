@@ -8,11 +8,19 @@ export const initialState = {
     activeBookings: [],
     scrollUpDisabled: false,
     scrollDownDisabled: false,
-    bookingCreated: false
+    bookingCreated: false,
+    logout: false
 };
 
 export const reducer = (state, action) => {
     switch (action.type) {
+        case actionTypes.LOGOUT_USER:
+            const logout = action.payload;
+            // reset state when the user logout
+            return {
+              ...initialState,
+              logout
+            }
         case actionTypes.BOOKINGS_FETCHED:
             const { user: userState } = state;
             const bookings = action.payload;

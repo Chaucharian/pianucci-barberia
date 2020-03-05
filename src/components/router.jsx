@@ -16,7 +16,7 @@ const routes = {
 
 export const Router = () => {
     const [state, setState] = useState({ loading: true });
-    const [{ user }, dispatch] = useStateValue();
+    const [{ user, logout }, dispatch] = useStateValue();
     const routeResult = useRoutes(routes);
     const { loading } = state;
 
@@ -48,6 +48,15 @@ export const Router = () => {
         });
     }
 
+    const logoutHandler = () => {
+        firebase.auth().signOut().then( () => {
+            // Sign-out successful.
+            dispatch(appActions.logoutUser(false));
+        }).catch(function (error) {
+            // An error happened.
+        });
+    }
+
     const viewToRender = () => {
         let resultView = <h1>LOADING...</h1>;
         if(!loading) {
@@ -57,9 +66,14 @@ export const Router = () => {
     }
 
     useEffect( () => {
-        console.log(" ea ");
         userHandler();
     }, []);
+    
+    useEffect( () => {
+        if(logout) {
+            logoutHandler();
+        }
+    }, [logout]);
     
     return viewToRender() || <NotFoundPage />;
 }

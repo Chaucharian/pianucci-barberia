@@ -108,7 +108,7 @@ const styles = {
 }
 
 const Header = (props) => {
-    const { classes } = props;
+    const { classes, onAction } = props;
     const [open, showNavbar] = useState(false);
     
     return (
@@ -123,7 +123,7 @@ const Header = (props) => {
                 <ul className={classes.linksList +' '+ (open ? classes.linksListVisible : '' )}>
                     <li><a>INICIO</a></li>
                     <li><a>TURNOS</a></li>
-                    <li><a>SALIR</a></li>
+                    <li><a onClick={() => onAction("logout")}>SALIR</a></li>
                 </ul> 
             </nav>
             <div className={classes.logoBlack +' '+ (open ?  classes.logoBlackVisible  :  classes.logoBlackHidden) }>

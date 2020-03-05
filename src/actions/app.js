@@ -6,6 +6,11 @@ export const userLoggedIn = user => ({
     payload: user
 });
 
+export const logoutUser = value => ({
+    type: actionTypes.LOGOUT_USER,
+    payload: value
+});
+
 export const bookingsFetched = bookings => ({
     type: actionTypes.BOOKINGS_FETCHED,
     payload: bookings

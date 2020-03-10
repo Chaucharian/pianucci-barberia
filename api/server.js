@@ -104,7 +104,7 @@ app.post('/getUserBookings', (request, response) => {
   bookingsRef.once('value', bookingRef => {
     const bookings = [];
     bookingRef.forEach( booking => {
-      bookings.push(booking.val());
+      bookings.push({ ...booking.val(), id: booking.key });
     });
     const filterdBookings = bookings.filter( booking => booking.clientId === userId);
     response.json({ status: "bookings retrived!", bookings: filterdBookings });
@@ -177,13 +177,20 @@ app.post('/getScheduleForDate', (request, response) => {
 app.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
-  const booking = { type, date, duration, status: "reserved", clientId: userId, id: uniqid() };
-  let bookingResponse = { };
+  const booking = { type, date, duration, status: "reserved", clientId: userId };
+  const bookingId = bookingRef.push(booking).key;
 
-  bookingResponse = bookingRef.push(booking);
-
-  response.json({ status: 'booking created!', bookingId: bookingResponse });
+  response.json({ status: 'booking created!', bookingId });
 });
+
+app.post('/deleteBooking', (request, response) => {
+  const { bookingId } = request.body;
+  const bookingRef = firebaseDB.ref('bookings/' + bookingId);
+  bookingRef.remove();
+  
+  response.json({ status: 'booking removed!'  });
+});
+
 
 app.post('/updateBooking', (request, response) => {
   const { userId, bookingId, type, duration, date, status } = request.body;

@@ -24,6 +24,18 @@ export const createBooking = booking => (
     .then( response => response.json() )
 );
 
+export const deleteBooking = bookingId => (
+    fetch(enviroment.baseUrl + '/deleteBooking', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bookingId })
+    })
+    .then( response => response.json() )
+);
+
 export const getUserData = userId => (
     fetch(enviroment.baseUrl + '/getUserData', {
         method: 'POST',

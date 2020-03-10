@@ -10,9 +10,6 @@ import UserBooking from '../components/userBooking';
 
 const styles = {
     container: {
-        // display: "flex",
-        // justifyContent: "center",
-        // flexDirection: "column",
         width: "100%",
         height: "100vh", 
         backgroundColor: "#000",
@@ -39,7 +36,7 @@ const styles = {
 const BookingList = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
-
+    const [refreshList, setRefreshList] = useState(false);
     const { user: { id: userId, bookings }, showBookingSection } = state;
     const matches = useMediaQuery('(min-width:600px)');
 
@@ -50,6 +47,12 @@ const BookingList = (props) => {
 
     const hasBookings = () => bookings.length > 0;
 
+    const deleteBookingHandler = booking => {
+        api.deleteBooking(booking.id).then( response => {
+            setRefreshList(true);
+        });
+    }
+
     useEffect( () => {
         if(userId !== "") {
             api.getUserBookings(userId).then( response => {
@@ -58,13 +61,22 @@ const BookingList = (props) => {
         }
     }, [userId, showBookingSection]); 
 
+    useEffect( () => {
+        if(refreshList) {
+            api.getUserBookings(userId).then( response => {
+                dispatch(appActions.bookingsFetched(response.bookings));
+                setRefreshList(false);
+            });
+        }
+    }, [refreshList]); 
+
     return (
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>
             <div className={classes.bookingListContainer}>
             { 
                 hasBookings() ? bookings.map( (booking, index) => 
-                <UserBooking key={index} booking={booking} onDelete={ booking => console.log(booking) } />) :
+                <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} />) :
                 <h2>No tienes ningun turno activo :(</h2>  
             }
             </div>

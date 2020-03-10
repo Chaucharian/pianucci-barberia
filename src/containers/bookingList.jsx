@@ -39,6 +39,7 @@ const styles = {
 const BookingList = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
+
     const { user: { id: userId, bookings }, showBookingSection } = state;
     const matches = useMediaQuery('(min-width:600px)');
 
@@ -63,7 +64,7 @@ const BookingList = (props) => {
             <div className={classes.bookingListContainer}>
             { 
                 hasBookings() ? bookings.map( (booking, index) => 
-                <UserBooking key={index} booking={booking} onDelete={() => {}}/>) :
+                <UserBooking key={index} booking={booking} onDelete={ booking => console.log(booking) } />) :
                 <h2>No tienes ningun turno activo :(</h2>  
             }
             </div>

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import  { getHours, format } from 'date-fns';
+import Modal from '../components/modal';
 
 const styles = {
     container: {
@@ -62,19 +63,37 @@ const styles = {
 
 const UserBooking = (props) => {
     const { classes, booking, onDelete } = props;
+    const [ isModalOpen, showModal] = useState(false);
     const { date, status } = booking;
     const dateFormated = format(date,"dd/MM/yyyy");
     const hour = getHours(date) >= 10 ? getHours(date)+":00" : "0"+getHours(date)+":00";
     const isBookingReserved = status === 'reserved';
 
+    const modalHandler = action => {
+        if(action === "confirm") {
+            showModal(false);
+            onDelete(booking);
+        } else {
+            showModal(false);
+        }
+    }
+
     return (
-        <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>
-            <div className={classes.description}>
-                <p>{ dateFormated }</p>
-                <strong>{ hour }</strong>
+        <>
+            <Modal 
+                open={isModalOpen} 
+                title="¿Seguro quieres eliminar tu reserva?" 
+                content="Una vez hecho tendras que crear una nueva reserva"
+                onAction={modalHandler}
+            />
+            <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>
+                <div className={classes.description}>
+                    <p>{ dateFormated }</p>
+                    <strong>{ hour }</strong>
+                </div>
+                { isBookingReserved && <button className={classes.crossButton} onClick={() => showModal(true)}><i className="fas fa-times"></i></button> }
             </div>
-            { isBookingReserved && <button className={classes.crossButton} onClick={onDelete(booking)}><i className="fas fa-times"></i></button> }
-        </div>
+        </>
     );
 }
 

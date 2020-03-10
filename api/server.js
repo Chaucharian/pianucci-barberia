@@ -1,6 +1,7 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const httpRequest = require('request');
+const uniqid = require('uniqid');
 const { format, getHours,  differenceInHours, compareAsc, isSameDay } = require('date-fns');
 const app = express();
 const cors = require('cors');
@@ -176,7 +177,7 @@ app.post('/getScheduleForDate', (request, response) => {
 app.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
-  const booking = { type, date, duration, status: "reserved", clientId: userId };
+  const booking = { type, date, duration, status: "reserved", clientId: userId, id: uniqid() };
   let bookingResponse = { };
 
   bookingResponse = bookingRef.push(booking);

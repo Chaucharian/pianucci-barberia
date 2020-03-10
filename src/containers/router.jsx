@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import {useRoutes, useInterceptor, navigate} from 'hookrouter';
+import {useRoutes, navigate} from 'hookrouter';
 import firebase from "firebase";
 import "firebase/auth";
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 
-import {NotFoundPage} from './notFoundPage';
-import MainViewer from '../containers/mainViewer';
-import Login from '../containers/login';
+import {NotFoundPage} from '../components/notFoundPage';
+import MainViewer from './mainViewer';
+import Login from './login';
+import loadingGif from '../assets/pianucci-loading.gif';
 
 const routes = {
     '/': () => <MainViewer />,
     '/login': () => <Login />,
 };
+
+const LoadingImg = ({ image }) => <div style={{ display: "flex", width: "100%", justifyContent: "center" }}><img style={{width:"150px", height: "70px"}} src={image}></img></div>;
 
 export const Router = () => {
     const [state, setState] = useState({ loading: true });
@@ -39,8 +42,8 @@ export const Router = () => {
             if (userSession && user.id === "") {
                 const sessionStored = JSON.parse(window.localStorage.getItem("user"));
                 dispatch(appActions.userLoggedIn(sessionStored));
-                navigate('/');
-                setState({ loading: false });
+               navigate('/');
+               setState({ loading: false });
             } else {
                 navigate('/login');
                 setState({ loading: false });
@@ -58,7 +61,7 @@ export const Router = () => {
     }
 
     const viewToRender = () => {
-        let resultView = <h1>LOADING...</h1>;
+        let resultView = <LoadingImg image={loadingGif} />
         if(!loading) {
             resultView = routeResult;
         }

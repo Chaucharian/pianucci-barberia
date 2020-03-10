@@ -1,5 +1,5 @@
 import React from 'react';
-import {Router} from '../components/router';
+import {Router} from './router';
 
 import { StateProvider } from '../state/rootState';
 import { reducer, initialState } from '../reducers/mainReducer';

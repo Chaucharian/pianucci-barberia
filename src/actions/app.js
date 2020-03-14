@@ -11,6 +11,11 @@ export const logoutUser = value => ({
     payload: value
 });
 
+export const fetching = value => ({
+    type: actionTypes.FETCHING,
+    payload: value
+});
+
 export const bookingsFetched = bookings => ({
     type: actionTypes.BOOKINGS_FETCHED,
     payload: bookings

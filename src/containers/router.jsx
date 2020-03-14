@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {useRoutes, navigate} from 'hookrouter';
 import firebase from "firebase";
 import "firebase/auth";
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
-
+import * as api from '../services/api';
 import {NotFoundPage} from '../components/notFoundPage';
 import MainViewer from './mainViewer';
 import Login from './login';
@@ -19,7 +19,7 @@ const LoadingImg = ({ image }) => <div style={{ display: "flex", width: "100%", 
 
 export const Router = () => {
     const [state, setState] = useState({ loading: true });
-    const [{ user, logout }, dispatch] = useStateValue();
+    const [{ user, logout, fetching }, dispatch] = useStateValue();
     const routeResult = useRoutes(routes);
     const { loading } = state;
 
@@ -38,23 +38,33 @@ export const Router = () => {
             firebase.initializeApp(firebaseConfig);
         }
 
-        firebase.auth().onAuthStateChanged( userSession => {
-            if (userSession && user.id === "") {
-                const sessionStored = JSON.parse(window.localStorage.getItem("user"));
-                dispatch(appActions.userLoggedIn(sessionStored));
-               navigate('/');
-               setState({ loading: false });
-            } else {
-                navigate('/login');
-                setState({ loading: false });
-            }
-        });
+        // firebase.auth().onAuthStateChanged( userSession => {
+        //     console.log(" USER ",user);
+        //         if(user.id !== "" && user.justLoggedIn) {
+        //             // const sessionStored = JSON.parse(window.localStorage.getItem("user"));
+        //             // dispatch(appActions.userLoggedIn(sessionStored));
+        //             navigate('/');
+        //             setState({ loading: false });
+        //         } else if(user.id === "") {
+        //             const sessionStored = JSON.parse(window.localStorage.getItem("user"));
+        //             // if a session exits
+        //             if(sessionStored) { 
+        //                 dispatch(appActions.userLoggedIn(sessionStored));
+        //                 navigate('/');
+        //             } else {
+        //                 navigate('/login');
+        //             }
+        //             setState({ loading: false });
+        //         }
+        // });
     }
 
     const logoutHandler = () => {
         firebase.auth().signOut().then( () => {
             // Sign-out successful.
+            window.localStorage.removeItem('user');
             dispatch(appActions.logoutUser(false));
+            navigate('/login');
         }).catch(function (error) {
             // An error happened.
         });
@@ -70,7 +80,24 @@ export const Router = () => {
 
     useEffect( () => {
         userHandler();
-    }, []);
+        const sessionStored = JSON.parse(window.localStorage.getItem("user"));
+
+        if(sessionStored && user.id === "") {
+            dispatch(appActions.userLoggedIn(sessionStored));
+            navigate('/');
+            setState({ loading: false });
+        } else {
+            navigate('/login');
+            setState({ loading: false });
+        }
+    }, [user]);
+
+    useEffect( () => {
+        if(user.id !== "") {
+            navigate('/');
+            setState({ loading: false });
+        }
+    }, [user]);
     
     useEffect( () => {
         if(logout) {

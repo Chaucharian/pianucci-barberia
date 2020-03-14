@@ -35,11 +35,8 @@ const Login = (props) => {
     const [state, dispatch] = useStateValue();
     let pageScroller = null;
 
-    // firebase.auth().signOut().then(function() {
-    //     // Sign-out successful.
-    //   }).catch(function(error) {
-    //     // An error happened.
-    //   });
+  
+  
     // firebase.auth().onAuthStateChanged(function(user) {
     //     if (user) {
     //         navigate('/');
@@ -68,12 +65,14 @@ const Login = (props) => {
     const loginWithEmail = user => {
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then( response => {
-            const { uid } = response.user;
+            const { uid: userId } = response.user;
             
-            api.getUserData(uid)
-            .then( response => {
-                window.localStorage.setItem("user", JSON.stringify(response.user));
-                dispatch(appActions.userLoggedIn(response.user));
+            api.getUserData(userId).then( ({ user }) => {
+                api.getUserBookings(userId).then( ({ bookings }) => { 
+                    const userData = { ...user, bookings };
+                    window.localStorage.setItem("user", JSON.stringify(userData));
+                    dispatch(appActions.userLoggedIn(userData));
+                });
             });
         })
         .catch(function(error) {

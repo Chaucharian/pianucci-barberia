@@ -114,7 +114,7 @@ const Header = (props) => {
     return (
         <header className={classes.header +' '+ (open ? classes.open : '')}>
             <div className={classes.barContainer}>
-                <BurgerButton click={ clicked => showNavbar(clicked) } ></BurgerButton>
+                <BurgerButton onChange={ clicked => showNavbar(clicked) } isOpen={open} ></BurgerButton>
                 <div className={classes.logo +' '+ (open ? classes.logoHidden : '' )}>
                     <span></span>
                 </div>
@@ -123,6 +123,10 @@ const Header = (props) => {
                 <ul className={classes.linksList +' '+ (open ? classes.linksListVisible : '' )}>
                     <li><a>INICIO</a></li>
                     <li><a>TURNOS</a></li>
+                    <li><a onClick={() => {
+                        showNavbar(false);
+                        onAction("profile");
+                    }}>PERFIL</a></li>
                     <li><a onClick={() => onAction("logout")}>SALIR</a></li>
                 </ul> 
             </nav>

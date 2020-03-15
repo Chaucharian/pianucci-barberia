@@ -10,6 +10,7 @@ import corte3 from '../assets/corte3.jpg';
 import ImageSlideGalery from '../components/imageSlideGalery';
 import BookingList from './bookingList';
 import BookingHandler from './bookingHandler';
+import UserProfile from './userProfile';
 
 const styles = {
     content: {
@@ -42,7 +43,7 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { scrollDownDisabled, scrollUpDisabled, showBookingSection, currentPage } = state;
+    const { scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
     let pageScroller = null;
 
     const pageOnChange = scroll => {
@@ -77,6 +78,8 @@ export const MainViewer = (props) => {
     const actionHeaderHandler = action => {
         if(action === "logout") {
             dispatch(appActions.logoutUser(true));
+        } else if(action === "profile") {
+            dispatch(appActions.showUserProfileView(true));
         }
     }
 
@@ -94,10 +97,10 @@ export const MainViewer = (props) => {
     }, [currentPage]);
 
     useEffect(()=> {
-        if(showBookingSection) {
+        if(showBookingSection || showUserProfileSection) {
             goToPage(2);
-        }
-    }, [showBookingSection]);
+        } 
+    }, [showBookingSection, showUserProfileSection]);
 
     return (
         <div>
@@ -113,9 +116,14 @@ export const MainViewer = (props) => {
                         </div>
                     </div>
                     <BookingList></BookingList>
+                    <>
                     {
-                        showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection}></BookingHandler>
+                        showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection} />
                     }
+                    {
+                        showUserProfileSection && <UserProfile />
+                    }
+                    </>
                 </ReactPageScroller>
             </div>
         </div>

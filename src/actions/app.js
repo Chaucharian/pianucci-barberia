@@ -46,6 +46,12 @@ export const showBookingHandlerView = show => ({
     payload: show 
 });
 
+export const showUserProfileView = show => ({
+    type: actionTypes.SHOW_USER_PROFILE,
+    payload: show 
+});
+
+
 export const hideBookingHandlerView = action => ({
     type: actionTypes.HIDE_BOOKING_HANDLER,
 });

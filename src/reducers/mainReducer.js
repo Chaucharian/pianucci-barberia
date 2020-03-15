@@ -4,6 +4,7 @@ export const initialState = {
     currentPage: 0,
     isDealing: false,
     showBookingSection: false,
+    showUserProfileSection: false,
     user: { id: '', bookings: [], name: '' },
     activeBookings: [],
     scrollUpDisabled: false,
@@ -70,6 +71,13 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 showBookingSection,
+            };
+        case actionTypes.SHOW_USER_PROFILE:
+            const showUserProfileSection = action.payload;
+
+            return {
+                ...state,
+                showUserProfileSection,
             };
         case actionTypes.BOOKING_CREATED:
             const bookingCreated = action.payload;

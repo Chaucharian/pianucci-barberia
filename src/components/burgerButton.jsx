@@ -64,20 +64,19 @@ const styles = {
 }
 
 const BugerButton = (props) => {
-    const { classes, click } = props;
-    const [clicked, changeState] = useState(false);
+    const { classes, onChange, isOpen } = props;
 
     const addClasses = stripeNumber => {
         let styleToAply = classes.stripe;
         switch(stripeNumber) {
             case 1:
-                styleToAply += " "+classes.stripe1 +" "+ (clicked ? classes.stripe1Clicked +" "+ classes.colorClicked : "" );
+                styleToAply += " "+classes.stripe1 +" "+ (isOpen ? classes.stripe1Clicked +" "+ classes.colorClicked : "" );
                 break;
             case 2:
-                styleToAply += " "+ classes.stripe2 +" "+ (clicked ? classes.stripe2Clicked +" "+ classes.colorClicked : "" );
+                styleToAply += " "+ classes.stripe2 +" "+ (isOpen ? classes.stripe2Clicked +" "+ classes.colorClicked : "" );
                 break;
             case 3:
-                styleToAply += " "+ classes.stripe3 +" "+ (clicked ? classes.stripe3Clicked +" "+ classes.colorClicked : "" );
+                styleToAply += " "+ classes.stripe3 +" "+ (isOpen ? classes.stripe3Clicked +" "+ classes.colorClicked : "" );
                 break;
         }
         return styleToAply;
@@ -85,12 +84,7 @@ const BugerButton = (props) => {
 
     return (
         <div className={classes.container}>
-            <button className={classes.button} onClick={ 
-                () => {
-                click(!clicked);
-                changeState(!clicked); 
-                }
-            }>
+            <button className={classes.button} onClick={ () => onChange(!isOpen)}>
                 <span className={addClasses(1)}></span>   
                 <span className={addClasses(2)}></span>
                 <span className={addClasses(3)}></span>

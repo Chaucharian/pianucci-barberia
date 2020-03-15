@@ -87,22 +87,7 @@ export const MainViewer = (props) => {
 
     useEffect(() => {
         pageScroller.goToPage(currentPage);
-        // if(currentPage === 2) {
-        //     if(!showBookingSection) {
-        //         dispatch(appActions.disableScrollDown(true));
-        //     } else {
-        //         dispatch(appActions.disableScrollDown(false));
-        //     }
-        // } else if(currentPage === 1) {
-        //     dispatch(appActions.disableScrollDown(false));
-        // }
     }, [currentPage]);
-
-    useEffect(()=> {
-        // if(showBookingSection || showUserProfileSection) {
-        //     goToPage(2);
-        // } 
-    }, [showBookingSection, showUserProfileSection]);
 
     return (
         <div>

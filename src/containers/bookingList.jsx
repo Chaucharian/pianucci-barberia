@@ -33,16 +33,15 @@ const styles = {
     }
 }
 
-const BookingList = (props) => {
-    const { classes } = props;
+const BookingList = props => {
+    const { classes, onAction } = props;
     const [state, dispatch] = useStateValue();
     const [refreshList, setRefreshList] = useState(false);
     const { user: { id: userId, bookings }, showBookingSection } = state;
     const matches = useMediaQuery('(min-width:600px)');
 
-    const createBooking = () => {
-        dispatch( appActions.showBookingHandlerView(true) );
-        dispatch( appActions.changePage(3) );
+    const bookBooking = () => {
+        onAction("bookingHandler");
     }
 
     const hasBookings = () => bookings.length > 0;
@@ -54,21 +53,22 @@ const BookingList = (props) => {
     }
 
     useEffect( () => {
-        if(userId !== "") {
-            api.getUserBookings(userId).then( response => {
-                dispatch(appActions.bookingsFetched(response.bookings));
-            });
-        }
-    }, [userId, showBookingSection]); 
-
-    useEffect( () => {
-        if(refreshList) {
+        if(userId !== "" || refreshList) {
             api.getUserBookings(userId).then( response => {
                 dispatch(appActions.bookingsFetched(response.bookings));
                 setRefreshList(false);
             });
         }
-    }, [refreshList]); 
+    }, [userId, showBookingSection, refreshList]); 
+
+    // useEffect( () => {
+    //     if(refreshList) {
+    //         api.getUserBookings(userId).then( response => {
+    //             dispatch(appActions.bookingsFetched(response.bookings));
+    //             setRefreshList(false);
+    //         });
+    //     }
+    // }, [refreshList]); 
 
     return (
         <div className={classes.container}>
@@ -81,7 +81,7 @@ const BookingList = (props) => {
             }
             </div>
             <div className={classes.bookingButton} >
-                <RealBarberButton text={'reservar turno'} disabled={hasBookings()} clicked={() => createBooking()}></RealBarberButton>
+                <RealBarberButton text={'reservar turno'} disabled={hasBookings()} clicked={() => bookBooking()}></RealBarberButton>
             </div>
         </div>
     );  

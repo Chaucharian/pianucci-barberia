@@ -70,6 +70,7 @@ export const reducer = (state, action) => {
 
             return {
                 ...state,
+                showUserProfileSection: false,
                 showBookingSection,
             };
         case actionTypes.SHOW_USER_PROFILE:
@@ -77,6 +78,7 @@ export const reducer = (state, action) => {
 
             return {
                 ...state,
+                showBookingSection: false,
                 showUserProfileSection,
             };
         case actionTypes.BOOKING_CREATED:

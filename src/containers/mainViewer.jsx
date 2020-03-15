@@ -47,7 +47,8 @@ export const MainViewer = (props) => {
     let pageScroller = null;
 
     const pageOnChange = scroll => {
-        goToPage(scroll);
+        console.log(scroll," current page ",currentPage)
+        goToPage(scroll -1);
     }
 
     const goToPage = pageNumber => {
@@ -68,38 +69,39 @@ export const MainViewer = (props) => {
     }
 
     const changePageAndHideSection = () => {
-        goToPage(1);
-        setTimeout( () => {
-            dispatch(appActions.showBookingHandlerView(false));
-            dispatch(appActions.disableScrollDown(true));
-        }, 1000);
+        dispatch(appActions.changePage(1));
+        dispatch(appActions.showBookingHandlerView(false));
     }
 
     const actionHeaderHandler = action => {
         if(action === "logout") {
             dispatch(appActions.logoutUser(true));
         } else if(action === "profile") {
+            dispatch(appActions.changePage(2));
             dispatch(appActions.showUserProfileView(true));
+        } else if(action === "bookingHandler") {
+            dispatch(appActions.changePage(2));
+            dispatch(appActions.showBookingHandlerView(true));
         }
     }
 
     useEffect(() => {
         pageScroller.goToPage(currentPage);
-        if(currentPage === 2) {
-            if(!showBookingSection) {
-                dispatch(appActions.disableScrollDown(true));
-            } else {
-                dispatch(appActions.disableScrollDown(false));
-            }
-        } else if(currentPage === 1) {
-            dispatch(appActions.disableScrollDown(false));
-        }
+        // if(currentPage === 2) {
+        //     if(!showBookingSection) {
+        //         dispatch(appActions.disableScrollDown(true));
+        //     } else {
+        //         dispatch(appActions.disableScrollDown(false));
+        //     }
+        // } else if(currentPage === 1) {
+        //     dispatch(appActions.disableScrollDown(false));
+        // }
     }, [currentPage]);
 
     useEffect(()=> {
-        if(showBookingSection || showUserProfileSection) {
-            goToPage(2);
-        } 
+        // if(showBookingSection || showUserProfileSection) {
+        //     goToPage(2);
+        // } 
     }, [showBookingSection, showUserProfileSection]);
 
     return (
@@ -107,16 +109,16 @@ export const MainViewer = (props) => {
             <Header onAction={actionHeaderHandler}></Header>
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
-                    <div>
+                    <>
                         <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
                         <div className={classes.buttonContainer}>
                             <button className={classes.nextPageButton} onClick={() => goToPage(1)}>
                                 <i className="fas fa-arrow-circle-down"></i>
                             </button>
                         </div>
-                    </div>
-                    <BookingList></BookingList>
-                    <>
+                    </>
+                    <BookingList onAction={actionHeaderHandler}></BookingList>
+                     { (showBookingSection || showUserProfileSection) ? <>
                     {
                         showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection} />
                     }
@@ -124,6 +126,7 @@ export const MainViewer = (props) => {
                         showUserProfileSection && <UserProfile />
                     }
                     </>
+                    : null }
                 </ReactPageScroller>
             </div>
         </div>

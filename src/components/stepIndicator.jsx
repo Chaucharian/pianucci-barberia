@@ -6,6 +6,7 @@ const styles = {
     container: {
         display: "flex",
         width: "100%",
+        height: "50px",
         justifyContent: "space-evenly",
         alignItems: "center"
     }

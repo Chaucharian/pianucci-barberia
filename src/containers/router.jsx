@@ -12,7 +12,7 @@ import loadingGif from '../assets/pianucci-loading.gif';
 
 const routes = {
     '/': () => <MainViewer />,
-    '/login': () => <Login />
+    '/login': () => <Login />,
 };
 
 const LoadingImg = ({ image }) => <div style={{ display: "flex", width: "100%", justifyContent: "center" }}><img style={{width:"150px", height: "70px"}} src={image}></img></div>;

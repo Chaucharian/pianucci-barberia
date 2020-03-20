@@ -11,6 +11,7 @@ import ImageSlideGalery from '../components/imageSlideGalery';
 import BookingList from './bookingList';
 import BookingHandler from './bookingHandler';
 import UserProfile from './userProfile';
+import Admin from './admin';
 
 const styles = {
     content: {
@@ -43,11 +44,10 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
+    const { user: { isAdmin }, scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
     let pageScroller = null;
 
     const pageOnChange = scroll => {
-        console.log(scroll," current page ",currentPage)
         goToPage(scroll -1);
     }
 
@@ -88,30 +88,35 @@ export const MainViewer = (props) => {
     useEffect(() => {
         pageScroller.goToPage(currentPage);
     }, [currentPage]);
-
+    console.log(" isAdmin ",isAdmin)
     return (
         <div>
             <Header onAction={actionHeaderHandler}></Header>
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
-                    <>
-                        <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
-                        <div className={classes.buttonContainer}>
-                            <button className={classes.nextPageButton} onClick={() => goToPage(1)}>
-                                <i className="fas fa-arrow-circle-down"></i>
-                            </button>
-                        </div>
-                    </>
-                    <BookingList onAction={actionHeaderHandler}></BookingList>
-                     { (showBookingSection || showUserProfileSection) ? <>
-                    {
-                        showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection} />
-                    }
-                    {
-                        showUserProfileSection && <UserProfile />
-                    }
-                    </>
-                    : null }
+                {/* <>    {isAdmin ? 
+                     <>  */}
+                        <>
+                            <ImageSlideGalery images={[corte1,corte2,corte3]}></ImageSlideGalery>
+                            <div className={classes.buttonContainer}>
+                                <button className={classes.nextPageButton} onClick={() => goToPage(1)}>
+                                    <i className="fas fa-arrow-circle-down"></i>
+                                </button>
+                            </div>
+                        </>
+                        <BookingList onAction={actionHeaderHandler}></BookingList>
+                        { (showBookingSection || showUserProfileSection) ? <>
+                        {
+                            showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection} />
+                        }
+                        {
+                            showUserProfileSection && <UserProfile />
+                        }
+                        </>
+                        : null }
+                    {/* </>
+                } 
+                </> */}
                 </ReactPageScroller>
             </div>
         </div>

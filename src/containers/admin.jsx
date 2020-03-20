@@ -33,11 +33,11 @@ const styles = {
     }
 }
 
-const UserProfile = (props) => {
+const Admin = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
     const { user: { id: userId, bookings, name, email }, showBookingSection } = state;
-
+    console.log(" EAA ",state);
     useEffect( () => {
 
     }, []);
@@ -52,4 +52,4 @@ const UserProfile = (props) => {
   }
   
 
-export default withStyles(styles)(UserProfile);
+export default withStyles(styles)(Admin);

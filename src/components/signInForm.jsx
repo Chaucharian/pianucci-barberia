@@ -29,10 +29,11 @@ const styles = {
 
 const SignInForm = (props) => {
     const { classes, onAction } = props; 
-    let user = { name: '', email: '', password: '' };
+    let user = { name: '', email: '', password: '', phone: 0 };
     const setName = value => user.name = value;
     const setEmail = value => user.email = value;
     const setPassword = value => user.password = value;
+    const setPhone = value => user.phone = value;
     const newUser= () => onAction(user);
 
     const validatePassword = (password, callbackSuccess, callbackError) => {
@@ -62,6 +63,14 @@ const SignInForm = (props) => {
                         label="Email"
                         margin="normal"
                         onChange={ event => setEmail(event.target.value)}
+                        />
+                        <WhiteTextField
+                            id="standard-basic"
+                            className={classes.textField}
+                            label="Celular"
+                            margin="normal"
+                            type="number"
+                            onChange={event => setPhone(event.target.value)}
                         />
                         <WhiteTextField
                         id="standard-basic"

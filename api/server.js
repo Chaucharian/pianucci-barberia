@@ -202,13 +202,11 @@ app.post('/updateBooking', (request, response) => {
 });
 
 app.post('/createUser', (request, response) => {
-  const { name, email, id } = request.body;
-  const ref = firebaseDB.ref('users');
-  const newUserForDb = { name, email, id, bookings: [] }; 
-  const userResponse = { name, id, bookings: [] };
+  const { name, email, phone, id } = request.body;
+  const usersRef = firebaseDB.ref('users');
+  const userModel = { name, email, id, phone, bookings: [] }; 
 
-  const newUserCreated = firebaseDB.ref('users/'+ref.push(newUserForDb).key+'/bookings');
-  newUserCreated.push({ "type": "classic" }); // TODO FOR EXAMPLE 
+  usersRef.push(userModel);
 
-  response.json({ status: 'user created successfully!', user: userResponse });
+  response.json({ status: 'user created successfully!', user: userModel });
 });

@@ -50,12 +50,15 @@ const Login = (props) => {
     const createUserWithEmail = user => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then( response => {
-            const { email, uid } = response.user;
-            const { name } = user;
-            const newUser = { email, id: uid, name };
+            const { email, uid: id } = response.user;
+            const { name, phone } = user;
+            const newUser = { email, id, name, phone };
             
             api.createUser(newUser)
-            .then( response => dispatch(appActions.userLoggedIn(response.user)) );
+            .then( ({ user }) => {
+                window.localStorage.setItem("user", JSON.stringify(user));
+                dispatch(appActions.userLoggedIn(user));
+            });
         })
         .catch(function(error) {
             console.log(error);

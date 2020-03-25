@@ -43,7 +43,7 @@ const BookingList = props => {
     const bookBooking = () => {
         onAction("bookingHandler");
     }
-
+    console.log(state);
     const hasBookings = () => bookings.length > 0;
 
     const deleteBookingHandler = booking => {

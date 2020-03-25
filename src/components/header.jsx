@@ -108,8 +108,31 @@ const styles = {
 }
 
 const Header = (props) => {
-    const { classes, onAction } = props;
+    const { classes, isAdmin, onAction } = props;
     const [open, showNavbar] = useState(false);
+
+    const adminMenu = () => {
+        return ( 
+            <>
+                <li><a>TURNOS</a></li>
+                <li><a onClick={() => onAction("logout")}>SALIR</a></li>
+            </>
+        );
+    }
+
+    const userMenu = () => {
+        return (
+            <>
+                <li><a>INICIO</a></li>
+                <li><a>TURNOS</a></li>
+                <li><a onClick={() => {
+                    showNavbar(false);
+                    onAction("profile");
+                }}>PERFIL</a></li>
+                <li><a onClick={() => onAction("logout")}>SALIR</a></li>
+            </>
+        );
+    }
     
     return (
         <header className={classes.header +' '+ (open ? classes.open : '')}>
@@ -121,13 +144,7 @@ const Header = (props) => {
             </div>
             <nav className={classes.navbar +' '+ (open ? '' : classes.navbarHidden )}>
                 <ul className={classes.linksList +' '+ (open ? classes.linksListVisible : '' )}>
-                    <li><a>INICIO</a></li>
-                    <li><a>TURNOS</a></li>
-                    <li><a onClick={() => {
-                        showNavbar(false);
-                        onAction("profile");
-                    }}>PERFIL</a></li>
-                    <li><a onClick={() => onAction("logout")}>SALIR</a></li>
+                    { isAdmin ? adminMenu() : userMenu() }
                 </ul> 
             </nav>
             <div className={classes.logoBlack +' '+ (open ?  classes.logoBlackVisible  :  classes.logoBlackHidden) }>

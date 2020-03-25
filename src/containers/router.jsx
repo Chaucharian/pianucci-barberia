@@ -4,14 +4,16 @@ import firebase from "firebase";
 import "firebase/auth";
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
-import * as api from '../services/api';
+
 import {NotFoundPage} from '../components/notFoundPage';
 import MainViewer from './mainViewer';
+import MainAdminViewer from './mainAdminViewer';
 import Login from './login';
 import loadingGif from '../assets/pianucci-loading.gif';
 
 const routes = {
     '/': () => <MainViewer />,
+    '/admin': () => <MainAdminViewer />,
     '/login': () => <Login />,
 };
 
@@ -37,26 +39,6 @@ export const Router = () => {
         if (firebase.apps.length === 0) {
             firebase.initializeApp(firebaseConfig);
         }
-
-        // firebase.auth().onAuthStateChanged( userSession => {
-        //     console.log(" USER ",user);
-        //         if(user.id !== "" && user.justLoggedIn) {
-        //             // const sessionStored = JSON.parse(window.localStorage.getItem("user"));
-        //             // dispatch(appActions.userLoggedIn(sessionStored));
-        //             navigate('/');
-        //             setState({ loading: false });
-        //         } else if(user.id === "") {
-        //             const sessionStored = JSON.parse(window.localStorage.getItem("user"));
-        //             // if a session exits
-        //             if(sessionStored) { 
-        //                 dispatch(appActions.userLoggedIn(sessionStored));
-        //                 navigate('/');
-        //             } else {
-        //                 navigate('/login');
-        //             }
-        //             setState({ loading: false });
-        //         }
-        // });
     }
 
     const logoutHandler = () => {
@@ -83,22 +65,31 @@ export const Router = () => {
         const sessionStored = JSON.parse(window.localStorage.getItem("user"));
 
         if(sessionStored && user.id === "") {
-            dispatch(appActions.userLoggedIn(sessionStored));
-            navigate('/');
-            setState({ loading: false });
+            const { isAdmin } = sessionStored;
+            if(isAdmin) {
+                dispatch(appActions.userLoggedIn(sessionStored));
+                navigate('/admin');
+                setState({ loading: false });
+            } else {
+                dispatch(appActions.userLoggedIn(sessionStored));
+                navigate('/');
+                setState({ loading: false });
+            }
+        } else if(user.id !== "") {
+            const { isAdmin } = sessionStored;
+            if(isAdmin) {
+                navigate('/admin');
+                setState({ loading: false });
+            } else {
+                navigate('/');
+                setState({ loading: false });
+            }
         } else {
             navigate('/login');
             setState({ loading: false });
         }
     }, [user]);
 
-    useEffect( () => {
-        if(user.id !== "") {
-            navigate('/');
-            setState({ loading: false });
-        }
-    }, [user]);
-    
     useEffect( () => {
         if(logout) {
             logoutHandler();

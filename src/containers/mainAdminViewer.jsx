@@ -40,7 +40,7 @@ const styles = {
     }
 }
 
-export const MainViewer = (props) => {
+export const MainAdminViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
     const { user, scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
@@ -90,7 +90,7 @@ export const MainViewer = (props) => {
 
     return (
         <div>
-            <Header onAction={actionHeaderHandler}></Header>
+            <Header onAction={actionHeaderHandler} isAdmin={true} ></Header>
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
                     <>
@@ -102,22 +102,12 @@ export const MainViewer = (props) => {
                         </div>
                     </>
                     <BookingList onAction={actionHeaderHandler}></BookingList>
-                    {(showBookingSection || showUserProfileSection) ? 
-                    <>
-                        {
-                            showBookingSection && <BookingHandler onDisableScroll={disableScroll} onGoUp={changePageAndHideSection} />
-                        }
-                        {
-                            showUserProfileSection && <UserProfile />
-                        }
-                    </>
-                        : null}
                 </ReactPageScroller>
             </div>
         </div>
     );
 }
 
-export default withStyles(styles)(MainViewer);
+export default withStyles(styles)(MainAdminViewer);
 
 

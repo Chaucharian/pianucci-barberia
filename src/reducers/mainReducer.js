@@ -6,22 +6,14 @@ export const initialState = {
     showBookingSection: false,
     showUserProfileSection: false,
     user: { id: '', bookings: [], name: '' },
-    activeBookings: [],
     scrollUpDisabled: false,
     scrollDownDisabled: false,
     bookingCreated: false,
     logout: false,
-    fetching: false
 };
 
 export const reducer = (state, action) => {
     switch (action.type) {
-        case actionTypes.FETCHING:
-            const fetching = action.payload;
-            return {
-              ...initialState,
-              fetching
-            }
         case actionTypes.LOGOUT_USER:
             const logout = action.payload;
             // reset state when the user logout

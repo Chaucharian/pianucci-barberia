@@ -5,7 +5,6 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useStateValue } from '../state/rootState';
 import * as api from '../services/api';
 import * as appActions from '../actions/app';
-import RealBarberButton from '../components/realBarberButton';
 import UserBooking from '../components/userBooking';
 
 const styles = {
@@ -33,7 +32,7 @@ const styles = {
     }
 }
 
-const BookingList = props => {
+const BookingAdminList = props => {
     const { classes, onAction } = props;
     const [state, dispatch] = useStateValue();
     const [refreshList, setRefreshList] = useState(false);
@@ -53,39 +52,33 @@ const BookingList = props => {
     }
 
     useEffect( () => {
-        if(userId !== "" || refreshList) {
-            api.getUserBookings(userId).then( response => {
-                dispatch(appActions.bookingsFetched(response.bookings));
+        console.log(" EAA")
+        // if(refreshList) {
+            // api.getUserBookings(userId).then( response => {
+            //     dispatch(appActions.bookingsFetched(response.bookings));
+            //     setRefreshList(false);
+            // });
+            api.getAllBookingsByDate(Date.now()).then( ({bookings}) => {
+                console.log(" BOOKINGS ",bookings);
+                dispatch(appActions.bookingsFetched(bookings));
                 setRefreshList(false);
             });
-        }
-    }, [userId, showBookingSection, refreshList]); 
-
-    // useEffect( () => {
-    //     if(refreshList) {
-    //         api.getUserBookings(userId).then( response => {
-    //             dispatch(appActions.bookingsFetched(response.bookings));
-    //             setRefreshList(false);
-    //         });
-    //     }
-    // }, [refreshList]); 
+        // }
+    }, []); 
 
     return (
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>
             <div className={classes.bookingListContainer}>
             { 
-                hasBookings() ? bookings.map( (booking, index) => 
-                <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} />) :
-                <h2>No tienes ningun turno activo :(</h2>  
+                // hasBookings() ? 
+                bookings.map( (booking, index) => <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} /> )
+                // <h2>No tienes ningun turno activo :(</h2>  
             }
-            </div>
-            <div className={classes.bookingButton} >
-                <RealBarberButton text={'reservar turno'} disabled={hasBookings()} clicked={() => bookBooking()}></RealBarberButton>
             </div>
         </div>
     );  
   }
   
 
-export default withStyles(styles)(BookingList);
+export default withStyles(styles)(BookingAdminList);

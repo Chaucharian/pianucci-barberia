@@ -116,7 +116,31 @@ app.post('/updateDailyTimeSchedule', (request, response) => {
   setTimeScheduleForDate(morningScheduleTime, afternoonScheduleTime);
 });
 
-// TODO MAKE IT WORK!
+app.post('/getAllBookingsByDate', (request, response) => {
+  const { userDate, bookingDuration = 60 } = request.body;
+  const bookingRef = firebaseDB.ref('/bookings');
+  const timeRangeRef = firebaseDB.ref('/timeRange');
+  const bookingModel = { status: "available",  duration: bookingDuration, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
+  const bookings = [];
+
+  bookingRef.once('value', bookingSnapshot => {
+    const bookingsRaw = [];
+    bookingSnapshot.forEach( booking => {
+      bookingsRaw.push(booking.val());
+    });
+    // filtered by request date
+    const reservedBookings = bookingsRaw.map( bookingReserved => {
+      if(isSameDay(bookingReserved.date, userDate) && bookingReserved.status === "reserved") {
+        return bookingReserved;
+      }
+    }).filter( bookingReserved => bookingReserved !== undefined);
+    // filtered asc order
+    reservedBookings.sort( (firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
+
+    response.json({ status: "bookings retrived!", bookings: reservedBookings });
+  }); 
+});
+
 app.post('/getScheduleForDate', (request, response) => {
   const { userDate, bookingDuration = 60 } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
@@ -164,7 +188,6 @@ app.post('/getScheduleForDate', (request, response) => {
           reservedBookings.map( bookingReserved => {
             if(new Date(bookingReserved.date).getHours() === new Date(bookingTemplate.date).getHours()) {
               bookings[index] = bookingReserved;
-              console.log(" RESERVED ",bookingReserved);
             }
           });
         }); 

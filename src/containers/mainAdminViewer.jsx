@@ -8,9 +8,7 @@ import corte1 from '../assets/corte1.jpg';
 import corte2 from '../assets/corte2.jpg';
 import corte3 from '../assets/corte3.jpg';
 import ImageSlideGalery from '../components/imageSlideGalery';
-import BookingList from './bookingList';
-import BookingHandler from './bookingHandler';
-import UserProfile from './userProfile';
+import BookingAdminList from './bookingAdminList';
 
 const styles = {
     content: {
@@ -93,15 +91,8 @@ export const MainAdminViewer = (props) => {
             <Header onAction={actionHeaderHandler} isAdmin={true} ></Header>
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
-                    <>
-                        <ImageSlideGalery images={[corte1, corte2, corte3]}></ImageSlideGalery>
-                        <div className={classes.buttonContainer}>
-                            <button className={classes.nextPageButton} onClick={() => goToPage(1)}>
-                                <i className="fas fa-arrow-circle-down"></i>
-                            </button>
-                        </div>
-                    </>
-                    <BookingList onAction={actionHeaderHandler}></BookingList>
+                    <div></div>
+                    <BookingAdminList onAction={actionHeaderHandler} />
                 </ReactPageScroller>
             </div>
         </div>

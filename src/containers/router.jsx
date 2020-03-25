@@ -21,7 +21,7 @@ const LoadingImg = ({ image }) => <div style={{ display: "flex", width: "100%", 
 
 export const Router = () => {
     const [state, setState] = useState({ loading: true });
-    const [{ user, logout, fetching }, dispatch] = useStateValue();
+    const [{ user, logout }, dispatch] = useStateValue();
     const routeResult = useRoutes(routes);
     const { loading } = state;
 

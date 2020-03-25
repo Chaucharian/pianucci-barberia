@@ -60,9 +60,20 @@ export const getUserBookings = userId => (
     .then( response => response.json() )
 );
 
-
 export const getSchedule = userDate => (
     fetch(enviroment.baseUrl + '/getScheduleForDate', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({userDate})
+    })
+    .then( response => response.json() )
+);
+
+export const getAllBookingsByDate = userDate => (
+    fetch(enviroment.baseUrl + '/getAllBookingsByDate', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

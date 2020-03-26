@@ -7,7 +7,7 @@ const styles = {
     container: {
         display: "flex",
         justifyContent: "space-between",
-        margin: "0px",
+        marginBottom: "20px",
         padding: "0px",
         outline: "none",
         alignItems: "center",
@@ -21,7 +21,7 @@ const styles = {
         color: "#FFF",
         transition: "all 200ms ease",
         width: "80%",
-        height: "40px",
+        // height: "40px",
         transition: "background 5s cubic-bezier(0.19, 1, 0.22, 1)," +
         "border 1s cubic-bezier(0.19, 1, 0.22, 1)," +
         "color 0.6s cubic-bezier(0.19, 1, 0.22, 1)",
@@ -33,13 +33,19 @@ const styles = {
         boxShadow: "-5px 5px 0 0 #636161"
     },
     description: {
-        width: "100%",
+        width: "65%",
+        padding: "5px",
         fontSize: "20px",
-        display: "flex",
-        justifyContent: "center",
         "& p": {
             margin: "0px"
         }
+    },
+    time: {
+        width: "15%",
+        marginRight: "5px",
+        fontSize: "30px",
+        display: "flex",
+        justifyContent: "center",
     },
     crossButton: {
         outline: "none",
@@ -64,7 +70,7 @@ const styles = {
 const UserBooking = (props) => {
     const { classes, booking, onDelete } = props;
     const [ isModalOpen, showModal] = useState(false);
-    const { date, status } = booking;
+    const { date, status, name, phone } = booking;
     const dateFormated = format(date,"dd/MM/yyyy");
     const hour = getHours(date) >= 10 ? getHours(date)+":00" : "0"+getHours(date)+":00";
     const isBookingReserved = status === 'reserved';
@@ -78,6 +84,20 @@ const UserBooking = (props) => {
         }
     }
 
+    const descriptionToShow = () => {
+        return (
+            <>
+                { name && 
+                <>
+                    <p>{ name.length >= 30 ? name.substring(0, 27) + "..." : name }</p>
+                    <strong>{ phone }</strong>
+                </> 
+                }
+                { !name && <p>{ dateFormated }</p> }
+            </>
+        );
+    }
+
     return (
         <>
             <Modal 
@@ -88,7 +108,9 @@ const UserBooking = (props) => {
             />
             <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>
                 <div className={classes.description}>
-                    <p>{ dateFormated }</p>
+                    { descriptionToShow()}
+                </div>
+                <div className={classes.time}>
                     <strong>{ hour }</strong>
                 </div>
                 { isBookingReserved && <button className={classes.crossButton} onClick={() => showModal(true)}><i className="fas fa-times"></i></button> }

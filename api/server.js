@@ -119,11 +119,11 @@ app.post('/updateDailyTimeSchedule', (request, response) => {
 app.post('/getAllBookingsByDate', (request, response) => {
   const { userDate, bookingDuration = 60 } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
-  const timeRangeRef = firebaseDB.ref('/timeRange');
+  const usersRef = firebaseDB.ref('/users');
   const bookingModel = { status: "available",  duration: bookingDuration, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
-  const bookings = [];
+  let bookings = [];
 
-  bookingRef.once('value', bookingSnapshot => {
+  bookingRef.once('value', async bookingSnapshot => {
     const bookingsRaw = [];
     bookingSnapshot.forEach( booking => {
       bookingsRaw.push(booking.val());
@@ -137,7 +137,17 @@ app.post('/getAllBookingsByDate', (request, response) => {
     // filtered asc order
     reservedBookings.sort( (firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
 
-    response.json({ status: "bookings retrived!", bookings: reservedBookings });
+    usersRef.once('value', usersSnapshot => {
+      usersSnapshot.forEach( user => {
+        const { name, phone, id } = user.val();
+        reservedBookings.map( booking => {
+          if(booking.clientId === id) {
+            bookings.push({ ...booking, name, phone, id });
+          }
+        });
+      });
+      response.json({ status: "bookings retrived!", bookings });
+    });
   }); 
 });
 

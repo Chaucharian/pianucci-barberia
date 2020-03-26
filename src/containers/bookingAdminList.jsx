@@ -52,18 +52,11 @@ const BookingAdminList = props => {
     }
 
     useEffect( () => {
-        console.log(" EAA")
-        // if(refreshList) {
-            // api.getUserBookings(userId).then( response => {
-            //     dispatch(appActions.bookingsFetched(response.bookings));
-            //     setRefreshList(false);
-            // });
-            api.getAllBookingsByDate(Date.now()).then( ({bookings}) => {
-                console.log(" BOOKINGS ",bookings);
-                dispatch(appActions.bookingsFetched(bookings));
-                setRefreshList(false);
-            });
-        // }
+        api.getAllBookingsByDate(Date.now()).then( ({bookings}) => {
+            console.log(" BOOKINGS ",bookings);
+            dispatch(appActions.bookingsFetched(bookings));
+            setRefreshList(false);
+        });
     }, []); 
 
     return (

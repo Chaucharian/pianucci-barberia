@@ -69,7 +69,8 @@ export const MainViewer = (props) => {
 
     const changePageAndHideSection = () => {
         dispatch(appActions.changePage(1));
-        dispatch(appActions.showBookingHandlerView(false));
+        // set a delay to not hide section so quickly
+        setTimeout( () => dispatch(appActions.showBookingHandlerView(false)), 1000);
     }
 
     const actionHeaderHandler = action => {

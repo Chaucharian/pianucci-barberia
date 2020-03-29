@@ -89,7 +89,7 @@ const UserBooking = (props) => {
             <>
                 { name && 
                 <>
-                    <p>{ name.length >= 30 ? name.substring(0, 27) + "..." : name }</p>
+                    <p>{ name.length >= 30 ? name.substring(0, 13) + "..." : name }</p>
                     <strong>{ phone }</strong>
                 </> 
                 }

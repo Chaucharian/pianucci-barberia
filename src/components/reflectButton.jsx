@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { withStyles} from '@material-ui/styles';
 
 const styles = {
@@ -66,9 +66,11 @@ const styles = {
 }
 
 const ReflectButton = (props) => {
-    const { classes, text, icon, clicked } = props;
+    const { classes, text, icon } = props;
+    const clicked = props.clicked ? props.clicked : () => {};
+
     return (
-    <button className={classes.button +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => clicked(true)}>
+    <button type='submit' className={classes.button +' '+ (props.strong ? classes.boldFont : '' )} onClick={ () => clicked(true)}>
         <div>
             <a>{ text }</a>
             { icon }

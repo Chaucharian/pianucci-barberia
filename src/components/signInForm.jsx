@@ -18,12 +18,15 @@ const styles = {
         justifyContent: "center",
         flexDirection: "column"
     },
-    fieldsContainer: {
+    formContainer: {
         display: "flex",
         flexDirection: "column",
         marginBottom: "60px",
         paddingLeft: "10px",
-        paddingRight: "10px"
+        paddingRight: "10px",
+        "& button": {
+            marginTop: "60px"
+        }
     },
 }
 
@@ -49,8 +52,13 @@ const SignInForm = (props) => {
         <div className={classes.centerContainer}>
             <div className={classes.contentContainer}>
                 <div className={classes.formContainer}>
-                    <div className={classes.fieldsContainer}>
-                        <WhiteTextField
+                    <form
+                            className={classes.formContainer} 
+                            onSubmit={ event => {
+                                newUser();
+                                event.preventDefault();
+                        }}>                      
+                    <WhiteTextField
                         id="standard-basic"
                         className={classes.textField}
                         label="Nombre"
@@ -80,8 +88,8 @@ const SignInForm = (props) => {
                         type="password"
                         onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
                         />
-                    </div>
-                    <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></ReflectButton>
+                        <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} ></ReflectButton>
+                    </form>
                 </div>
             </div>
         </div>

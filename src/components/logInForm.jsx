@@ -18,12 +18,14 @@ const styles = {
         justifyContent: "center",
         flexDirection: "column"
     },
-    fieldsContainer: {
+    formContainer: {
         display: "flex",
         flexDirection: "column",
-        marginBottom: "60px",
         paddingLeft: "10px",
-        paddingRight: "10px"
+        paddingRight: "10px",
+        "& button": {
+            marginTop: "60px"
+        }
     },
     buttonContainer: {
         display: "block",
@@ -80,13 +82,19 @@ const LogInForm = (props) => {
         <div className={classes.centerContainer}>
               <div className={classes.contentContainer}>
                 <div className={classes.formContainer}>
-                    <div className={classes.fieldsContainer}>
+                    <form
+                        className={classes.formContainer} 
+                        onSubmit={ event => {
+                            newUser();
+                            event.preventDefault();
+                    }}>
                         <WhiteTextField
                         id="standard-basic"
                         className={classes.textField}
                         label="Email"
                         margin="normal"
                         type="email"
+                        required={true}
                         onChange={ event => validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROR") ) }
                         />
                         <WhiteTextField
@@ -95,10 +103,10 @@ const LogInForm = (props) => {
                         label="Contraseña"
                         margin="normal"
                         type="password"
-                        onChange={ event => setPassword(event.target.value)}
-                        />
-                    </div>
-                    <ReflectButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>} clicked={ () => newUser() }></ReflectButton>
+                        required={true}
+                        onChange={ event => setPassword(event.target.value)} />
+                        <ReflectButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>}/>
+                    </form> 
                 </div>
                 <div className={classes.buttonContainer}>
                     <label>Registrate!</label>

@@ -25,7 +25,8 @@ const styles = {
         justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
-        height: "calc(100vh / 2)"
+        height: "calc(100vh / 2)",
+        margin: "10px"
     },
     bookingButton: {
         display: "flex",

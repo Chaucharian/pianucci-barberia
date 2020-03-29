@@ -14,8 +14,12 @@ const styles = {
         cursor: "pointer",
         "& h2": {
             transition: "all 200ms ease",
-            marginRight: "10px"
+            marginRight: "10px",
+            marginBottom: "3px"
         }
+    },
+    calendar: {
+        overflow: "auto"
     },
     selected: {
         color: "red"
@@ -39,7 +43,6 @@ export const DaysListSelector = (props) => {
     const daySelection = (date, calendarSelection) => {
         const unixDate = dateToUnix(date);
         let newBookingStatus = calendarSelection ? calendarSelection : !isOtherDay(date);
-        console.log(" SHOW BOOKINGS ",showBookings);
         onDaySelected( unixDate, { showBookings: newBookingStatus });
     }
 
@@ -63,11 +66,13 @@ export const DaysListSelector = (props) => {
                 </h2>
             </div>
             { (isOtherDay(date) && !showBookings) && 
-                <Calendar 
+                <div className={classes.calendar}>
+                    <Calendar 
                     startDate={dateToUnix(addDays(new Date(), 2))} 
                     endDate={new Date().setDate(new Date().getDate() + 14)} 
                     disableDates={date => date < new Date().getTime() && date > new Date().getTime() + 14}
                     onChange={ date => daySelection(addDays(date, 1), true) }/>
+                </div>
             }
         </div>
     );

@@ -20,7 +20,7 @@ const styles = {
         backgroundColor: "#000",
         color: "#FFF",
         transition: "all 200ms ease",
-        width: "80%",
+        width: "100%",
         // height: "40px",
         transition: "background 5s cubic-bezier(0.19, 1, 0.22, 1)," +
         "border 1s cubic-bezier(0.19, 1, 0.22, 1)," +
@@ -42,7 +42,7 @@ const styles = {
     },
     time: {
         width: "15%",
-        marginRight: "5px",
+        marginRight: "30px",
         fontSize: "30px",
         display: "flex",
         justifyContent: "center",

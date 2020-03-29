@@ -134,8 +134,6 @@ app.post('/getAllBookingsByDate', (request, response) => {
         return bookingReserved;
       }
     }).filter( bookingReserved => bookingReserved !== undefined);
-    // filtered asc order
-    reservedBookings.sort( (firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
 
     usersRef.once('value', usersSnapshot => {
       usersSnapshot.forEach( user => {
@@ -146,6 +144,7 @@ app.post('/getAllBookingsByDate', (request, response) => {
           }
         });
       });
+      bookings.sort( (firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
       response.json({ status: "bookings retrived!", bookings });
     });
   }); 

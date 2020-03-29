@@ -19,7 +19,6 @@ const styles = {
                 cursor: "pointer",
                 letterSpacing: "0.2125rem",
                 overflow: "hidden",
-                margin: "5px",
                 color: "#FFF",
                 padding: "20px 30px",
                 position: "relative",
@@ -52,6 +51,7 @@ const styles = {
     },
     servicesContainer: {
         width: "400px",
+        margin: "5px"
     },
     secondButtonsRow: {
         display: "flex",

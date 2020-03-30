@@ -8,6 +8,7 @@ const styles = {
         letterSpacing: "0.2125rem",
         overflow: "hidden",
         margin: "5px",
+        width: "100%",
         padding: "20px 30px",
         position: "relative",
         backgroundColor: "#000",

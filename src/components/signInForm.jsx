@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createRef } from 'react';
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
@@ -18,6 +18,14 @@ const styles = {
         justifyContent: "center",
         flexDirection: "column"
     },
+    fieldError: {
+        "& label": {
+            color: "red"
+        },
+        "& :before": {
+            borderBottomColor: "red"
+        }
+    },
     formContainer: {
         display: "flex",
         flexDirection: "column",
@@ -31,13 +39,12 @@ const styles = {
 }
 
 const SignInForm = (props) => {
-    const { classes, onAction } = props; 
+    const { classes, onSubmit } = props; 
     let user = { name: '', email: '', password: '', phone: 0 };
-    const setName = value => user.name = value;
-    const setEmail = value => user.email = value;
-    const setPassword = value => user.password = value;
-    const setPhone = value => user.phone = value;
-    const newUser= () => onAction(user);
+    const nameField = createRef();
+    const phoneField = createRef();
+    const emailField = createRef();
+    const passwordField = createRef();
 
     const validatePassword = (password, callbackSuccess, callbackError) => {
         const strongRegex =  { test: () => password.length > 6 }; // :D new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
@@ -48,47 +55,58 @@ const SignInForm = (props) => {
         }
     }
 
+    const submit = event => {
+        const name = nameField.current.value;
+        const email = emailField.current.value;
+        const phone = phoneField.current.value;
+        const password = passwordField.current.value;
+
+        event.preventDefault();
+        if(name !== '' && email !== '' && phone !== '' && password !== '') {
+            onSubmit({ name, email, phone, password });
+        }
+    }
+
     return (
         <div className={classes.centerContainer}>
             <div className={classes.contentContainer}>
                 <div className={classes.formContainer}>
                     <form
-                            className={classes.formContainer} 
-                            onSubmit={ event => {
-                                newUser();
-                                event.preventDefault();
-                        }}>                      
+                        className={classes.formContainer} 
+                        onSubmit={ event => submit(event)}
+                    >                      
                     <WhiteTextField
                         id="standard-basic"
                         className={classes.textField}
+                        inputRef={nameField}
                         label="Nombre"
                         margin="normal"
-                        onChange={ event => setName(event.target.value)}
-                        />
-                        <WhiteTextField
+                    />
+                    <WhiteTextField
                         id="standard-basic"
                         className={classes.textField}
+                        inputRef={emailField}
                         label="Email"
                         margin="normal"
-                        onChange={ event => setEmail(event.target.value)}
-                        />
-                        <WhiteTextField
-                            id="standard-basic"
-                            className={classes.textField}
-                            label="Celular"
-                            margin="normal"
-                            type="number"
-                            onChange={event => setPhone(event.target.value)}
-                        />
-                        <WhiteTextField
+                    />
+                    <WhiteTextField
                         id="standard-basic"
                         className={classes.textField}
+                        inputRef={phoneField}
+                        label="Celular"
+                        margin="normal"
+                        type="number"
+                    />
+                    <WhiteTextField
+                        id="standard-basic"
+                        className={classes.textField}
+                        inputRef={passwordField}
                         label="Contraseña"
                         margin="normal"
                         type="password"
-                        onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
-                        />
-                        <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} ></ReflectButton>
+                        // onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
+                    />
+                    <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} ></ReflectButton>
                     </form>
                 </div>
             </div>

@@ -72,8 +72,10 @@ const CustomModal = ({ open, title, content, onAction }) => {
           <div className={classes.paper}>
             <h2 id="spring-modal-title">{title}</h2>
             <p id="spring-modal-description">{content}</p>
-            <ReflectButton text="CONFIRMAR" clicked={() => onAction("confirm")} />
-            <ReflectButton text="CANCELAR" clicked={() => onAction("cancel")} />
+            <div>
+              <ReflectButton text="CONFIRMAR" clicked={() => onAction("confirm")} />
+              <ReflectButton text="CANCELAR" clicked={() => onAction("cancel")} />
+            </div>
           </div>
         </Fade>
       </Modal>

@@ -47,7 +47,7 @@ const Login = (props) => {
     //     window.open(enviroment.baseUrl+ '/instagram', 'firebaseAuth', 'height=315,width=400');
     // }
 
-    const createUserWithEmail = user => {
+    const submitSignIn = user => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then( response => {
             const { email, uid: id } = response.user;
@@ -65,7 +65,7 @@ const Login = (props) => {
         });
     }
 
-    const loginWithEmail = user => {
+    const submitLogin = user => {
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then( response => {
             const { uid: userId } = response.user;
@@ -100,20 +100,12 @@ const Login = (props) => {
         }
     }
 
-    const loginFormActions = action => {
-        if(action === 'changeView') {
-            pageScroller.goToPage(1);
-        } else {
-            loginWithEmail(action);
-        }
-    }
-
     return (
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
             <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={false}>
-                <LogInForm onAction={ action => loginFormActions(action) }></LogInForm>
-                <SignInForm onAction={ action => createUserWithEmail(action) }></SignInForm>
+                <LogInForm onSubmit={submitLogin}></LogInForm>
+                <SignInForm onSubmit={submitSignIn}></SignInForm>
             </ReactPageScroller>
         </div>
     );

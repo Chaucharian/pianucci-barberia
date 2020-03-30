@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, createRef } from 'react';
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
@@ -25,6 +25,14 @@ const styles = {
         paddingRight: "10px",
         "& button": {
             marginTop: "60px"
+        }
+    },
+    fieldError: {
+        "& label": {
+            color: "red"
+        },
+        "&:before": {
+            borderBottomColor: "red"
         }
     },
     buttonContainer: {
@@ -55,18 +63,12 @@ const styles = {
 }
 
 const LogInForm = (props) => {
-    const { classes, onAction } = props; 
-    let user = { email: '', password: '' };
-    const setEmail = value => user.email = value;
-    const setPassword = value => user.password = value;
-    const newUser = () => {
-        console.log(user);
-        if(user.email !== '' && user.password !== '') {
-            onAction(user);
-        } else {
-            
-        }
-    }
+    const { classes, onSubmit } = props; 
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+    const emailField = createRef();
+    const passwordField = createRef();
+    
     const goToSigInView = () => onAction('changeView');
     const validateEmail = (email, callbackSuccess, callbackError) => {
         const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -78,33 +80,43 @@ const LogInForm = (props) => {
         
     }
 
+    const submit = event => {
+        const email = emailField.current.value;
+        const password = passwordField.current.value;
+        event.preventDefault();
+        // validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROR") )
+        if(email !== '' && password !== '') {
+            onSubmit({ email, password });
+        } else if(email === '') {
+            setEmailError(true);
+        } else if(password === '') {
+            setPasswordError(true);
+        }
+    }
+
+
     return (
         <div className={classes.centerContainer}>
               <div className={classes.contentContainer}>
                 <div className={classes.formContainer}>
                     <form
                         className={classes.formContainer} 
-                        onSubmit={ event => {
-                            newUser();
-                            event.preventDefault();
-                    }}>
+                        onSubmit={ event => submit(event)}>
                         <WhiteTextField
                         id="standard-basic"
-                        className={classes.textField}
+                        inputRef={emailField}
+                        // classes={ { a: emailError ? classes.fieldError : '' } }
                         label="Email"
                         margin="normal"
                         type="email"
-                        required={true}
-                        onChange={ event => validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROR") ) }
                         />
                         <WhiteTextField
                         id="standard-basic"
-                        className={classes.textField}
+                        inputRef={passwordField}
                         label="Contraseña"
                         margin="normal"
-                        type="password"
-                        required={true}
-                        onChange={ event => setPassword(event.target.value)} />
+                        type="password" 
+                        />
                         <ReflectButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>}/>
                     </form> 
                 </div>

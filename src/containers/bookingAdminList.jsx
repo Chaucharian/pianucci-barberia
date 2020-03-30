@@ -22,11 +22,11 @@ const styles = {
     },
     bookingListContainer: {
         display: "flex",
-        justifyContent: "center",
         flexDirection: "column",
         alignItems: "center",
-        height: "calc(100vh / 2)",
-        margin: "10px"
+        height: "60%",
+        overflow: "auto",
+        padding: "10px"
     },
     daySelector: {
         display: "flex",
@@ -35,7 +35,7 @@ const styles = {
 }
 
 const BookingAdminList = props => {
-    const { classes, onAction } = props;
+    const { classes, onDisableScroll,onAction } = props;
     const [state, dispatch] = useStateValue();
     const [refreshList, setRefreshList] = useState(false);
     const [currentDate, setCurrentDate] = useState(Date.now());
@@ -73,7 +73,7 @@ const BookingAdminList = props => {
             <div className={classes.daySelector}>   
                 <DaysListSelector  date={currentDate} showBookings={showBookings} onDaySelected={changeDay}/>
             </div>
-            <div className={classes.bookingListContainer}>
+            <div className={classes.bookingListContainer} onScroll={ () => onDisableScroll(true)}>
             { 
                 showBookings && (
                 hasBookings() ? 

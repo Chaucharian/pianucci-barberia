@@ -92,7 +92,7 @@ export const MainAdminViewer = (props) => {
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
                     <div></div>
-                    <BookingAdminList onAction={actionHeaderHandler} />
+                    <BookingAdminList onDisableScroll={disableScroll} />
                 </ReactPageScroller>
             </div>
         </div>

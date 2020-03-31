@@ -4,6 +4,7 @@ import { useStateValue } from '../state/rootState';
 import * as api from '../services/api';
 import * as appActions from '../actions/app';
 import Select from '../components/select';
+import ReflectButton from '../components/reflectButton';
 
 const styles = {
     container: {
@@ -21,7 +22,12 @@ const styles = {
         }
     },
     timeRange: {
-        color: "#FFF"
+        display: "flex"
+    },
+    buttonContainer: {
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "20%"
     }
 }
 
@@ -29,7 +35,9 @@ const ScheduleHandler = props => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
     const [morningSchedule, setMorningSchedule] = useState({ from: '', to: ''});
+    const [afternoonSchedule, setAfternoonSchedule] = useState({ from: '', to: ''});
     const { from: morningFrom, to: morningTo } = morningSchedule;
+    const { from: afternoonFrom, to: afternoonTo } = afternoonSchedule;
 
     const morningSelection = (label, time) => {
         if(label === 'Desde') {
@@ -41,18 +49,18 @@ const ScheduleHandler = props => {
    
     const afternoonSelection = (label, time) => {
         if(label === 'Desde') {
-            setMorningSchedule({ ...morningSchedule, from: time });
+            setAfternoonSchedule({ ...afternoonSchedule, from: time });
         } else {
-            setMorningSchedule({ ...morningSchedule, to: time });
+            setAfternoonSchedule({ ...afternoonSchedule, to: time });
         }
     }
 
     return (
         <div className={classes.container}>
             <h1>HORARIOS</h1>
-            <div className={classes.timeRange}>
+            <div>
                 <h2>MAÑANA</h2>
-                <div>
+                <div className={classes.timeRange}>
                     <Select label="Desde" selection={morningFrom} onChange={morningSelection}> 
                         {["9:00","10:00","11:00"]}
                     </Select>
@@ -63,6 +71,17 @@ const ScheduleHandler = props => {
             </div>
             <div>
                 <h2>TARDE</h2>
+                <div className={classes.timeRange}>
+                    <Select label="Desde" selection={afternoonFrom} onChange={afternoonSelection}> 
+                        {["9:00","10:00","11:00"]}
+                    </Select>
+                    <Select label="Hasta" selection={afternoonTo} onChange={afternoonSelection}> 
+                        {["9:00","10:00","11:00"]}
+                    </Select>
+                </div>
+            </div>
+            <div className={classes.buttonContainer}>
+                <ReflectButton text="GUARDAR"/>
             </div>
         </div>
     );  

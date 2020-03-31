@@ -16,6 +16,7 @@ const CustomSelect = ({ label, classes, onChange, selection, children }) => (
 
 export default withStyles({
     root: {
+        width: "100%",
         '& label': {
             color: "#615a5a",
         },
@@ -29,27 +30,7 @@ export default withStyles({
             "& :before": {
                 borderBottomColor: "#615a5a"
             }
-        },
-        // "& div:after": {
-        //     borderBottomColor: "#FFF",
-        // },
-        // '& label.Mui-focused': {
-        //     color: '#FFF',
-        // },
-        // '& .MuiInput-underline:after': {
-        //     borderBottomColor: '#FFF',
-        // },
-        // '& .MuiOutlinedInput-root': {
-        // '& fieldset': {
-        //     borderColor: '#FFF',
-        // },
-        // '&:hover fieldset': {
-        //     borderColor: '#FFF',
-        // },
-        // '&.Mui-focused fieldset': {
-        //     borderColor: '#FFF',
-        // },
-    //   },
+        }
     },
   })(CustomSelect);
 

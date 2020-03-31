@@ -21,6 +21,10 @@ const styles = {
         "& ul": {
             listStyle: "none"
         }
+    },
+    buttons: {
+        display: "flex",
+        padding: "5px"
     }
 }
 
@@ -45,8 +49,10 @@ export const BookingConfirmation = (props) => {
                     </li>
                 </ul>
             </div>
-            <ReflectButton text="CONFIRMAR" clicked={() => onSubmit("confirm")} />
-            <ReflectButton text="CANCELAR" clicked={() => onSubmit("cancel")} />
+            <div className={classes.buttons}>
+                <ReflectButton text="CONFIRMAR" clicked={() => onSubmit("confirm")} />
+                <ReflectButton text="CANCELAR" clicked={() => onSubmit("cancel")} />
+            </div>
         </div>
     );
 }

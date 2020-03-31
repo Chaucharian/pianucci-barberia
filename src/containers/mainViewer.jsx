@@ -74,14 +74,21 @@ export const MainViewer = (props) => {
     }
 
     const actionHeaderHandler = action => {
-        if(action === "logout") {
-            dispatch(appActions.logoutUser(true));
-        } else if(action === "profile") {
-            dispatch(appActions.changePage(2));
-            dispatch(appActions.showUserProfileView(true));
-        } else if(action === "bookingHandler") {
-            dispatch(appActions.changePage(2));
-            dispatch(appActions.showBookingHandlerView(true));
+        switch(action) {
+            case "logout":
+                dispatch(appActions.logoutUser(true));
+            break;
+            case "profile":
+                dispatch(appActions.changePage(2));
+                dispatch(appActions.showUserProfileView(true));
+            break;
+            case "bookingHandler":
+                dispatch(appActions.changePage(2));
+                dispatch(appActions.showBookingHandlerView(true));
+            break;
+            case "bookings":
+                dispatch(appActions.changePage(1));
+            break;
         }
     }
 

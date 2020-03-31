@@ -35,17 +35,12 @@ const styles = {
 }
 
 const BookingAdminList = props => {
-    const { classes, onDisableScroll,onAction } = props;
+    const { classes, onDisableScroll } = props;
     const [state, dispatch] = useStateValue();
     const [refreshList, setRefreshList] = useState(false);
     const [currentDate, setCurrentDate] = useState(Date.now());
     const [showBookings, setShowBookings] = useState(true);
-    const { user: { id: userId, bookings }, showBookingSection } = state;
-    const matches = useMediaQuery('(min-width:600px)');
-
-    const bookBooking = () => {
-        onAction("bookingHandler");
-    }
+    const { user: { bookings } } = state;
 
     const hasBookings = () => bookings.length > 0;
 

@@ -1,14 +1,11 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import Header from '../components/header';
 import ReactPageScroller from "react-page-scroller";
 import { withStyles } from '@material-ui/styles';
-import corte1 from '../assets/corte1.jpg';
-import corte2 from '../assets/corte2.jpg';
-import corte3 from '../assets/corte3.jpg';
-import ImageSlideGalery from '../components/imageSlideGalery';
 import BookingAdminList from './bookingAdminList';
+import ScheduleHandler from './scheduleHandler';
 
 const styles = {
     content: {
@@ -73,12 +70,10 @@ export const MainAdminViewer = (props) => {
     const actionHeaderHandler = action => {
         if(action === "logout") {
             dispatch(appActions.logoutUser(true));
-        } else if(action === "profile") {
-            dispatch(appActions.changePage(2));
-            dispatch(appActions.showUserProfileView(true));
-        } else if(action === "bookingHandler") {
-            dispatch(appActions.changePage(2));
-            dispatch(appActions.showBookingHandlerView(true));
+        } else if(action === "schedule") {
+            dispatch(appActions.changePage(0));
+        } else if(action === "bookings") {
+            dispatch(appActions.changePage(1));
         }
     }
 
@@ -91,7 +86,7 @@ export const MainAdminViewer = (props) => {
             <Header onAction={actionHeaderHandler} isAdmin={true} ></Header>
             <div className={classes.content}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
-                    <div></div>
+                    <ScheduleHandler />
                     <BookingAdminList onDisableScroll={disableScroll} />
                 </ReactPageScroller>
             </div>

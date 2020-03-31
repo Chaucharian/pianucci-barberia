@@ -114,7 +114,24 @@ const Header = (props) => {
     const adminMenu = () => {
         return ( 
             <>
-                <li><a>TURNOS</a></li>
+                <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("schedule");
+                    }}>
+                    HORARIO
+                    </a>
+                </li> 
+                <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("bookings");
+                    }}>
+                    TURNOS
+                    </a>
+                </li> 
                 <li><a onClick={() => onAction("logout")}>SALIR</a></li>
             </>
         );
@@ -123,12 +140,24 @@ const Header = (props) => {
     const userMenu = () => {
         return (
             <>
-                <li><a>INICIO</a></li>
-                <li><a>TURNOS</a></li>
-                <li><a onClick={() => {
-                    showNavbar(false);
-                    onAction("profile");
-                }}>PERFIL</a></li>
+                <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("bookings");
+                    }}>
+                    TURNOS
+                    </a>
+                </li>                
+                <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("profile");
+                    }}>
+                    PERFIL
+                    </a>
+                </li>
                 <li><a onClick={() => onAction("logout")}>SALIR</a></li>
             </>
         );

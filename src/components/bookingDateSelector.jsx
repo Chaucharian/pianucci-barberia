@@ -30,15 +30,14 @@ export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [state, setState] = useState({ currentDate: Date.now(), bookings: [], showBookings: true});
     const { currentDate, showBookings, bookings } = state;
+
     const changeCurrentDate = (date, { showBookings }) => {
-        console.log(" NEW DATE ",date);
         setState({ ...state, currentDate: date, showBookings });
     }
     
     useEffect( () => {
         api.getSchedule(currentDate).then( ({bookings}) => {
-            console.log("CURRENT DATE ",new Date(currentDate)," RESPONSE ",bookings);
-            setState({ ...state, bookings });
+            setState( state => ({ ...state, bookings }));
         });
     }, [currentDate]);
 

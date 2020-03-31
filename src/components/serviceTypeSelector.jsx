@@ -7,7 +7,7 @@ const styles = {
         height: "100%", 
         backgroundColor: "#000",
         display: "flex",
-        paddingTop: "100px",
+        paddingTop: "30px",
         justifyContent: "center",
         color: "#FFF",
         "& div": {

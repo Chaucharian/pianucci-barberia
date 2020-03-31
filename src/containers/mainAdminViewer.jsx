@@ -38,7 +38,7 @@ const styles = {
 export const MainAdminViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { user, scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
+    const { scrollDownDisabled, scrollUpDisabled, currentPage } = state;
     let pageScroller = null;
 
     const pageOnChange = scroll => {
@@ -60,11 +60,6 @@ export const MainAdminViewer = (props) => {
     const disableScroll = disable => {
         dispatch(appActions.disableScrollUp(disable));
         dispatch(appActions.disableScrollDown(disable));
-    }
-
-    const changePageAndHideSection = () => {
-        dispatch(appActions.changePage(1));
-        dispatch(appActions.showBookingHandlerView(false));
     }
 
     const actionHeaderHandler = action => {

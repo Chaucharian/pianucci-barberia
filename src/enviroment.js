@@ -1,5 +1,5 @@
 import address from 'address';
 
 export const enviroment = {
-    baseUrl: process.env.PROD ? 'http://192.168.0.107:2345' : 'http://192.168.0.105:2345' //`http://localhost:2345`
+    baseUrl: process.env.PROD ? 'http://192.168.0.107:2345' : 'http://192.168.0.106:2345' //`http://localhost:2345`
 }

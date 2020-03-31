@@ -1,4 +1,5 @@
-import React, { createRef } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form'
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
@@ -20,10 +21,10 @@ const styles = {
     },
     fieldError: {
         "& label": {
-            color: "red"
+            color: "red !important"
         },
-        "& :before": {
-            borderBottomColor: "red"
+        "& div:before": {
+            borderBottomColor: "red !important"
         }
     },
     formContainer: {
@@ -40,73 +41,65 @@ const styles = {
 
 const SignInForm = (props) => {
     const { classes, onSubmit } = props; 
-    let user = { name: '', email: '', password: '', phone: 0 };
-    const nameField = createRef();
-    const phoneField = createRef();
-    const emailField = createRef();
-    const passwordField = createRef();
-
-    const validatePassword = (password, callbackSuccess, callbackError) => {
-        const strongRegex =  { test: () => password.length > 6 }; // :D new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
-        if(strongRegex.test(password)) {
-            callbackSuccess(password);
-        } else {
-            callbackError(password);
-        }
-    }
-
-    const submit = event => {
-        const name = nameField.current.value;
-        const email = emailField.current.value;
-        const phone = phoneField.current.value;
-        const password = passwordField.current.value;
-
-        event.preventDefault();
-        if(name !== '' && email !== '' && phone !== '' && password !== '') {
-            onSubmit({ name, email, phone, password });
-        }
-    }
-
+    const { register, handleSubmit, errors } = useForm();
+   
     return (
         <div className={classes.centerContainer}>
             <div className={classes.contentContainer}>
                 <div className={classes.formContainer}>
                     <form
                         className={classes.formContainer} 
-                        onSubmit={ event => submit(event)}
+                        onSubmit={handleSubmit(onSubmit)}
                     >                      
-                    <WhiteTextField
-                        id="standard-basic"
-                        className={classes.textField}
-                        inputRef={nameField}
-                        label="Nombre"
-                        margin="normal"
-                    />
-                    <WhiteTextField
-                        id="standard-basic"
-                        className={classes.textField}
-                        inputRef={emailField}
-                        label="Email"
-                        margin="normal"
-                    />
-                    <WhiteTextField
-                        id="standard-basic"
-                        className={classes.textField}
-                        inputRef={phoneField}
-                        label="Celular"
-                        margin="normal"
-                        type="number"
-                    />
-                    <WhiteTextField
-                        id="standard-basic"
-                        className={classes.textField}
-                        inputRef={passwordField}
-                        label="Contraseña"
-                        margin="normal"
-                        type="password"
-                        // onChange={ event => validatePassword(event.target.value, password => setPassword(password), () => console.log("PASS WEAK") )}
-                    />
-                    <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} ></ReflectButton>
+                        <WhiteTextField
+                            id="standard-basic"
+                            className={classes.textField}
+                            inputRef={register({ required: true })}
+                            classes={ { root: errors.name ? classes.fieldError : '' } }
+                            name="name"
+                            label="Nombre"
+                            margin="normal"
+                        />
+                        <WhiteTextField
+                            id="standard-basic"
+                            className={classes.textField}
+                            inputRef={register({ 
+                                required: true,   
+                                pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+                                } 
+                            }) }
+                            classes={ { root: errors.email ? classes.fieldError : '' } }
+                            name="email"
+                            label="Email"
+                            margin="normal"
+                        />
+                        <WhiteTextField
+                            id="standard-basic"
+                            className={classes.textField}
+                            inputRef={register({ required: true })}
+                            classes={ { root: errors.phone ? classes.fieldError : '' } }
+                            name="phone"
+                            label="Celular"
+                            margin="normal"
+                            type="number"
+                        />
+                        <WhiteTextField
+                            id="standard-basic"
+                            className={classes.textField}
+                            inputRef={register({ 
+                                required: true,   
+                                pattern: {
+                                    value: /(?=.{6,})/
+                                } 
+                            }) }
+                            classes={ { root: errors.password ? classes.fieldError : '' } }
+                            name="password"
+                            label="Contraseña"
+                            margin="normal"
+                            type="password"
+                        />
+                        <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} ></ReflectButton>
                     </form>
                 </div>
             </div>

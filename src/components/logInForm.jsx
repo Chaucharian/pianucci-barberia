@@ -1,4 +1,5 @@
-import React, { useState, createRef } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form'
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
@@ -29,10 +30,10 @@ const styles = {
     },
     fieldError: {
         "& label": {
-            color: "red"
+            color: "red !important"
         },
-        "&:before": {
-            borderBottomColor: "red"
+        "& div:before": {
+            borderBottomColor: "red !important"
         }
     },
     buttonContainer: {
@@ -64,36 +65,9 @@ const styles = {
 
 const LogInForm = (props) => {
     const { classes, onSubmit } = props; 
-    const [emailError, setEmailError] = useState(false);
-    const [passwordError, setPasswordError] = useState(false);
-    const emailField = createRef();
-    const passwordField = createRef();
+    const { register, handleSubmit, watch, errors } = useForm();
     
     const goToSigInView = () => onAction('changeView');
-    const validateEmail = (email, callbackSuccess, callbackError) => {
-        const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if(re.test(email)) {
-            callbackSuccess(email);
-        } else {
-            callbackError(`there is and error with this email: ${email} }`);
-        }
-        
-    }
-
-    const submit = event => {
-        const email = emailField.current.value;
-        const password = passwordField.current.value;
-        event.preventDefault();
-        // validateEmail(event.target.value, email => setEmail(email), () => console.log("ERROR") )
-        if(email !== '' && password !== '') {
-            onSubmit({ email, password });
-        } else if(email === '') {
-            setEmailError(true);
-        } else if(password === '') {
-            setPasswordError(true);
-        }
-    }
-
 
     return (
         <div className={classes.centerContainer}>
@@ -101,18 +75,32 @@ const LogInForm = (props) => {
                 <div className={classes.formContainer}>
                     <form
                         className={classes.formContainer} 
-                        onSubmit={ event => submit(event)}>
+                        onSubmit={handleSubmit(onSubmit)}
+                    >
                         <WhiteTextField
                         id="standard-basic"
-                        inputRef={emailField}
-                        // classes={ { a: emailError ? classes.fieldError : '' } }
+                        inputRef={register({ 
+                            required: true,   
+                            pattern: {
+                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i
+                            } 
+                        }) }
+                        classes={ { root: errors.email ? classes.fieldError : '' } }
                         label="Email"
+                        name="email"
                         margin="normal"
                         type="email"
                         />
                         <WhiteTextField
                         id="standard-basic"
-                        inputRef={passwordField}
+                        inputRef={register({ 
+                            required: true,   
+                            pattern: {
+                                value: /(?=.{6,})/
+                            } 
+                        }) }
+                        classes={ { root: errors.password ? classes.fieldError : '' } }
+                        name="password"
                         label="Contraseña"
                         margin="normal"
                         type="password" 

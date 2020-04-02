@@ -111,16 +111,33 @@ app.post('/getUserBookings', (request, response) => {
   });
 });
 
-app.post('/updateDailyTimeSchedule', (request, response) => {
-  const { date, morinigSchueduleTime, afternoonScheduleTime } = request.body;
-  setTimeScheduleForDate(morningScheduleTime, afternoonScheduleTime);
+app.post('/setAvailableHours', (request, response) => {
+  const { morning: { from: morningFrom, to: morningTo }, afternoon: { from: afternoonFrom, to: afternoonTo } } = request.body;
+  const afternoonRef = firebaseDB.ref('/timeRange/afternoonScheduleTime');
+  const morningRef = firebaseDB.ref('/timeRange/morningScheduleTime');
+
+  morningRef.set(`${morningFrom}/${morningTo}`); 
+  afternoonRef.set(`${afternoonFrom}/${afternoonTo}`);
+
+  response.json({ status: "hours updated!" });
+});
+
+app.get('/getAvailableHours', (request, response) => {
+  const timeRangeRef = firebaseDB.ref('/timeRange');
+
+  timeRangeRef.once('value', timeRangeSnapshot => {
+    const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
+    const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map( unixDate => Number(unixDate) );
+    const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map( unixDate => Number(unixDate) );
+
+    response.json({ status: "hours retrieved!", morning: { from: mStartingTime, to: mEndingTime }, afternoon: { from: aStartingTime, to: aEndingTime } });
+  });
 });
 
 app.post('/getAllBookingsByDate', (request, response) => {
-  const { userDate, bookingDuration = 60 } = request.body;
+  const { userDate } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const usersRef = firebaseDB.ref('/users');
-  const bookingModel = { status: "available",  duration: bookingDuration, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
   let bookings = [];
 
   bookingRef.once('value', async bookingSnapshot => {

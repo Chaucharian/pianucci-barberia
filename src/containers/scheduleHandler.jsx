@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { withStyles } from '@material-ui/styles';
+import { getHours } from 'date-fns';
 import { useStateValue } from '../state/rootState';
 import * as api from '../services/api';
 import * as appActions from '../actions/app';
@@ -21,6 +22,9 @@ const styles = {
             fontWeight: "lighter"
         }
     },
+    morningSchedule: {
+        marginBottom: "60px"
+    },
     timeRange: {
         display: "flex"
     },
@@ -33,11 +37,12 @@ const styles = {
 
 const ScheduleHandler = props => {
     const { classes } = props;
-    const [state, dispatch] = useStateValue();
     const [morningSchedule, setMorningSchedule] = useState({ from: '', to: ''});
     const [afternoonSchedule, setAfternoonSchedule] = useState({ from: '', to: ''});
     const { from: morningFrom, to: morningTo } = morningSchedule;
     const { from: afternoonFrom, to: afternoonTo } = afternoonSchedule;
+    const defaultMorningTimeRange = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
+    const defaultAfternoonTimeRange = ["16:00", "17:00", "18:00", "19:00", "20:00", "21:00"];
 
     const morningSelection = (label, time) => {
         if(label === 'Desde') {
@@ -55,17 +60,31 @@ const ScheduleHandler = props => {
         }
     }
 
+    const submit = () => {
+        const morningTimeToUnix = { from: new Date().setHours(Number(morningFrom.split(":")[0]), 0), to: new Date().setHours(Number(morningTo.split(":")[0]), 0) };
+        const afternoonTimeToUnix = { from: new Date().setHours(Number(afternoonFrom.split(":")[0]), 0), to: new Date().setHours(Number(afternoonTo.split(":")[0]), 0) };
+
+        api.setAvailableHours({ morning: morningTimeToUnix, afternoon: afternoonTimeToUnix }).then( data => console.log (data));
+    }
+
+    useEffect( () => {
+        api.getAvailableHours().then( ({ morning, afternoon }) => {
+            setMorningSchedule({ from: getHours(morning.from)+":00", to: getHours(morning.to)+":00" });
+            setAfternoonSchedule({ from: getHours(afternoon.from)+":00", to: getHours(afternoon.to)+":00" });
+        });
+    }, []);
+
     return (
         <div className={classes.container}>
             <h1>HORARIOS</h1>
-            <div>
+            <div className={classes.morningSchedule}>
                 <h2>MAÑANA</h2>
                 <div className={classes.timeRange}>
                     <Select label="Desde" selection={morningFrom} onChange={morningSelection}> 
-                        {["9:00","10:00","11:00"]}
+                        {defaultMorningTimeRange}
                     </Select>
                     <Select label="Hasta" selection={morningTo} onChange={morningSelection}> 
-                        {["9:00","10:00","11:00"]}
+                        {defaultMorningTimeRange}
                     </Select>
                 </div>
             </div>
@@ -73,15 +92,15 @@ const ScheduleHandler = props => {
                 <h2>TARDE</h2>
                 <div className={classes.timeRange}>
                     <Select label="Desde" selection={afternoonFrom} onChange={afternoonSelection}> 
-                        {["9:00","10:00","11:00"]}
+                        {defaultAfternoonTimeRange}
                     </Select>
                     <Select label="Hasta" selection={afternoonTo} onChange={afternoonSelection}> 
-                        {["9:00","10:00","11:00"]}
+                        {defaultAfternoonTimeRange}
                     </Select>
                 </div>
             </div>
             <div className={classes.buttonContainer}>
-                <ReflectButton text="GUARDAR"/>
+                <ReflectButton text="GUARDAR" clicked={submit}/>
             </div>
         </div>
     );  

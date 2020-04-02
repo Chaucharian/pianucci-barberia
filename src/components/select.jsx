@@ -6,6 +6,7 @@ const CustomSelect = ({ label, classes, onChange, selection, children }) => (
     <FormControl className={classes.root}>
         <InputLabel>{label}</InputLabel>
         <Select
+            displayEmpty={true}
             value={selection}
             onChange={ ({target: { value } }) => onChange(label, value) }
         >

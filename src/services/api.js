@@ -83,3 +83,29 @@ export const getAllBookingsByDate = userDate => (
     })
     .then( response => response.json() )
 );
+
+export const getAvailableHours = () => (
+    fetch(enviroment.baseUrl + '/getAvailableHours', {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+    })
+    .then( response => response.json() )
+);
+
+export const setAvailableHours = (timeRange) => (
+    fetch(enviroment.baseUrl + '/setAvailableHours', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(timeRange)
+    })
+    .then( response => response.json() )
+);
+
+
+

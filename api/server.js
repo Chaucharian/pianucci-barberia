@@ -202,11 +202,12 @@ app.post('/getScheduleForDate', (request, response) => {
         const bookingDate = new Date(userDate).setHours(currentHour,00,00);
         bookings.push({ ...bookingModel, date: bookingDate });
 
+        currentHour += 1;
+        hoursCount += 1;
+        
         if(currentHour === new Date(mEndingTime).getHours()) {
           currentHour = new Date(aStartingTime).getHours();
         }
-        currentHour += 1;
-        hoursCount += 1;
       }
       // populate reserved bookings is there any
       if(reservedBookings.length !== 0) {

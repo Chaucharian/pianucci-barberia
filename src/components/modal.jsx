@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSpring, animated } from 'react-spring/web.cjs'; // web.cjs is required for IE 11 support
 import ReflectButton from './reflectButton';
+
 const useStyles = makeStyles(theme => ({
   modal: {
     display: 'flex',
@@ -52,7 +53,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 const styles = {
 }
 
-const CustomModal = ({ open, title, content, onAction }) => {
+const CustomModal = ({ open, title, content, onlyConfirm, onAction }) => {
     const classes = useStyles();
 
     return (
@@ -73,8 +74,14 @@ const CustomModal = ({ open, title, content, onAction }) => {
             <h2 id="spring-modal-title">{title}</h2>
             <p id="spring-modal-description">{content}</p>
             <div>
-              <ReflectButton text="CONFIRMAR" clicked={() => onAction("confirm")} />
-              <ReflectButton text="CANCELAR" clicked={() => onAction("cancel")} />
+              { onlyConfirm ? 
+              <ReflectButton text="ACEPTAR" clicked={() => onAction("cancel")} />
+              :
+              <>
+                <ReflectButton text="CONFIRMAR" clicked={() => onAction("confirm")} />
+                <ReflectButton text="CANCELAR" clicked={() => onAction("cancel")} />
+              </>
+              }
             </div>
           </div>
         </Fade>

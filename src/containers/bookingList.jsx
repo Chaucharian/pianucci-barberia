@@ -38,38 +38,24 @@ const BookingList = props => {
     const { classes, onAction } = props;
     const [state, dispatch] = useStateValue();
     const [refreshList, setRefreshList] = useState(false);
-    const { user: { id: userId, bookings }, showBookingSection } = state;
-    const matches = useMediaQuery('(min-width:600px)');
+    const { user: { id: userId, bookings }, currentPage } = state;
 
-    const bookBooking = () => {
-        onAction("bookingHandler");
-    }
+    const bookBooking = () => onAction("bookingHandler");
 
     const hasBookings = () => bookings.length > 0;
 
-    const deleteBookingHandler = booking => {
-        api.deleteBooking(booking.id).then( response => {
-            setRefreshList(true);
-        });
+    const deleteBookingHandler = ({ id }) => {
+        api.deleteBooking(id).then( () => setRefreshList(true) );
     }
 
     useEffect( () => {
-        if(userId !== "" || refreshList) {
+        if(refreshList || currentPage === 1) {
             api.getUserBookings(userId).then( response => {
                 dispatch(appActions.bookingsFetched(response.bookings));
                 setRefreshList(false);
             });
         }
-    }, [userId, showBookingSection, refreshList]); 
-
-    // useEffect( () => {
-    //     if(refreshList) {
-    //         api.getUserBookings(userId).then( response => {
-    //             dispatch(appActions.bookingsFetched(response.bookings));
-    //             setRefreshList(false);
-    //         });
-    //     }
-    // }, [refreshList]); 
+    }, [refreshList, currentPage]); 
 
     return (
         <div className={classes.container}>

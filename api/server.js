@@ -143,7 +143,7 @@ app.post('/getAllBookingsByDate', (request, response) => {
   bookingRef.once('value', async bookingSnapshot => {
     const bookingsRaw = [];
     bookingSnapshot.forEach( booking => {
-      bookingsRaw.push(booking.val());
+      bookingsRaw.push({ ...booking.val(), id: booking.key });
     });
     // filtered by request date
     const reservedBookings = bookingsRaw.map( bookingReserved => {
@@ -157,7 +157,7 @@ app.post('/getAllBookingsByDate', (request, response) => {
         const { name, phone, id } = user.val();
         reservedBookings.map( booking => {
           if(booking.clientId === id) {
-            bookings.push({ ...booking, name, phone, id });
+            bookings.push({ ...booking, name, phone });
           }
         });
       });

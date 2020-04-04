@@ -40,14 +40,12 @@ const BookingAdminList = props => {
     const [refreshList, setRefreshList] = useState(false);
     const [currentDate, setCurrentDate] = useState(Date.now());
     const [showBookings, setShowBookings] = useState(true);
-    const { user: { bookings } } = state;
+    const { user: { bookings }, currentPage } = state;
 
     const hasBookings = () => bookings.length > 0;
 
-    const deleteBookingHandler = booking => {
-        api.deleteBooking(booking.id).then( response => {
-            setRefreshList(true);
-        });
+    const deleteBookingHandler = ({ id }) => {
+        api.deleteBooking(id).then( () => setRefreshList(true) );
     }
 
     const changeDay = (date, { showBookings}) => {
@@ -56,11 +54,13 @@ const BookingAdminList = props => {
     }
 
     useEffect( () => {
-        api.getAllBookingsByDate(currentDate).then( ({bookings}) => {
-            dispatch(appActions.bookingsFetched(bookings));
-            setRefreshList(false);
-        });
-    }, [currentDate, refreshList]); 
+        if(currentDate || refreshList || currentPage === 1) {
+            api.getAllBookingsByDate(currentDate).then( ({bookings}) => {
+                dispatch(appActions.bookingsFetched(bookings));
+                setRefreshList(false);
+            });
+        }
+    }, [currentDate, refreshList, currentPage]); 
 
     return (
         <div className={classes.container}>
@@ -72,7 +72,7 @@ const BookingAdminList = props => {
             { 
                 showBookings && (
                 hasBookings() ? 
-                bookings.map( (booking, index) => <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} /> ) 
+                bookings.map( (booking, index) => <UserBooking key={index} booking={booking} isAdmin={true} onDelete={deleteBookingHandler} /> ) 
                 :
                 <h2>No hay turnos para la fecha seleccionada</h2> 
                 )

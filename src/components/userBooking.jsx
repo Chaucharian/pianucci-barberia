@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
-import  { getHours, format } from 'date-fns';
+import  { getHours, isSameDay,format } from 'date-fns';
 import Modal from '../components/modal';
 
 const styles = {
@@ -68,7 +68,7 @@ const styles = {
 }
 
 const UserBooking = (props) => {
-    const { classes, booking, onDelete } = props;
+    const { classes, booking, isAdmin, onDelete } = props;
     const [ isModalOpen, showModal] = useState(false);
     const { date, status, name, phone } = booking;
     const dateFormated = format(date,"dd/MM/yyyy");
@@ -98,12 +98,15 @@ const UserBooking = (props) => {
         );
     }
 
+    const sameDay = () => isAdmin ? false : isSameDay(date, new Date());
+
     return (
         <>
             <Modal 
+                onlyConfirm={sameDay()}
                 open={isModalOpen} 
-                title="¿Seguro quieres eliminar tu reserva?" 
-                content="Una vez hecho tendras que crear una nueva reserva"
+                title={sameDay() ?  "No puedes eliminar esta reserva" : "¿Seguro quieres eliminar esta reserva?" }
+                content={ sameDay() ? "No puedes eliminar una reserva en la misma fecha que la creaste, contactate con la barberia para realizar este cambio" : "Una vez hecho tendras que crear una nueva reserva" }
                 onAction={modalHandler}
             />
             <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>

@@ -4,6 +4,7 @@
   "description": "Barber appointment web",
   "scripts": {
     "start": "parcel --host 0.0.0.0 ./src/index.html",
+    "build": "parcel start --host 0.0.0.0 --port 8080 ./src/index.html",
     "api": "pm2 start ./api/server.js --watch"
   },
   "author": "AS",

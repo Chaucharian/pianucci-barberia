@@ -1,15 +1,15 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const httpRequest = require('request');
-const uniqid = require('uniqid');
-const { format, getHours,  differenceInHours, compareAsc, isSameDay } = require('date-fns');
+const { isSameDay } = require('date-fns');
+const path = require('path');
 const app = express();
 const cors = require('cors');
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebaseCredentials.json');
 const router = express.Router();
-const path = __dirname + '/dist';
-const port = process.env.PORT || 2345;
+// const path = __dirname + '/dist';
+const port = process.env.PORT || 8080;
 const credentials = {
     client: {
       id: '6630f184387c425e8912e1495be328c9', 
@@ -26,8 +26,8 @@ admin.initializeApp({
   databaseURL: "https://pianucci-barberia.firebaseio.com"
 });
 const firebaseDB = admin.database();
-
-app.use(express.static(path));
+// app.use(express.static(path));
+app.use(express.static("./dist"));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
@@ -40,15 +40,7 @@ router.use(function (req,res,next) {
 
 app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`));
 
-const updateDailyTimeRange = (morningStartHour = 9, afternoonStartHour = 17) => {
-  const timeRangeRef = firebaseDB.ref('timeRange');
-  morningScheduleTime = new Date().setHours(morningStartHour, 00, 00) + "/" + new Date().setHours(13, 00, 00);
-  afternoonScheduleTime = new Date().setHours(afternoonStartHour, 00, 00) + "/" + new Date().setHours(21, 00, 00);
-  scheduleForDate = { morningScheduleTime, afternoonScheduleTime };
-
-  timeRangeRef.set(scheduleForDate);
-}
-setInterval( () => updateDailyTimeRange(), 1000*60*60*24); // set schedule daily
+app.get('/', (req, res) => res.sendfile('./index.html') );
 
 app.get('/instagram', (req, res) => {
     const redirectUri = oauth2.authorizationCode.authorizeURL({
@@ -78,26 +70,21 @@ app.get('/instagram-redirect', (req, res) => {
   });
 });
 
-app.post('/getUserData', (request, response) => {
+app.post('/api/getUserData', (request, response) => {
   const { userId } = request.body;
   const ref = firebaseDB.ref('/users');
 
   ref.once('value', snapshot => {
     snapshot.forEach( user => {
-      // const userBookings = user.val().bookings;
       const userIdTemp = user.val().id;
       if(userIdTemp === userId) {
           response.json({ status: 'user loged in successfullt!', user: user.val() })
       }
-      // TODO MAP BOOKINGS
-      // Object.keys((user.val().bookings)).map( key => {
-      //   console.log(userBookings[key].type);
-      // });
     });
   });
 });
 
-app.post('/getUserBookings', (request, response) => {
+app.post('/api/getUserBookings', (request, response) => {
   const { userId } = request.body;
   const bookingsRef = firebaseDB.ref('/bookings');
 
@@ -111,7 +98,7 @@ app.post('/getUserBookings', (request, response) => {
   });
 });
 
-app.post('/setAvailableHours', (request, response) => {
+app.post('/api/setAvailableHours', (request, response) => {
   const { morning: { from: morningFrom, to: morningTo }, afternoon: { from: afternoonFrom, to: afternoonTo } } = request.body;
   const afternoonRef = firebaseDB.ref('/timeRange/afternoonScheduleTime');
   const morningRef = firebaseDB.ref('/timeRange/morningScheduleTime');
@@ -122,7 +109,7 @@ app.post('/setAvailableHours', (request, response) => {
   response.json({ status: "hours updated!" });
 });
 
-app.get('/getAvailableHours', (request, response) => {
+app.get('/api/getAvailableHours', (request, response) => {
   const timeRangeRef = firebaseDB.ref('/timeRange');
 
   timeRangeRef.once('value', timeRangeSnapshot => {
@@ -134,7 +121,7 @@ app.get('/getAvailableHours', (request, response) => {
   });
 });
 
-app.post('/getAllBookingsByDate', (request, response) => {
+app.post('/api/getAllBookingsByDate', (request, response) => {
   const { userDate } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const usersRef = firebaseDB.ref('/users');
@@ -167,7 +154,7 @@ app.post('/getAllBookingsByDate', (request, response) => {
   }); 
 });
 
-app.post('/getScheduleForDate', (request, response) => {
+app.post('/api/getScheduleForDate', (request, response) => {
   const { userDate, bookingDuration = 60 } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const timeRangeRef = firebaseDB.ref('/timeRange');
@@ -224,7 +211,7 @@ app.post('/getScheduleForDate', (request, response) => {
   }); 
 });
 
-app.post('/createBooking', (request, response) => {
+app.post('/api/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
   const booking = { type, date, duration, status: "reserved", clientId: userId };
@@ -233,7 +220,7 @@ app.post('/createBooking', (request, response) => {
   response.json({ status: 'booking created!', bookingId });
 });
 
-app.post('/deleteBooking', (request, response) => {
+app.post('/api/deleteBooking', (request, response) => {
   const { bookingId } = request.body;
   const bookingRef = firebaseDB.ref('bookings/' + bookingId);
   bookingRef.remove();
@@ -242,7 +229,7 @@ app.post('/deleteBooking', (request, response) => {
 });
 
 
-app.post('/updateBooking', (request, response) => {
+app.post('/api/updateBooking', (request, response) => {
   const { userId, bookingId, type, duration, date, status } = request.body;
   const bookingRef = firebaseDB.ref('bookings/'+bookingId);
 
@@ -251,7 +238,7 @@ app.post('/updateBooking', (request, response) => {
   response.json({ status: 'booking updated!' });
 });
 
-app.post('/createUser', (request, response) => {
+app.post('/api/createUser', (request, response) => {
   const { name, email, phone, id } = request.body;
   const usersRef = firebaseDB.ref('users');
   const userModel = { name, email, id, phone, bookings: [] }; 

@@ -27,7 +27,7 @@ admin.initializeApp({
 });
 const firebaseDB = admin.database();
 // app.use(express.static(path));
-app.use(express.static("./dist"));
+// app.use(express.static("./dist"));
 app.use(cookieParser());
 app.use(cors());
 app.use(express.json());
@@ -40,7 +40,9 @@ router.use(function (req,res,next) {
 
 app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`));
 
-app.get('/', (req, res) => res.sendfile('./index.html') );
+app.get('/color-matcher', (req, res) => res.sendfile('./color-matcher/dist/index.html') );
+
+app.get('/', (req, res) => res.sendfile('/.dist/index.html') );
 
 app.get('/instagram', (req, res) => {
     const redirectUri = oauth2.authorizationCode.authorizeURL({

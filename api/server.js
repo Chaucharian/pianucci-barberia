@@ -48,8 +48,9 @@ app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`))
 app.get('/color-matcher', (req, res) => res.sendfile('./color-matcher/dist/index.html') );
 
 app.get('/', (req, res) => res.sendfile('./index.html') );
-app.get('/login', (req, res) => res.sendfile('./index.html') );
-app.get('/admin', (req, res) => res.sendfile('./index.html') );
+// redirect to ui router
+app.get('/login', (req, res) => res.sendfile('./dist/index.html') );
+app.get('/admin', (req, res) => res.sendfile('./dist/index.html') );
 
 app.get('/instagram', (req, res) => {
     const redirectUri = oauth2.authorizationCode.authorizeURL({

@@ -5,7 +5,8 @@
   "scripts": {
     "start": "parcel --host 0.0.0.0 ./src/index.html",
     "build": "parcel build ./src/index.html",
-    "production": "parcel watch ./src/index.html",
+    "watch:dev": "NODE_ENV=development parcel watch ./src/index.html",
+    "watch:prod": "NODE_ENV=production parcel watch ./src/index.html",
     "api": "pm2 start ./api/server.js --name pianucciweb --watch "
   },
   "author": "AS",

@@ -13,9 +13,12 @@ import BookingHandler from './bookingHandler';
 import UserProfile from './userProfile';
 
 const styles = {
-    content: {
+    container: {
         backgroundColor: "#FFF",
-        height: "100vh"
+        height: "100vh",
+        "& div > div": {
+            outline: "none"
+        }
     },
     headerSpace: {
         height: "76px"
@@ -99,7 +102,7 @@ export const MainViewer = (props) => {
     return (
         <div>
             <Header onAction={actionHeaderHandler}></Header>
-            <div className={classes.content}>
+            <div className={classes.container}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
                     <>
                         <ImageSlideGalery images={[corte1, corte2, corte3]}></ImageSlideGalery>

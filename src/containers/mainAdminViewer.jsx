@@ -8,9 +8,12 @@ import BookingAdminList from './bookingAdminList';
 import ScheduleHandler from './scheduleHandler';
 
 const styles = {
-    content: {
+    container: {
         backgroundColor: "#FFF",
-        height: "100vh"
+        height: "100vh",
+        "& div > div": {
+            outline: "none"
+        }
     },
     headerSpace: {
         height: "76px"
@@ -79,7 +82,7 @@ export const MainAdminViewer = (props) => {
     return (
         <div>
             <Header onAction={actionHeaderHandler} isAdmin={true} ></Header>
-            <div className={classes.content}>
+            <div className={classes.container}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
                     <ScheduleHandler />
                     <BookingAdminList onDisableScroll={disableScroll} />

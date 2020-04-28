@@ -15,7 +15,10 @@ const styles = {
         gridTemplateColumns: "repeat(1, minmax(240px, 1fr))",
         gridTemplateRows: "repeat(4, 100px)",
         backgroundColor: "#000",
-        textAlign: "center"
+        textAlign: "center",
+        "& div > div": {
+            outline: "none"
+        }
     },
     loginFormContainer: {
         height: "100%",

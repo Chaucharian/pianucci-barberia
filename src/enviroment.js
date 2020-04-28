@@ -1,4 +1,4 @@
 export const enviroment = {
-    baseUrl: process.env.NODE_ENV === 'production' ? `https://localhost:8080/api` : `http://localhost:8080/api`
+    baseUrl: process.env.NODE_ENV === 'production' ? `http://localhost:8080/api` : `http://localhost:8080/api`
 }
 

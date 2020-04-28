@@ -5,7 +5,7 @@
   "scripts": {
     "start": "parcel --host 0.0.0.0 ./src/index.html",
     "build": "parcel build ./src/index.html",
-    "api": "pm2 start ./api/server.js --watch"
+    "api": "pm2 start ./api/server.js --name pianucciweb --watch "
   },
   "author": "AS",
   "license": "MIT",

@@ -40,7 +40,7 @@ const styles = {
         display: "block",
         width: "100px",
         margin: "0px auto",
-        marginTop: "calc(100vh / 4)",
+        marginTop: "calc(100vh / 5)",
         "& label": {
             fontFamily: "Alegreya Sans SC",
             fontSize: "20px",
@@ -64,11 +64,9 @@ const styles = {
 }
 
 const LogInForm = (props) => {
-    const { classes, onSubmit } = props; 
+    const { classes, onSubmit, onChangePage } = props; 
     const { register, handleSubmit, watch, errors } = useForm();
     
-    const goToSigInView = () => onAction('changeView');
-
     return (
         <div className={classes.centerContainer}>
               <div className={classes.contentContainer}>
@@ -110,7 +108,7 @@ const LogInForm = (props) => {
                 </div>
                 <div className={classes.buttonContainer}>
                     <label>Registrate!</label>
-                    <button className={classes.nextPageButton} onClick={() => goToSigInView()}>
+                    <button className={classes.nextPageButton} onClick={() => onChangePage(1)}>
                         <i className="fas fa-arrow-circle-down"></i>
                     </button>
                 </div>

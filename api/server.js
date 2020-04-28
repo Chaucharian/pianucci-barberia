@@ -42,7 +42,7 @@ app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`))
 
 app.get('/color-matcher', (req, res) => res.sendfile('./color-matcher/dist/index.html') );
 
-app.get('/', (req, res) => res.sendfile('/.dist/index.html') );
+app.get('/', (req, res) => res.sendfile('/dist/index.html') );
 
 app.get('/instagram', (req, res) => {
     const redirectUri = oauth2.authorizationCode.authorizeURL({
@@ -75,9 +75,10 @@ app.get('/instagram-redirect', (req, res) => {
 app.post('/api/getUserData', (request, response) => {
   const { userId } = request.body;
   const ref = firebaseDB.ref('/users');
-
+  console.log(" REF ",ref);
   ref.once('value', snapshot => {
     snapshot.forEach( user => {
+      console.log(" USER ",user);
       const userIdTemp = user.val().id;
       if(userIdTemp === userId) {
           response.json({ status: 'user loged in successfullt!', user: user.val() })

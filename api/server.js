@@ -27,7 +27,7 @@ admin.initializeApp({
 });
 const firebaseDB = admin.database();
 // app.use(express.static(path));
-// app.use(express.static("./dist"));
+app.use(express.static("./dist"));
 app.use(cookieParser());
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "marplacode.com"); // update to match the domain you will make the request from
@@ -47,7 +47,7 @@ app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`))
 
 app.get('/color-matcher', (req, res) => res.sendfile('./color-matcher/dist/index.html') );
 
-app.get('/', (req, res) => res.sendfile('/dist/index.html') );
+app.get('/', (req, res) => res.sendfile('./index.html') );
 
 app.get('/instagram', (req, res) => {
     const redirectUri = oauth2.authorizationCode.authorizeURL({

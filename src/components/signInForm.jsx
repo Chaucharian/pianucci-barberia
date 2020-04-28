@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
@@ -40,9 +40,15 @@ const styles = {
 }
 
 const SignInForm = (props) => {
-    const { classes, onSubmit } = props; 
-    const { register, handleSubmit, errors } = useForm();
+    const { classes, onSubmit, formErrors } = props; 
+    const { register, handleSubmit, setError, errors } = useForm();
    
+    useEffect( () => {
+        formErrors.map( field => {
+            field === 'signInemail' && setError('email','notMatch');
+        });
+    }, [formErrors]);
+
     return (
         <div className={classes.centerContainer}>
             <div className={classes.contentContainer}>

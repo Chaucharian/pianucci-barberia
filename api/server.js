@@ -40,6 +40,11 @@ app.use('/', router);
 
 router.use(function (req,res,next) {
   console.log(`${req.method} ${req.originalUrl}`);
+  // Handling not found manually and always redirecting to root in that case
+  if(!req.originalUrl.includes('/api') && (req.originalUrl !== '/login' || req.originalUrl !== 'admin')) {
+    res.sendfile('./dist/index.html');
+    return;
+  }
   next();
 });
 

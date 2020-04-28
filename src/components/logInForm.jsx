@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form'
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
@@ -64,9 +64,15 @@ const styles = {
 }
 
 const LogInForm = (props) => {
-    const { classes, onSubmit, onChangePage } = props; 
-    const { register, handleSubmit, watch, errors } = useForm();
+    const { classes, formErrors, onSubmit, onChangePage } = props; 
+    const { register, handleSubmit, setError, errors } = useForm();
     
+    useEffect( () => {
+        formErrors.map( field => {
+            setError(field,'notMatch');
+        });
+    }, [formErrors]);
+
     return (
         <div className={classes.centerContainer}>
               <div className={classes.contentContainer}>

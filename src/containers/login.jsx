@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles} from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
 import firebase from "firebase";
@@ -32,6 +32,7 @@ const styles = {
 
 const Login = (props) => {
     const { classes } = props;
+    const [formErrors, setFormErrors] = useState([]);
     const [{ currentPage }, dispatch] = useStateValue();
     let pageScroller = null;
 
@@ -51,6 +52,18 @@ const Login = (props) => {
         }
     }
 
+    const matchErrorsToFields = errorCode => {
+        const errors = [];
+        if(errorCode.includes('wrong-password')) {
+            errors.push('password');
+        } else if(errorCode.includes('user-not-found')) { 
+            errors.push('email');
+        } else if(errorCode.includes("email-already-in-use")) {
+            errors.push('signInemail');
+        }
+        return errors;
+    }
+
     const submitSignIn = user => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then( response => {
@@ -65,6 +78,7 @@ const Login = (props) => {
             });
         })
         .catch(function(error) {
+            setFormErrors(matchErrorsToFields(error.code));
             console.log(error);
         });
     }
@@ -83,6 +97,7 @@ const Login = (props) => {
             });
         })
         .catch(function(error) {
+            setFormErrors(matchErrorsToFields(error.code));
             console.log(error);
         });
     }
@@ -95,8 +110,8 @@ const Login = (props) => {
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
             <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange}>
-                <LogInForm onSubmit={submitLogin} onChangePage={goToPage} ></LogInForm>
-                <SignInForm onSubmit={submitSignIn}></SignInForm>
+                <LogInForm onSubmit={submitLogin} formErrors={formErrors} onChangePage={goToPage} ></LogInForm>
+                <SignInForm onSubmit={submitSignIn} formErrors={formErrors}></SignInForm>
             </ReactPageScroller>
         </div>
     );

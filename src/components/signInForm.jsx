@@ -58,7 +58,6 @@ const SignInForm = (props) => {
                         onSubmit={handleSubmit(onSubmit)}
                     >                      
                         <WhiteTextField
-                            id="standard-basic"
                             className={classes.textField}
                             inputRef={register({ required: true })}
                             classes={ { root: errors.name ? classes.fieldError : '' } }
@@ -67,7 +66,6 @@ const SignInForm = (props) => {
                             margin="normal"
                         />
                         <WhiteTextField
-                            id="standard-basic"
                             className={classes.textField}
                             inputRef={register({ 
                                 required: true,   
@@ -81,7 +79,6 @@ const SignInForm = (props) => {
                             margin="normal"
                         />
                         <WhiteTextField
-                            id="standard-basic"
                             className={classes.textField}
                             inputRef={register({ required: true })}
                             classes={ { root: errors.phone ? classes.fieldError : '' } }
@@ -91,7 +88,6 @@ const SignInForm = (props) => {
                             type="number"
                         />
                         <WhiteTextField
-                            id="standard-basic"
                             className={classes.textField}
                             inputRef={register({ 
                                 required: true,   

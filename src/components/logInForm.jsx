@@ -82,7 +82,6 @@ const LogInForm = (props) => {
                         onSubmit={handleSubmit(onSubmit)}
                     >
                         <WhiteTextField
-                        id="standard-basic"
                         inputRef={register({ 
                             required: true,   
                             pattern: {
@@ -96,7 +95,6 @@ const LogInForm = (props) => {
                         type="email"
                         />
                         <WhiteTextField
-                        id="standard-basic"
                         inputRef={register({ 
                             required: true,   
                             pattern: {

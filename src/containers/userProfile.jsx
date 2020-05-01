@@ -10,46 +10,39 @@ import UserBooking from '../components/userBooking';
 
 const styles = {
     container: {
-        width: "100%",
-        height: "100vh", 
-        backgroundColor: "#000",
-        textAlign: "center",
         paddingTop: "76px",
-        color: "#FFF",
-        "& h2": {
-            fontWeight: "lighter"
+        "& ul": {
+            listStyle: "none",
+            fontSize: "15px"
         }
     },
-    bookingListContainer: {
-        display: "flex",
-        justifyContent: "center",
-        flexDirection: "column",
-        alignItems: "center",
-        height: "calc(100vh / 2)"
-    },
-    bookingButton: {
-        display: "flex",
-        justifyContent: "center",
+    userData: {
+        fontStyle: "normal",
+        fontWeight: "lighter"
     }
 }
 
 const UserProfile = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
-    const { user: { id: userId, bookings, name, email }, showBookingSection } = state;
-
-    useEffect( () => {
-
-    }, []);
+    const { user: { name, email, phone } } = state;
 
     return (
         <div className={classes.container}>
-            <h1>Nomber <strong>{name}</strong></h1>
-            <h1>Email <strong>{email}</strong></h1>
-            {/* <h1>Celular <strong>{phone}</strong></h1> */}
+            <ul>
+                <li>
+                    <h1>Nombre <i className={classes.userData}>{name}</i></h1>
+                </li>
+                <li>
+                    <h1>Email <i className={classes.userData}>{email}</i></h1>
+                </li>
+                <li>
+                    <h1>Celular <i className={classes.userData}>{phone}</i></h1>
+                </li>
+            </ul>
         </div>
-    );  
-  }
-  
+    );
+}
+
 
 export default withStyles(styles)(UserProfile);

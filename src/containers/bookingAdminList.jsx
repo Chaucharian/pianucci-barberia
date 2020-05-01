@@ -7,6 +7,7 @@ import * as api from '../services/api';
 import * as appActions from '../actions/app';
 import UserBooking from '../components/userBooking';
 import DaysListSelector from '../components/daysListSelector';
+import Spinner from '../components/spinner';
 
 const styles = {
     container: {
@@ -40,7 +41,7 @@ const BookingAdminList = props => {
     const [refreshList, setRefreshList] = useState(false);
     const [currentDate, setCurrentDate] = useState(Date.now());
     const [showBookings, setShowBookings] = useState(true);
-    const { user: { bookings }, currentPage } = state;
+    const { user: { bookings }, fetching, currentPage } = state;
 
     const hasBookings = () => bookings.length > 0;
 
@@ -55,7 +56,9 @@ const BookingAdminList = props => {
 
     useEffect( () => {
         if(currentDate || refreshList || currentPage === 1) {
+            dispatch(appActions.fetching(true))
             api.getAllBookingsByDate(currentDate).then( ({bookings}) => {
+                dispatch(appActions.fetching(false));
                 dispatch(appActions.bookingsFetched(bookings));
                 setRefreshList(false);
             });
@@ -69,14 +72,16 @@ const BookingAdminList = props => {
                 <DaysListSelector  date={currentDate} showBookings={showBookings} onDaySelected={changeDay}/>
             </div>
             <div className={classes.bookingListContainer} onScroll={ () => onDisableScroll(true)}>
-            { 
-                showBookings && (
-                hasBookings() ? 
-                bookings.map( (booking, index) => <UserBooking key={index} booking={booking} isAdmin={true} onDelete={deleteBookingHandler} /> ) 
-                :
-                <h2>No hay turnos para la fecha seleccionada</h2> 
-                )
-            }
+            <Spinner loading={fetching && showBookings}>
+                {
+                    showBookings && (
+                        hasBookings() ?
+                            bookings.map((booking, index) => <UserBooking key={index} booking={booking} isAdmin={true} onDelete={deleteBookingHandler} />)
+                            :
+                            <h2>No hay turnos para la fecha seleccionada</h2>
+                    )
+                }
+            </Spinner>
             </div>
         </div>
     );  

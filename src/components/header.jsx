@@ -11,7 +11,7 @@ const styles = {
         position: "fixed",
         top: 0,
         left: 0, 
-        overflow: "auto",
+        overflow: "hidden",
         display: "block",
         zIndex: "1000",
         width: "100%",

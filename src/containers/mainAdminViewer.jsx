@@ -9,10 +9,12 @@ import ScheduleHandler from './scheduleHandler';
 
 const styles = {
     container: {
-        backgroundColor: "#FFF",
-        height: "100vh",
-        "& div > div": {
-            outline: "none"
+        padding: "5px",
+        "& > div": {
+            width: "100% !important",
+            "& div":{
+                outline: "none"
+            }
         }
     },
     headerSpace: {

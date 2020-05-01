@@ -49,7 +49,6 @@ const Fade = React.forwardRef(function Fade(props, ref) {
   );
 });
 
-
 const styles = {
 }
 

@@ -50,8 +50,6 @@ router.use(function (req,res,next) {
 
 app.listen(port, '0.0.0.0',() => console.log(`Server running at ${port} port!`));
 
-app.get('/color-matcher', (req, res) => res.sendfile('./color-matcher/dist/index.html') );
-
 app.get('/', (req, res) => res.sendfile('./index.html') );
 // redirect to ui router
 app.get('/login', (req, res) => res.sendfile('./dist/index.html') );

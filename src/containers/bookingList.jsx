@@ -64,7 +64,7 @@ const BookingList = props => {
             { 
                 hasBookings() ? bookings.map( (booking, index) => 
                 <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} />) :
-                <h2>No tienes ningun turno activo :(</h2>  
+                <h2>No tienes ningun turno activo &#x1F625;</h2>  
             }
             </div>
             <div className={classes.bookingButton} >

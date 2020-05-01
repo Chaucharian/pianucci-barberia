@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/styles';
-import { format } from 'date-fns';
+import { format, isToday } from 'date-fns';
 import AnimatedButton from './animatedButton';
 import ReflectButton from './reflectButton';
 
@@ -25,6 +25,12 @@ const styles = {
     buttons: {
         display: "flex",
         padding: "5px"
+    },
+    list: {
+        textAlign: "left"
+    },
+    warning: {
+        color: "red"
     }
 }
 
@@ -39,7 +45,7 @@ export const BookingConfirmation = (props) => {
         <div className={classes.container}>
             <div className={classes.description}>
                 <h2>INFORMACIÓN DEL TURNO</h2>
-                <ul>
+                <ul className={classes.list}>
                     <li>
                         <p><b>Día </b> {dateFormated}</p>
                         <p><b>Hora </b> {hours}</p>
@@ -48,10 +54,11 @@ export const BookingConfirmation = (props) => {
                         <p><b>Ubicación </b> Pianucci Barberia - 25 de Mayo 1234 2 º B</p>
                     </li>
                 </ul>
+                { isToday(date) && <p className={classes.warning}><b>¡ESPERA! Verifica que los datos sean correctos, este turno no se podra cancelar</b></p> }
             </div>
             <div className={classes.buttons}>
-                <ReflectButton text="CONFIRMAR" clicked={() => onSubmit("confirm")} />
                 <ReflectButton text="CANCELAR" clicked={() => onSubmit("cancel")} />
+                <ReflectButton text="CONFIRMAR" clicked={() => onSubmit("confirm")} />
             </div>
         </div>
     );

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
+import Spinner from './spinner';
 
 const styles = {
     centerContainer: {
@@ -35,6 +36,7 @@ const styles = {
         "& div:before": {
             borderBottomColor: "red !important"
         }
+
     },
     buttonContainer: {
         display: "block",
@@ -48,6 +50,9 @@ const styles = {
                 paddingTop: "10px"
             }
         }
+    },
+    spinnerContainer: {
+        paddingTop: "15px"
     },
     nextPageButton: {
         color: "#FFF",
@@ -64,7 +69,7 @@ const styles = {
 }
 
 const LogInForm = (props) => {
-    const { classes, formErrors, onSubmit, onChangePage } = props; 
+    const { classes, formErrors, fetching, onSubmit, onChangePage } = props; 
     const { register, handleSubmit, setError, errors } = useForm();
     
     useEffect( () => {
@@ -109,6 +114,9 @@ const LogInForm = (props) => {
                         />
                         <ReflectButton text="Iniciar Sesion" icon={<i className="fa fa-instagram"></i>}/>
                     </form> 
+                </div>
+                <div className={classes.spinnerContainer}>
+                    <Spinner loading={fetching} />
                 </div>
                 <div className={classes.buttonContainer}>
                     <label>Registrate!</label>

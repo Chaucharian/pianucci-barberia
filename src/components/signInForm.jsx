@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form'
 import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
+import Spinner from './spinner';
 
 const styles = {
     centerContainer: {
@@ -30,17 +31,19 @@ const styles = {
     formContainer: {
         display: "flex",
         flexDirection: "column",
-        marginBottom: "60px",
         paddingLeft: "10px",
         paddingRight: "10px",
         "& button": {
             marginTop: "60px"
         }
     },
+    spinnerContainer: {
+        paddingTop: "15px"
+    }
 }
 
 const SignInForm = (props) => {
-    const { classes, onSubmit, formErrors } = props; 
+    const { classes, fetching,  formErrors, onSubmit } = props; 
     const { register, handleSubmit, setError, errors } = useForm();
    
     useEffect( () => {
@@ -103,6 +106,9 @@ const SignInForm = (props) => {
                         />
                         <ReflectButton text="Registrarte" icon={<i className="fa fa-instagram"></i>} ></ReflectButton>
                     </form>
+                </div>
+                <div className={classes.spinnerContainer}>
+                    <Spinner loading={fetching} />
                 </div>
             </div>
         </div>

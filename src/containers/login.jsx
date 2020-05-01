@@ -33,7 +33,7 @@ const styles = {
 const Login = (props) => {
     const { classes } = props;
     const [formErrors, setFormErrors] = useState([]);
-    const [{ currentPage }, dispatch] = useStateValue();
+    const [{ currentPage, fetching }, dispatch] = useStateValue();
     let pageScroller = null;
 
     const pageOnChange = scroll => {
@@ -65,6 +65,7 @@ const Login = (props) => {
     }
 
     const submitSignIn = user => {
+        dispatch(appActions.fetching(true));
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
         .then( response => {
             const { email, uid: id } = response.user;
@@ -73,17 +74,20 @@ const Login = (props) => {
             
             api.createUser(newUser)
             .then( ({ user }) => {
+                dispatch(appActions.fetching(false));
                 window.localStorage.setItem("user", JSON.stringify(user));
                 dispatch(appActions.userLoggedIn(user));
             });
         })
         .catch(function(error) {
+            dispatch(appActions.fetching(false));
             setFormErrors(matchErrorsToFields(error.code));
             console.log(error);
         });
     }
 
     const submitLogin = user => {
+        dispatch(appActions.fetching(true));
         firebase.auth().signInWithEmailAndPassword(user.email, user.password)
         .then( response => {
             const { uid: userId } = response.user;
@@ -91,12 +95,14 @@ const Login = (props) => {
             api.getUserData(userId).then( ({ user }) => {
                 api.getUserBookings(userId).then( ({ bookings }) => { 
                     const userData = { ...user, bookings };
+                    dispatch(appActions.fetching(false));
                     window.localStorage.setItem("user", JSON.stringify(userData));
                     dispatch(appActions.userLoggedIn(userData));
                 });
             });
         })
         .catch(function(error) {
+            dispatch(appActions.fetching(false));
             setFormErrors(matchErrorsToFields(error.code));
             console.log(error);
         });
@@ -110,8 +116,17 @@ const Login = (props) => {
         <div className={classes.login}>
             <h1 className={classes.title}>Pianucci Barberia</h1>
             <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange}>
-                <LogInForm onSubmit={submitLogin} formErrors={formErrors} onChangePage={goToPage} ></LogInForm>
-                <SignInForm onSubmit={submitSignIn} formErrors={formErrors}></SignInForm>
+                <LogInForm 
+                    fetching={fetching}
+                    formErrors={formErrors} 
+                    onSubmit={submitLogin}
+                    onChangePage={goToPage}>
+                </LogInForm>
+                <SignInForm 
+                    fetching={fetching}
+                    formErrors={formErrors}
+                    onSubmit={submitSignIn}>
+                </SignInForm>
             </ReactPageScroller>
         </div>
     );

@@ -1,4 +1,5 @@
 import { enviroment } from '../enviroment';
+import { fetching } from '../actions/app';
 
 export const createUser = user => (
     fetch(enviroment.baseUrl + '/createUser', {
@@ -60,8 +61,9 @@ export const getUserBookings = userId => (
     .then( response => response.json() )
 );
 
-export const getSchedule = userDate => (
-    fetch(enviroment.baseUrl + '/getScheduleForDate', {
+export const getSchedule = (dispatch, userDate) => {
+    dispatch(fetching(true));
+    return fetch(enviroment.baseUrl + '/getScheduleForDate', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -69,8 +71,8 @@ export const getSchedule = userDate => (
         },
         body: JSON.stringify({userDate})
     })
-    .then( response => response.json() )
-);
+    .then( response => response.json() );
+}
 
 export const getAllBookingsByDate = userDate => (
     fetch(enviroment.baseUrl + '/getAllBookingsByDate', {

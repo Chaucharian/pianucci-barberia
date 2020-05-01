@@ -2,7 +2,6 @@ import * as actionTypes from '../actions/types';
 
 export const initialState = {
     currentPage: 0,
-    isDealing: false,
     showBookingSection: false,
     showUserProfileSection: false,
     user: { id: '', bookings: [], name: '' },
@@ -10,10 +9,17 @@ export const initialState = {
     scrollDownDisabled: false,
     bookingCreated: false,
     logout: false,
+    fetching: false
 };
 
 export const reducer = (state, action) => {
     switch (action.type) {
+        case actionTypes.FETCHING:
+            const fetching = action.payload;
+            return {
+              ...state,
+              fetching
+            }
         case actionTypes.LOGOUT_USER:
             const logout = action.payload;
             // reset state when the user logout
@@ -51,11 +57,6 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 currentPage
-            };
-        case actionTypes.CREATE_APPOINTMENT:
-            return {
-                ...state,
-                isDealing: true,
             };
         case actionTypes.SHOW_BOOKING_HANDLER:
             const showBookingSection = action.payload;

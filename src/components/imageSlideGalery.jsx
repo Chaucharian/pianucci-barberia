@@ -9,7 +9,7 @@ const styles = {
         overflow: "hidden",
         width: "100%",
         height: "100%",
-
+        position: "relative",
         "& div": {
             display: "block",
             position: "absolute",

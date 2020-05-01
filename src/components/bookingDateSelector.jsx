@@ -48,9 +48,9 @@ export const BookingDateSelector = (props) => {
     return (
         <div className={classes.container}>
             <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeCurrentDate}/>
-            <Spinner loading={fetching}>
+            <Spinner loading={fetching && showBookings}>
                 <div className={classes.bookings}>
-                    {bookings.map((booking, index) => <BookingItem key={index} booking={booking} onSelect={onBookingSelect} /> )}
+                    {showBookings && bookings.map((booking, index) => <BookingItem key={index} booking={booking} onSelect={onBookingSelect} /> )}
                 </div>
             </Spinner>  
         </div>

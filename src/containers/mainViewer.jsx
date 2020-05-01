@@ -48,7 +48,7 @@ const styles = {
 export const MainViewer = (props) => {
     const { classes } = props; 
     const [state, dispatch] = useStateValue();
-    const { user, scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
+    const { scrollDownDisabled, scrollUpDisabled, showBookingSection, showUserProfileSection, currentPage } = state;
     let pageScroller = null;
 
     const pageOnChange = scroll => {

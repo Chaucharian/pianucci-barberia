@@ -42,7 +42,7 @@ const styles = {
         display: "block",
         width: "100px",
         margin: "0px auto",
-        marginTop: "calc(100vh / 5)",
+        marginTop: "50px",
         "& label": {
             fontFamily: "Alegreya Sans SC",
             fontSize: "20px",

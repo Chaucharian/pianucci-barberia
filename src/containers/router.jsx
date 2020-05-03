@@ -38,6 +38,10 @@ export const Router = () => {
         };
         if (firebase.apps.length === 0) {
             firebase.initializeApp(firebaseConfig);
+            // const messaging = firebase.messaging();
+            // messaging.requestPermission().then( () => messaging.getToken() )
+            // .then( data => console.log(data))
+            // .catch( error => console.log(error))
         }
     }
 

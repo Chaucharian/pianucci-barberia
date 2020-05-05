@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/styles';
 import WhiteTextField from './textField'; 
 import ReflectButton from './reflectButton';
 import Spinner from './spinner';
+import Modal from './modal';
 
 const styles = {
     centerContainer: {
@@ -69,7 +70,7 @@ const styles = {
 }
 
 const LogInForm = (props) => {
-    const { classes, formErrors, fetching, onSubmit, onChangePage } = props; 
+    const { classes, formErrors, fetching, showModal, onModalClose, onSubmit, onChangePage } = props; 
     const { register, handleSubmit, setError, errors } = useForm();
     
     useEffect( () => {
@@ -80,6 +81,13 @@ const LogInForm = (props) => {
 
     return (
         <div className={classes.centerContainer}>
+            <Modal 
+                    onlyConfirm={true}
+                    open={showModal} 
+                    title={"Accepta las notificaciones :)" }
+                    content={"Asi puedes estar al tanto de tus turnos"}
+                    onAction={onModalClose}
+              />
               <div className={classes.contentContainer}>
                 <div className={classes.formContainer}>
                     <form

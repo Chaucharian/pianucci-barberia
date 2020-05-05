@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import {useRoutes, navigate} from 'hookrouter';
+import { useRoutes, navigate } from 'hookrouter';
 import firebase from "firebase";
 import "firebase/auth";
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 
-import {NotFoundPage} from '../components/notFoundPage';
+import { NotFoundPage } from '../components/notFoundPage';
 import MainViewer from './mainViewer';
 import MainAdminViewer from './mainAdminViewer';
 import Login from './login';
@@ -17,7 +17,7 @@ const routes = {
     '/login': () => <Login />,
 };
 
-const LoadingImg = ({ image }) => <div style={{ display: "flex", width: "100%", justifyContent: "center" }}><img style={{width:"150px", height: "70px"}} src={image}></img></div>;
+const LoadingImg = ({ image }) => <div style={{ display: "flex", width: "100%", justifyContent: "center" }}><img style={{ width: "150px", height: "70px" }} src={image}></img></div>;
 
 export const Router = () => {
     const [state, setState] = useState({ loading: true });
@@ -38,15 +38,11 @@ export const Router = () => {
         };
         if (firebase.apps.length === 0) {
             firebase.initializeApp(firebaseConfig);
-            // const messaging = firebase.messaging();
-            // messaging.requestPermission().then( () => messaging.getToken() )
-            // .then( data => console.log(data))
-            // .catch( error => console.log(error))
         }
     }
 
     const logoutHandler = () => {
-        firebase.auth().signOut().then( () => {
+        firebase.auth().signOut().then(() => {
             // Sign-out successful.
             window.localStorage.removeItem('user');
             dispatch(appActions.logoutUser(false));
@@ -58,19 +54,19 @@ export const Router = () => {
 
     const viewToRender = () => {
         let resultView = <LoadingImg image={loadingGif} />
-        if(!loading) {
+        if (!loading) {
             resultView = routeResult;
         }
         return resultView;
     }
 
-    useEffect( () => {
+    useEffect(() => {
         userHandler();
         const sessionStored = JSON.parse(window.localStorage.getItem("user"));
 
-        if(sessionStored && user.id === "") {
+        if (sessionStored && user.id === "") {
             const { isAdmin } = sessionStored;
-            if(isAdmin) {
+            if (isAdmin) {
                 dispatch(appActions.userLoggedIn(sessionStored));
                 navigate('/admin');
                 setState({ loading: false });
@@ -79,9 +75,9 @@ export const Router = () => {
                 navigate('/');
                 setState({ loading: false });
             }
-        } else if(user.id !== "") {
+        } else if (user.id !== "") {
             const { isAdmin } = sessionStored;
-            if(isAdmin) {
+            if (isAdmin) {
                 navigate('/admin');
                 setState({ loading: false });
             } else {
@@ -94,11 +90,11 @@ export const Router = () => {
         }
     }, [user]);
 
-    useEffect( () => {
-        if(logout) {
+    useEffect(() => {
+        if (logout) {
             logoutHandler();
         }
     }, [logout]);
-    
+
     return viewToRender() || <NotFoundPage />;
 }

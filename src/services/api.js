@@ -109,5 +109,14 @@ export const setAvailableHours = (timeRange) => (
     .then( response => response.json() )
 );
 
-
-
+export const sendNotificationToken = payload => (
+    fetch(enviroment.baseUrl + '/setNotificationToken', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+    })
+    .then( response => response.json() )
+);

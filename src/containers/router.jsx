@@ -10,6 +10,7 @@ import MainViewer from './mainViewer';
 import MainAdminViewer from './mainAdminViewer';
 import Login from './login';
 import loadingGif from '../assets/pianucci-loading.gif';
+import * as api from '../services/api';
 
 const routes = {
     '/': () => <MainViewer />,
@@ -44,11 +45,14 @@ export const Router = () => {
     const logoutHandler = () => {
         firebase.auth().signOut().then(() => {
             // Sign-out successful.
-            window.localStorage.removeItem('user');
-            dispatch(appActions.logoutUser(false));
-            navigate('/login');
+            api.logout(user.id).then( data => {
+                window.localStorage.removeItem('user');
+                dispatch(appActions.reset());
+                navigate('/login');
+            });
         }).catch(function (error) {
             // An error happened.
+            console.log(" LOGOUT ERROR ",error);
         });
     }
 

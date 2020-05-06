@@ -11,6 +11,11 @@ export const logoutUser = value => ({
     payload: value
 });
 
+export const reset = () => ({
+    type: actionTypes.RESET
+});
+
+
 export const fetching = value => ({
     type: actionTypes.FETCHING,
     payload: value

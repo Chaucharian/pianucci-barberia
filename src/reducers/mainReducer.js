@@ -20,11 +20,15 @@ export const reducer = (state, action) => {
               ...state,
               fetching
             }
+        case actionTypes.RESET:
+                // reset state when the user logout
+                return {
+                  ...initialState
+                }
         case actionTypes.LOGOUT_USER:
             const logout = action.payload;
-            // reset state when the user logout
             return {
-              ...initialState,
+              ...state,
               logout
             }
         case actionTypes.BOOKINGS_FETCHED:

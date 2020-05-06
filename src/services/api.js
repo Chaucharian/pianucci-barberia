@@ -120,3 +120,16 @@ export const sendNotificationToken = payload => (
     })
     .then( response => response.json() )
 );
+
+export const logout = userId => (
+    fetch(enviroment.baseUrl + '/logout', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId })
+    })
+    .then( response => response.json() )
+);
+

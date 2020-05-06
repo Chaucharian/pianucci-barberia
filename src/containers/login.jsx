@@ -76,21 +76,24 @@ const Login = (props) => {
 
                 api.createUser(newUser)
                     .then(({ user }) => {
-                        const sigin = () => {
+                        const sigin = token => {
+                            const userData = { ...user, notificationToken: token };
                             dispatch(appActions.fetching(false));
-                            window.localStorage.setItem("user", JSON.stringify(user));
-                            dispatch(appActions.userLoggedIn(user));
+                            window.localStorage.setItem("user", JSON.stringify(userData));
+                            dispatch(appActions.userLoggedIn(userData));
                         }
                         showModal(true);
                         // whichever be the notification flow, login the user
                         requestNotificationPermission()
                             .then(token => {
+                                api.sendNotificationToken({ notificationToken: token, userId }).then(() => {});
                                 showModal(false);
-                                sigin();
+                                sigin(token);
                             })
-                            .catch(() => {
+                            .catch( error => {
+                                sigin(error);
                                 showModal(false);
-                                sigin();
+                                sigin(error);
                             })
                     });
             })
@@ -108,9 +111,9 @@ const Login = (props) => {
                 const { uid: userId } = response.user;
 
                 api.getUserData(userId).then(({ user }) => {
-                    api.getUserBookings(userId).then(({ bookings }) => {
-                        const login = () => {
-                            const userData = { ...user, bookings };
+                    // api.getUserBookings(userId).then(({ bookings }) => {
+                        const login = token => {
+                            const userData = { ...user, notificationToken: token };
                             dispatch(appActions.fetching(false));
                             window.localStorage.setItem("user", JSON.stringify(userData));
                             dispatch(appActions.userLoggedIn(userData));
@@ -122,7 +125,7 @@ const Login = (props) => {
                                 api.sendNotificationToken({ notificationToken: token, userId }).then(() => {});
                                 showModal(false);
                                 console.log(token);
-                                login();
+                                login(token);
                             })
                             .catch(error => {
                                 showModal(false);
@@ -130,7 +133,7 @@ const Login = (props) => {
                                 login();
                             });
                     });
-                });
+                // });
             })
             .catch(function (error) {
                 dispatch(appActions.fetching(false));

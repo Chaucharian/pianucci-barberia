@@ -1,9 +1,11 @@
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const fetch = require('node-fetch');
-const { isSameDay } = require('date-fns');
+const luxon = require('luxon');
+const { isSameDay, isSameHour } = require('date-fns');
 const path = require('path');
 const app = express();
+// const app = require("https-localhost")() // DEV ONLY
 const cors = require('cors');
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebaseCredentials.json');
@@ -78,6 +80,84 @@ app.get('/admin', (req, res) => res.sendFile(distPath+'index.html'));
 //   });
 // });
 
+// WORKING BUT IN TESTING YET
+// setInterval( () => {
+//     const bookingRef = firebaseDB.ref('/bookings');
+//     const usersRef = firebaseDB.ref('/users');
+//     // const unixArgentinaTime = new Date(luxon.DateTime.local().setZone('America/Argentina/Buenos_Aires').ts);
+//     const argentinaTime = new Date(new Date().setHours(00));
+//     const newDay = argentinaTime.getHours() === 00;
+
+//     bookingRef.once('value', async bookingSnapshot => {
+//         const bookingsRaw = [];
+//         bookingSnapshot.forEach(booking => {
+//             bookingsRaw.push({ ...booking.val(), id: booking.key });
+//         });
+//         // filter bookings for today
+//         const reservedBookings = bookingsRaw.map(bookingReserved => {
+//             const filterCondition = newDay ? 
+//             isSameDay(bookingReserved.date, argentinaTime) && bookingReserved.status === "reserved" : 
+//             isSameDay(bookingReserved.date, argentinaTime) && isSameHour(bookingReserved.date, new Date(argentinaTime).setHours(new Date(argentinaTime).getHours() + 1)) && bookingReserved.status === "reserved";
+//             if (filterCondition) {
+//                 return bookingReserved;
+//             }
+//         }).filter(bookingReserved => bookingReserved !== undefined);
+
+//         // set up notifications to send
+//         usersRef.once('value', usersSnapshot => {
+//             let notifications = [];
+//             usersSnapshot.forEach(user => {
+//                 const { id, notificationToken } = user.val();
+//                 reservedBookings.map(booking => {
+//                     if (booking.clientId === id) {
+//                         const notificationBody = ({
+//                             "title": "Pianucci Barberia",
+//                             "body": "Tienes un turno reservado dentro de una hora",
+//                             "click_action": "http://localhost:8080/",
+//                             "icon": "http://url-to-an-icon/icon.png"
+//                         });
+//                         if(newDay) {
+//                             notificationBody.body = `Hoy tienes un turno reservado para las ${new Date(booking.date).getHours()}:00hs`;
+//                         } 
+//                         notifications.push([ notificationBody, notificationToken ]);
+//                     }
+//                 });
+//             });
+//             // SEND NOTIFICATION TO FIREBASE
+//             notifications.map( ([ notificationBody, userToken]) => 
+//                 userToken && fetch('https://fcm.googleapis.com/fcm/send', {
+//                     method: 'post',
+//                     body: JSON.stringify({
+//                         "notification": notificationBody,
+//                         "to": userToken
+//                     }),
+//                     headers: { 'Content-Type': 'application/json', 'Authorization': 'key=AAAAQHgvRKo:APA91bF4_XkAk_XWc753vWpsj50SxP0tD60qJb5DXRtEFmngHB6oyr-7bX5f2DfX5LMU4gfAfJpeuqwztLCit-dxWOsY-b9sSD4DA9pCUmGbHHUywEYDk0KodPY1bDAdrcchq0uDPcu-' },
+//                 })
+//                 .then(res => res.json())
+//                 .then(response => console.log(" notification dispatched ",response))
+//             );            
+//         });
+//     });
+   
+// }, 9000);
+
+app.post('/api/logout', (request, response) => {
+    const { userId } = request.body;
+    const usersRef = firebaseDB.ref('/users');
+
+    usersRef.once('value', userRef => {
+        userRef.forEach(user => {
+            const userIdTemp = user.val().id;
+            if (userIdTemp === userId) {
+                // Clear notification token cause it's unique for device 
+                firebaseDB.ref('/users/'+user.key).set({ ...user.val(), notificationToken: '' });
+            }
+        });
+    });
+    response.setHeader('Clear-Site-Data', '*');
+    response.json({ status: "user logged out succesfully!" });
+});
+
 app.post('/api/setNotificationToken', (request, response) => {
     const { notificationToken, userId } = request.body;
     const usersRef = firebaseDB.ref('/users');
@@ -87,25 +167,7 @@ app.post('/api/setNotificationToken', (request, response) => {
             const userIdTemp = user.val().id;
             if (userIdTemp === userId) {
                 firebaseDB.ref('/users/'+user.key).set({ ...user.val(), notificationToken });
-
-                setTimeout( () => fetch('https://fcm.googleapis.com/fcm/send', {
-                    method: 'post',
-                    body: JSON.stringify({
-                        "notification": {
-                            "title": "Pianucci Barberia",
-                            "body": "En una hora es tu turno",
-                            "click_action": "http://localhost:8080/",
-                            "icon": "http://url-to-an-icon/icon.png"
-                        },
-                        "to": notificationToken
-                    }),
-                    headers: { 'Content-Type': 'application/json', 'Authorization': 'key=AAAAQHgvRKo:APA91bF4_XkAk_XWc753vWpsj50SxP0tD60qJb5DXRtEFmngHB6oyr-7bX5f2DfX5LMU4gfAfJpeuqwztLCit-dxWOsY-b9sSD4DA9pCUmGbHHUywEYDk0KodPY1bDAdrcchq0uDPcu-' },
-                })
-                    .then(res => res.json())
-                    .then(json => console.log(json))
-                    , 3000);
-
-                response.json({ status: "¡notification token sent!" });
+                response.json({ status: "¡notification assigned to user!", token: notificationToken });
             }
         });
     });
@@ -113,13 +175,21 @@ app.post('/api/setNotificationToken', (request, response) => {
 
 app.post('/api/getUserData', (request, response) => {
     const { userId } = request.body;
-    const ref = firebaseDB.ref('/users');
+    const usersRef = firebaseDB.ref('/users');
+    const bookingsRef = firebaseDB.ref('/bookings');
 
-    ref.once('value', snapshot => {
+    usersRef.once('value', snapshot => {
         snapshot.forEach(user => {
             const userIdTemp = user.val().id;
             if (userIdTemp === userId) {
-                response.json({ status: 'user loged in successfullt!', user: user.val() })
+                bookingsRef.once('value', bookingRef => {
+                    const bookings = [];
+                    bookingRef.forEach(booking => {
+                        bookings.push({ ...booking.val(), id: booking.key });
+                    });
+                    const filterdBookings = bookings.filter(booking => booking.clientId === userId);
+                    response.json({ status: 'user logged in successfullt!', user: { ...user.val(), bookings: filterdBookings } });
+                });
             }
         });
     });

@@ -25,6 +25,7 @@
     "instafeed.js": "^1.4.1",
     "ip": "^1.1.5",
     "lodash-es": "^4.17.15",
+    "luxon": "^1.24.1",
     "node-fetch": "^2.6.0",
     "pm2": "^4.2.3",
     "public-ip": "^4.0.1",
@@ -48,6 +49,7 @@
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "cookie-parser": "^1.4.5",
+    "https-localhost": "^4.5.2",
     "react-hot-loader": "^4.12.20"
   },
   "keywords": [

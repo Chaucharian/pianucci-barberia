@@ -38,6 +38,7 @@ const BookingList = props => {
     const { classes, onAction } = props;
     const [state, dispatch] = useStateValue();
     const [refreshList, setRefreshList] = useState(false);
+    console.log(state)
     const { user: { id: userId, bookings }, currentPage } = state;
 
     const bookBooking = () => onAction("bookingHandler");

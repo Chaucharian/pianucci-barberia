@@ -8,8 +8,8 @@ import * as appActions from '../actions/app';
 import ReactPageScroller from "react-page-scroller";
 import SignInForm from '../components/signInForm';
 import LogInForm from '../components/logInForm';
-
 import { requestNotificationPermission } from '../notificationHelper';
+
 const styles = {
     login: {
         display: "grid",

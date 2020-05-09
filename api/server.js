@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 const luxon = require('luxon');
 const { isSameDay, isSameHour } = require('date-fns');
 const path = require('path');
-const app = express();
-// const app = require("https-localhost")() // DEV ONLY
+// const app = express();
+const app = require("https-localhost")() // DEV ONLY
 const cors = require('cors');
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebaseCredentials.json');
@@ -30,6 +30,7 @@ admin.initializeApp({
 });
 const firebaseDB = admin.database();
 app.use(express.static(rootPath+"dist"));
+app.use("/assets", express.static(rootPath+"src/assets/icons"));
 app.use(express.static(rootPath));
 app.use(cors());
 app.use(express.json());
@@ -114,8 +115,10 @@ const notificationDispatcher = () => {
                         const notificationBody = ({
                             "title": "Pianucci Barberia",
                             "body": "Tienes un turno reservado dentro de una hora",
-                            "click_action": "http://localhost:8080/",
-                            "icon": "http://url-to-an-icon/icon.png"
+                            "click_action": "https://pianuccibarberia.com",
+                            "default_sound": true,
+                            "default_vibrate_timings": true,
+                            "icon": "https://pianuccibarberia.com/assets/icons/android-chrome-192x192.png"
                         });
                         if(newDay) {
                             notificationBody.body = `Hoy tienes un turno reservado para las ${new Date(booking.date).getHours()}:00hs`;
@@ -141,7 +144,8 @@ const notificationDispatcher = () => {
     });
 }
 
-setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
+// setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
+setInterval(() => notificationDispatcher(), 1000 * 60);
 
 app.post('/api/logout', (request, response) => {
     const { userId } = request.body;

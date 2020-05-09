@@ -144,8 +144,7 @@ const notificationDispatcher = () => {
     });
 }
 
-// setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
-setInterval(() => notificationDispatcher(), 1000 * 60);
+setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
 
 app.post('/api/logout', (request, response) => {
     const { userId } = request.body;

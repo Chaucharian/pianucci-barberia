@@ -4,8 +4,8 @@ const fetch = require('node-fetch');
 const luxon = require('luxon');
 const { isSameDay, isSameHour } = require('date-fns');
 const path = require('path');
-// const app = express();
-const app = require("https-localhost")() // DEV ONLY
+const app = express();
+// const app = require("https-localhost")() // DEV ONLY
 const cors = require('cors');
 const admin = require('firebase-admin');
 const serviceAccount = require('./firebaseCredentials.json');
@@ -88,7 +88,7 @@ const notificationDispatcher = () => {
     const argentinaTime = new Date(luxon.DateTime.local().setZone('America/Argentina/Buenos_Aires').ts);
     // const argentinaTime = new Date(new Date().setHours(00));
     const newDay = argentinaTime.getHours() === 00;
-    console.log(" CURRENT TIME ",argentinaTime);
+    console.log(" CURRENT TIME ",argentinaTime.getHours());
 
     bookingRef.once('value', async bookingSnapshot => {
         const bookingsRaw = [];

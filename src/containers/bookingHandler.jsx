@@ -74,6 +74,10 @@ export const BookingHandler = (props) => {
         }
     }, [currentStep]);
 
+    useEffect( () => {
+        console.log("BOOKING ",bookingSelected)
+    }, [bookingSelected]);
+
     return (
         <div className={classes.container}>
             <h2>RESERVA UN TURNO</h2>

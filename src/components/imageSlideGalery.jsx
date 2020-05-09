@@ -27,7 +27,7 @@ const ImageSlideGalery = (props) => {
     const { classes, images } = props;
     const _images = [];
     images.map( (image, index) => {
-        _images.push({id: index, url: image });
+        _images.push({id: index, url: image.url });
     })
     const [index, set] = useState(0);
     const transitions = useTransition(_images[index], item => item.id, {

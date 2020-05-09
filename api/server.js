@@ -12,6 +12,7 @@ const serviceAccount = require('./firebaseCredentials.json');
 const router = express.Router();
 const rootPath = path.join(__dirname, '../');
 const distPath = path.join(__dirname, '../') + 'dist/'
+const assetsPath = path.join(__dirname, '../') + 'src/assets/'
 const port = process.env.PORT || 8080;
 const credentials = {
     client: {
@@ -30,7 +31,7 @@ admin.initializeApp({
 });
 const firebaseDB = admin.database();
 app.use(express.static(rootPath+"dist"));
-app.use("/assets", express.static(rootPath+"src/assets/icons"));
+app.use("/assets", express.static(rootPath+"src/assets"));
 app.use(express.static(rootPath));
 app.use(cors());
 app.use(express.json());
@@ -39,7 +40,7 @@ app.use('/', router);
 router.use(function (req, res, next) {
     console.log(`${req.method} ${req.originalUrl}`);
     // Handling not found manually and always redirecting to root in that case
-    if (!req.originalUrl.includes('/api') && (req.originalUrl !== '/login' || req.originalUrl !== 'admin')) {
+    if (!req.originalUrl.includes('/api') && (!req.originalUrl.includes('/login') || !req.originalUrl.includes('/admin') )) {
         res.sendFile(distPath+'index.html');
         return;
     }
@@ -47,9 +48,8 @@ router.use(function (req, res, next) {
 });
 
 app.listen(port, '0.0.0.0', () => console.log(`Server running at ${port} port!`));
-
-app.get('/', (req, res) => res.sendFile(distPath+'index.html'));
 // redirect to ui router
+app.get('/', (req, res) => res.sendFile(distPath+'index.html'));
 app.get('/login', (req, res) => res.sendFile(distPath+'index.html'));
 app.get('/admin', (req, res) => res.sendFile(distPath+'index.html'));
 
@@ -145,6 +145,28 @@ const notificationDispatcher = () => {
 }
 
 setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
+
+app.get('/api/getImageGalery', (request, response) => {
+    const imageGaleryRef = firebaseDB.ref('/imageGalery');
+    const images = [];
+
+    imageGaleryRef.once('value', imageGalery => {
+        imageGalery.forEach( image => {
+            images.push(image.val());
+        });
+        response.json({ status: "images for galery!", images });
+    });
+});
+
+app.post('/api/setImageGalery', (request, response) => {
+    const { images: requestImages } = request.body;
+    const imageGaleryRef = firebaseDB.ref('/imageGalery');
+    const images = [];
+    
+    requestImages.map( (image, id) => images.push({ url: image, id }));
+    imageGaleryRef.set(images);
+    response.json({ status: 'images added to galery!' });
+});
 
 app.post('/api/logout', (request, response) => {
     const { userId } = request.body;

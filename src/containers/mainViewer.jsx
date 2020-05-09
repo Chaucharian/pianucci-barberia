@@ -4,13 +4,11 @@ import * as appActions from '../actions/app';
 import Header from '../components/header';
 import ReactPageScroller from "react-page-scroller";
 import { withStyles } from '@material-ui/styles';
-import corte1 from '../assets/corte1.jpg';
-import corte2 from '../assets/corte2.jpg';
-import corte3 from '../assets/corte3.jpg';
 import ImageSlideGalery from '../components/imageSlideGalery';
 import BookingList from './bookingList';
 import BookingHandler from './bookingHandler';
 import UserProfile from './userProfile';
+import GalerySection from '../components/galerySection';
 
 const styles = {
     container: {
@@ -20,27 +18,6 @@ const styles = {
             "& div":{
                 outline: "none"
             }
-        }
-    },
-    headerSpace: {
-        height: "76px"
-    },
-    buttonContainer: {
-        position: "fixed",
-        top: "75%",
-        left: "45%"
-    },
-    nextPageButton: {
-        color: "#FFF",
-        fontSize: "40px",
-        border: "none",
-        outline: "0px",
-        background: "transparent",
-        transition: "1s all ease-in-out",
-
-        "&:hover": {
-            color: "#000",
-            paddingTop: "10px"
         }
     }
 }
@@ -97,7 +74,7 @@ export const MainViewer = (props) => {
         }
     }
 
-    useEffect(() => {
+    useEffect(() => {   
         pageScroller.goToPage(currentPage);
     }, [currentPage]);
 
@@ -106,14 +83,7 @@ export const MainViewer = (props) => {
             <Header onAction={actionHeaderHandler}></Header>
             <div className={classes.container}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
-                    <>
-                        <ImageSlideGalery images={[corte1, corte2, corte3]}></ImageSlideGalery>
-                        <div className={classes.buttonContainer}>
-                            <button className={classes.nextPageButton} onClick={() => goToPage(1)}>
-                                <i className="fas fa-arrow-circle-down"></i>
-                            </button>
-                        </div>
-                    </>
+                    <GalerySection />
                     <BookingList onAction={actionHeaderHandler}></BookingList>
                     {(showBookingSection || showUserProfileSection) ? 
                     <>

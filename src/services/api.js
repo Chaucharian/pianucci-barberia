@@ -133,3 +133,9 @@ export const logout = userId => (
     .then( response => response.json() )
 );
 
+export const getImageGalery = () => (
+    fetch(enviroment.baseUrl + '/getImageGalery', {
+        method: 'GET',
+    })
+    .then( response => response.json() )
+);

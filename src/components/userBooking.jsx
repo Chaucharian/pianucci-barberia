@@ -36,6 +36,10 @@ const styles = {
         width: "65%",
         padding: "5px",
         fontSize: "20px",
+        "& a": {
+            color: "#FFF",
+            textDecoration: "none"
+        },
         "& p": {
             margin: "0px"
         }
@@ -90,7 +94,7 @@ const UserBooking = (props) => {
                 { name && 
                 <>
                     <p>{ name.length >= 30 ? name.substring(0, 13) + "..." : name }</p>
-                    <strong>{ phone }</strong>
+                    <a href={`tel:${phone}`}><strong>{ phone }</strong></a>
                 </> 
                 }
                 { !name && <p>{ dateFormated }</p> }

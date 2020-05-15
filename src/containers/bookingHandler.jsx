@@ -74,9 +74,9 @@ export const BookingHandler = (props) => {
         }
     }, [currentStep]);
 
-    useEffect( () => {
-        console.log("BOOKING ",bookingSelected)
-    }, [bookingSelected]);
+    // useEffect( () => {
+    //     console.log("BOOKING ",bookingSelected)
+    // }, [bookingSelected]);
 
     return (
         <div className={classes.container}>

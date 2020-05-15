@@ -39,7 +39,6 @@ export const BookingDateSelector = (props) => {
     }
     
     useEffect( () => {
-        console.log(new Date(currentDate))
         api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
             dispatch(appActions.fetching(false));
             setState( state => ({ ...state, bookings }));

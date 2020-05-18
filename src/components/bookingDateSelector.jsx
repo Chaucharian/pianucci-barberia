@@ -26,17 +26,23 @@ const styles = {
         flexDirection: "column",
         alignItems: "center"
     },
+    dateIndicator: {
+        transition: "all 200ms ease",
+        color: "red"
+    }
 }
 
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [{ fetching }, dispatch] = useStateValue();
-    const [state, setState] = useState({ currentDate: Date.now(), bookings: [], showBookings: true});
-    const { currentDate, showBookings, bookings } = state;
+    const [state, setState] = useState({ currentDate: Date.now(), currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
+    const { currentDate, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
 
-    const changeCurrentDate = (date, { showBookings }) => {
-        setState({ ...state, currentDate: date, showBookings });
+    const changeCurrentDate = ({date, dateFormated, showBookings, comesFromCalendar }) => {
+        setState({ ...state, currentDate: date, currentDateFormated: dateFormated, showBookings, comesFromCalendar });
     }
+
+    const openCalendar = defaultDate => setState({ ...state, currentDate: defaultDate, showBookings: false });
     
     useEffect( () => {
         api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
@@ -47,8 +53,9 @@ export const BookingDateSelector = (props) => {
 
     return (
         <div className={classes.container}>
-            <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeCurrentDate}/>
+            <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeCurrentDate} onOpenCalendar={openCalendar}/>
             <Spinner loading={fetching && showBookings}>
+                { comesFromCalendar && <h3 className={classes.dateIndicator} >TURNOS PARA {currentDateFormated}</h3> }
                 <div className={classes.bookings}>
                     {showBookings && bookings.map((booking, index) => <BookingItem key={index} booking={booking} onSelect={onBookingSelect} /> )}
                 </div>

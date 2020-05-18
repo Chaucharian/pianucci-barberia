@@ -2,7 +2,7 @@ import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import Calendar from '@lls/react-light-calendar';
 import '@lls/react-light-calendar/dist/index.css' // Default Style
-import  { addDays, isToday, isTomorrow } from 'date-fns';
+import  { addDays, isToday, isTomorrow, format } from 'date-fns';
 
 const styles = {
     container: {
@@ -31,14 +31,15 @@ const styles = {
 }
 
 export const DaysListSelector = (props) => {
-    const { classes, date, showBookings, onDaySelected } = props; 
+    const { classes, date, showBookings, onOpenCalendar, onDaySelected } = props; 
     const isOtherDay = date => !isTomorrow(date) && !isToday(date);
     const dateToUnix = date => date.getTime();
 
-    const daySelection = (date, calendarSelection) => {
+    const daySelection = (date, calendarSelection = false) => {
         const unixDate = dateToUnix(date);
-        let newBookingStatus = calendarSelection ? calendarSelection : !isOtherDay(date);
-        onDaySelected( unixDate, { showBookings: newBookingStatus });
+        const newBookingStatus = calendarSelection ? calendarSelection : !isOtherDay(date);
+        const dateFormated = format(date,"dd/MM/yyyy");
+        onDaySelected({ date: unixDate, dateFormated, showBookings: newBookingStatus, comesFromCalendar: calendarSelection });
     }
 
     const isWeekend = date => new Date(date).getDay() === 5 || new Date(date).getDay() === 6;
@@ -58,13 +59,13 @@ export const DaysListSelector = (props) => {
                 >
                     MAÑANA
                 </h2>
-                <h2 className={isOtherDay(date) ? classes.selected : ''} 
-                    onClick={() => !isOtherDay(date) && daySelection(addDays(new Date(), 2))}
+                <h2 className={!showBookings || isOtherDay(date) ? classes.selected : ''} 
+                    onClick={() => showBookings && onOpenCalendar(addDays(new Date(), 2)) }
                 >
                     OTRO DIA
                 </h2>
             </div>
-            { (isOtherDay(date) && !showBookings) && 
+            { !showBookings && 
                 <div className={classes.calendar}>
                     <Calendar 
                     dayLabels={['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']}
@@ -72,6 +73,7 @@ export const DaysListSelector = (props) => {
                     startDate={dateToUnix(addDays(new Date(), 1))} 
                     endDate={dateToUnix(addDays(new Date(), 14))} 
                     disableDates={disableDates}
+                    timezone={"GMT"}
                     onChange={ date => daySelection(addDays(date, 1), true) }/>
                 </div>
             }

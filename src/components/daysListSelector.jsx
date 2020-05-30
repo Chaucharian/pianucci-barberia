@@ -37,8 +37,9 @@ export const DaysListSelector = (props) => {
     const dateToUnix = date => date.getTime();
     const startDate = dateToUnix(addDays(new Date(), 1));
     const endDate = dateToUnix(addDays(new Date(), 15));
-    
+    // FIX SENDING DATES IN UNIX DATE
     const daySelection = (date, calendarSelection = false) => {
+        console.log(" DATE ",date);
         const unixDate = dateToUnix(date);
         const newBookingStatus = calendarSelection ? calendarSelection : !isOtherDay(date);
         const dateFormated = format(date,"dd/MM/yyyy");

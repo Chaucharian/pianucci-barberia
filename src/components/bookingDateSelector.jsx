@@ -53,7 +53,8 @@ export const BookingDateSelector = (props) => {
         } else {
             api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));
-                setState( state => ({ ...state, bookings }));
+                const normalizedTimeZoneBookings = bookings.map( booking => ({ ...booking, date: new Date(booking.date) }) );
+                setState( state => ({ ...state, bookings: normalizedTimeZoneBookings }));
             });
         }
     }, [currentDate]);

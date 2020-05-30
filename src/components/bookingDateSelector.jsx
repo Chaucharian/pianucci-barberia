@@ -37,7 +37,7 @@ const styles = {
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [{ fetching }, dispatch] = useStateValue();
-    const [state, setState] = useState({ currentDate: 1591057497000, currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
+    const [state, setState] = useState({ currentDate: Date.now(), currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
     const { currentDate, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
 
     const changeCurrentDate = ({date, dateFormated, showBookings, comesFromCalendar }) => {

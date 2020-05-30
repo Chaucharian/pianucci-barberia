@@ -6,6 +6,8 @@ import DaysListSelector from './daysListSelector';
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import Spinner from './spinner';
+import  { addDays } from 'date-fns';
+import { isDateDisabled } from './daysListSelector';
 
 const styles = {
     container: {
@@ -35,7 +37,7 @@ const styles = {
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [{ fetching }, dispatch] = useStateValue();
-    const [state, setState] = useState({ currentDate: Date.now(), currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
+    const [state, setState] = useState({ currentDate: 1591057497000, currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
     const { currentDate, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
 
     const changeCurrentDate = ({date, dateFormated, showBookings, comesFromCalendar }) => {
@@ -45,10 +47,15 @@ export const BookingDateSelector = (props) => {
     const openCalendar = defaultDate => setState({ ...state, currentDate: defaultDate, showBookings: false });
     
     useEffect( () => {
-        api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
-            dispatch(appActions.fetching(false));
-            setState( state => ({ ...state, bookings }));
-        });
+        // While current date isn't free move one day
+        if(isDateDisabled(currentDate)) {
+            setState( state => ({ ...state, currentDate: addDays(currentDate, 1) }));
+        } else {
+            api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
+                dispatch(appActions.fetching(false));
+                setState( state => ({ ...state, bookings }));
+            });
+        }
     }, [currentDate]);
 
     return (

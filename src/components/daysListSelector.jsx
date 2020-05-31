@@ -37,9 +37,8 @@ export const DaysListSelector = (props) => {
     const dateToUnix = date => date.getTime();
     const startDate = dateToUnix(addDays(new Date(), 1));
     const endDate = dateToUnix(addDays(new Date(), 15));
-    // FIX SENDING DATES IN UNIX DATE
+
     const daySelection = (date, calendarSelection = false) => {
-        console.log(" DATE ",date);
         const unixDate = dateToUnix(date);
         const newBookingStatus = calendarSelection ? calendarSelection : !isOtherDay(date);
         const dateFormated = format(date,"dd/MM/yyyy");
@@ -57,17 +56,17 @@ export const DaysListSelector = (props) => {
         <div className={classes.container}>
             <div className={classes.days}>
                 <h2 className={(isToday(date) ? classes.selected : '') +' '+ (isDateDisabled(new Date()) ? classes.disabled : '')} 
-                    onClick={() => ( !isToday(date) ) && daySelection( new Date() ) }
+                    onClick={() => !isDateDisabled(new Date()) && daySelection( new Date() ) }
                 >
                     HOY 
                 </h2>
                 <h2 className={(isTomorrow(date) ? classes.selected : '') +' '+ (isDateDisabled(addDays(new Date(), 1)) ? classes.disabled : '')} 
-                    onClick={() => ( !isTomorrow(date) ) && daySelection( addDays(new Date(), 1)) }
+                    onClick={() => !isDateDisabled(addDays(new Date(), 1)) && daySelection( addDays(new Date(), 1)) }
                 >
                     MAÑANA
                 </h2>
                 <h2 className={!showBookings || isOtherDay(date) ? classes.selected : ''} 
-                    onClick={() => ((isToday(date) || isTomorrow(date) ) && showBookings) && onOpenCalendar(addDays(new Date(), 2)) }
+                    onClick={() => (showBookings) && onOpenCalendar(addDays(new Date(), 2)) }
                 >
                     OTRO DIA
                 </h2>

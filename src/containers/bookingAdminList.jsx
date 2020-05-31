@@ -49,7 +49,12 @@ const BookingAdminList = props => {
         api.deleteBooking(id).then( () => setRefreshList(true) );
     }
 
-    const changeDay = (date, { showBookings}) => {
+    const openCalendar = defaultDate => {
+        setCurrentDate(defaultDate);
+        setShowBookings(false);
+    }
+
+    const changeDay = ({date, showBookings}) => {
         setCurrentDate(date);
         setShowBookings(showBookings);
     }
@@ -68,8 +73,8 @@ const BookingAdminList = props => {
     return (
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>
-            <div className={classes.daySelector}>   
-                <DaysListSelector  date={currentDate} showBookings={showBookings} onDaySelected={changeDay}/>
+            <div className={classes.daySelector}> 
+                <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeDay} onOpenCalendar={openCalendar}/>
             </div>
             <div className={classes.bookingListContainer} onScroll={ () => onDisableScroll(true)}>
             <Spinner loading={fetching && showBookings}>

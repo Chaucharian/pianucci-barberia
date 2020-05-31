@@ -6,7 +6,7 @@ import DaysListSelector from './daysListSelector';
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import Spinner from './spinner';
-import  { addDays } from 'date-fns';
+import  { addDays, isToday, isTomorrow } from 'date-fns';
 import { isDateDisabled } from './daysListSelector';
 
 const styles = {
@@ -37,8 +37,8 @@ const styles = {
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [{ fetching }, dispatch] = useStateValue();
-    const [state, setState] = useState({ currentDate: Date.now(), currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
-    const { currentDate, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
+    const [state, setState] = useState({ currentDate: Date.now(), firstOpen: true, currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
+    const { currentDate, firstOpen, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
 
     const changeCurrentDate = ({date, dateFormated, showBookings, comesFromCalendar }) => {
         setState({ ...state, currentDate: date, currentDateFormated: dateFormated, showBookings, comesFromCalendar });
@@ -51,9 +51,14 @@ export const BookingDateSelector = (props) => {
         if(isDateDisabled(currentDate)) {
             setState( state => ({ ...state, currentDate: addDays(currentDate, 1) }));
         } else {
+            // This is for hidding calendar when view first open
+            if(firstOpen && !isToday(currentDate) && !isTomorrow(currentDate)) {
+                setState( state => ({ ...state, firstOpen: false, showBookings: false }));
+            }
             api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));
-                const normalizedTimeZoneBookings = bookings.map( booking => ({ ...booking, date: new Date(booking.date) }) );
+                const normalizedTimeZoneBookings = bookings.map( booking => ({ ...booking, date: new Date(booking.date).getTime() }) );
+
                 setState( state => ({ ...state, bookings: normalizedTimeZoneBookings }));
             });
         }
@@ -63,7 +68,7 @@ export const BookingDateSelector = (props) => {
         <div className={classes.container}>
             <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeCurrentDate} onOpenCalendar={openCalendar}/>
             <Spinner loading={fetching && showBookings}>
-                { comesFromCalendar && <h3 className={classes.dateIndicator} >TURNOS PARA {currentDateFormated}</h3> }
+                { (showBookings && comesFromCalendar) && <h3 className={classes.dateIndicator} >TURNOS PARA {currentDateFormated}</h3> }
                 <div className={classes.bookings}>
                     {showBookings && bookings.map((booking, index) => <BookingItem key={index} booking={booking} onSelect={onBookingSelect} /> )}
                 </div>

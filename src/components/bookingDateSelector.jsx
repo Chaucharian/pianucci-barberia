@@ -8,6 +8,7 @@ import * as appActions from '../actions/app';
 import Spinner from './spinner';
 import  { addDays, isToday, isTomorrow } from 'date-fns';
 import { isDateDisabled } from './daysListSelector';
+import TimeZone from 'moment-timezone';
 
 const styles = {
     container: {
@@ -49,7 +50,7 @@ export const BookingDateSelector = (props) => {
     useEffect( () => {
         // While current date isn't free move one day
         if(isDateDisabled(currentDate)) {
-            setState( state => ({ ...state, currentDate: addDays(currentDate, 1) }));
+            setState( state => ({ ...state, currentDate: addDays(currentDate, 1).getTime() }));
         } else {
             // This is for hidding calendar when view first open
             if(firstOpen && !isToday(currentDate) && !isTomorrow(currentDate)) {
@@ -57,7 +58,11 @@ export const BookingDateSelector = (props) => {
             }
             api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));
-                const normalizedTimeZoneBookings = bookings.map( booking => ({ ...booking, date: new Date(booking.date).getTime() }) );
+                
+                const normalizedTimeZoneBookings = bookings.map( booking =>{
+                    const date = TimeZone(booking.date, "America/Buenos_Aires")._i;
+                    return { ...booking, date };
+                });
 
                 setState( state => ({ ...state, bookings: normalizedTimeZoneBookings }));
             });

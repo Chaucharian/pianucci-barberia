@@ -26,6 +26,7 @@
     "ip": "^1.1.5",
     "lodash-es": "^4.17.15",
     "luxon": "^1.24.1",
+    "moment-timezone": "^0.5.31",
     "node-fetch": "^2.6.0",
     "pm2": "^4.2.3",
     "public-ip": "^4.0.1",

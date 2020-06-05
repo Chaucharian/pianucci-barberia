@@ -66,7 +66,7 @@ export const DaysListSelector = (props) => {
                     MAÑANA
                 </h2>
                 <h2 className={!showBookings || isOtherDay(date) ? classes.selected : ''} 
-                    onClick={() => (showBookings) && onOpenCalendar(addDays(new Date(), 2)) }
+                    onClick={() => (showBookings) && onOpenCalendar(dateToUnix(addDays(new Date(), 2))) }
                 >
                     OTRO DIA
                 </h2>

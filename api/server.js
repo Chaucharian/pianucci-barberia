@@ -37,6 +37,7 @@ app.use(cors());
 app.use(express.json());
 app.use('/', router);
 
+console.log("ENV",process.env.TZ);
 router.use(function (req, res, next) {
     console.log(`${req.method} ${req.originalUrl}`);
     // Handling not found manually and always redirecting to root in that case

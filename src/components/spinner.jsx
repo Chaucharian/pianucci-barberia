@@ -21,10 +21,10 @@ export const Spinner = props => {
 
     return ( 
         <>
-            <div className={classes.container}>
+            { loading ? <div className={classes.container}>
                 <img src={scissors} className={loading ? classes.show : classes.hide} width="40" height="40" />
-            </div>
-            { !loading && children ? children : <></> }
+            </div>  : 
+            children ? children : <></> }
         </>
     );
 }

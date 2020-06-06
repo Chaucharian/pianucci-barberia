@@ -59,12 +59,12 @@ export const BookingDateSelector = (props) => {
             api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));
                 
-                const normalizedTimeZoneBookings = bookings.map( booking =>{
-                    const date = TimeZone(booking.date, "America/Buenos_Aires")._i;
-                    return { ...booking, date };
-                });
+                // const normalizedTimeZoneBookings = bookings.map( booking =>{
+                //     const date = TimeZone(booking.date, "America/Buenos_Aires")._i;
+                //     return { ...booking, date };
+                // });
 
-                setState( state => ({ ...state, bookings: normalizedTimeZoneBookings }));
+                setState( state => ({ ...state, bookings }));
             });
         }
     }, [currentDate]);

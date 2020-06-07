@@ -139,3 +139,22 @@ export const getImageGalery = () => (
     })
     .then( response => response.json() )
 );
+
+export const getDaysOff = () => (
+    fetch(enviroment.baseUrl + '/getDaysOff', {
+        method: 'GET',
+    })
+    .then( response => response.json() )
+);
+
+export const setDaysOff = days => (
+    fetch(enviroment.baseUrl + '/setDaysOff', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ days })
+    })
+    .then( response => response.json() )
+);

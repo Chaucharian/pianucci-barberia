@@ -6,6 +6,7 @@ import ReactPageScroller from "react-page-scroller";
 import { withStyles } from '@material-ui/styles';
 import BookingAdminList from './bookingAdminList';
 import ScheduleHandler from './scheduleHandler';
+import DaysOff from './daysOff';
 
 const styles = {
     container: {
@@ -86,6 +87,7 @@ export const MainAdminViewer = (props) => {
             <Header onAction={actionHeaderHandler} isAdmin={true} ></Header>
             <div className={classes.container}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
+                    <DaysOff />
                     <ScheduleHandler />
                     <BookingAdminList onDisableScroll={disableScroll} />
                 </ReactPageScroller>

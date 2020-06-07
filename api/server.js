@@ -148,24 +148,24 @@ setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
 
 // END POINTS 
 
-app.get('/api/getAvailableDays', (request, response) => {
-    const availableDaysRef = firebaseDB.ref('/availableDays');
+app.get('/api/getDaysOff', (request, response) => {
+    const daysOffRef = firebaseDB.ref('/daysOff');
     const days = [];
 
-    availableDaysRef.once('value', availableDays => {
-        availableDays.forEach( day => {
-            days.push(day.val());
+    daysOffRef.once('value', daysOff => {
+        daysOff.forEach( dayOff => {
+            days.push(dayOff.val());
         });
-        response.json({ status: "available days!", days });
+        response.json({ status: "days off!", days });
     });
 });
 
-app.post('/api/setAvailableDays', (request, response) => {
+app.post('/api/setDaysOff', (request, response) => {
     const { days } = request.body;
-    const availableDaysRef = firebaseDB.ref('/availableDays');
+    const daysOffRef = firebaseDB.ref('/daysOff');
     
-    availableDaysRef.set(days);
-    response.json({ status: 'available days updated!' });
+    daysOffRef.set(days);
+    response.json({ status: 'days off updated!' });
 });
 
 app.get('/api/getImageGalery', (request, response) => {

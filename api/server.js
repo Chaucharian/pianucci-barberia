@@ -37,7 +37,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/', router);
 
-console.log("ENV",process.env.TZ);
 router.use(function (req, res, next) {
     console.log(`${req.method} ${req.originalUrl}`);
     // Handling not found manually and always redirecting to root in that case
@@ -146,6 +145,28 @@ const notificationDispatcher = () => {
 }
 
 setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
+
+// END POINTS 
+
+app.get('/api/getAvailableDays', (request, response) => {
+    const availableDaysRef = firebaseDB.ref('/availableDays');
+    const days = [];
+
+    availableDaysRef.once('value', availableDays => {
+        availableDays.forEach( day => {
+            days.push(day.val());
+        });
+        response.json({ status: "available days!", days });
+    });
+});
+
+app.post('/api/setAvailableDays', (request, response) => {
+    const { days } = request.body;
+    const availableDaysRef = firebaseDB.ref('/availableDays');
+    
+    availableDaysRef.set(days);
+    response.json({ status: 'available days updated!' });
+});
 
 app.get('/api/getImageGalery', (request, response) => {
     const imageGaleryRef = firebaseDB.ref('/imageGalery');

@@ -33,6 +33,10 @@ const styles = {
         display: "flex",
         justifyContent: "center",
         marginTop: "20%"
+    },
+    daysOffContainer: {
+        height: "200px",
+        overflow: "auto"
     }
 }
 
@@ -122,7 +126,9 @@ const DaysOff = props => {
         <div className={classes.container}>
             <h1>DIAS CHILL</h1>
             <div className={classes.morningSchedule}>
-                { daysOff.map( (nameDay, index) => <DayOffItem key={index} nameDay={nameDay} onDelete={deleteDay} />) }
+                <div className={classes.daysOffContainer}>
+                    { daysOff.map( (nameDay, index) => <DayOffItem key={index} nameDay={nameDay} onDelete={deleteDay} />) }
+                </div>
                 <div className={classes.timeRange}>
                     <Select label="Dia libre" selection={newDayOff} onChange={selectDay}> 
                         {defaultDaysSelection}

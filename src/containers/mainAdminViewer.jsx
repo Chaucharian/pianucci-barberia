@@ -71,10 +71,12 @@ export const MainAdminViewer = (props) => {
     const actionHeaderHandler = action => {
         if(action === "logout") {
             dispatch(appActions.logoutUser(true));
-        } else if(action === "schedule") {
+        } else if(action === "daysOff") {
             dispatch(appActions.changePage(0));
-        } else if(action === "bookings") {
+        } else if(action === "schedule") {
             dispatch(appActions.changePage(1));
+        } else if(action === "bookings") {
+            dispatch(appActions.changePage(2));
         }
     }
 
@@ -87,7 +89,7 @@ export const MainAdminViewer = (props) => {
             <Header onAction={actionHeaderHandler} isAdmin={true} ></Header>
             <div className={classes.container}>
                 <ReactPageScroller ref={setScrollHandler} pageOnChange={pageOnChange} blockScrollDown={scrollDownDisabled} blockScrollUp={scrollUpDisabled} >
-                    <DaysOff />
+                    <DaysOff onDisableScroll={disableScroll} />
                     <ScheduleHandler />
                     <BookingAdminList onDisableScroll={disableScroll} />
                 </ReactPageScroller>

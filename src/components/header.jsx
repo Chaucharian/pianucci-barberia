@@ -114,6 +114,15 @@ const Header = (props) => {
     const adminMenu = () => {
         return ( 
             <>
+               <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("daysOff");
+                    }}>
+                    DIAS CHILL
+                    </a>
+                </li> 
                 <li>
                     <a 
                     onClick={() => {

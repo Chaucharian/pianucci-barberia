@@ -41,7 +41,7 @@ const BookingAdminList = props => {
     const [refreshList, setRefreshList] = useState(false);
     const [currentDate, setCurrentDate] = useState(Date.now());
     const [showBookings, setShowBookings] = useState(true);
-    const { user: { bookings }, fetching, currentPage } = state;
+    const { user: { bookings, daysOff }, fetching, currentPage } = state;
 
     const hasBookings = () => bookings.length > 0;
 
@@ -74,7 +74,7 @@ const BookingAdminList = props => {
         <div className={classes.container}>
             <h1>TUS TURNOS</h1>
             <div className={classes.daySelector}> 
-                <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeDay} onOpenCalendar={openCalendar}/>
+                <DaysListSelector date={currentDate} showBookings={showBookings} daysOff={daysOff} onDaySelected={changeDay} onOpenCalendar={openCalendar}/>
             </div>
             <div className={classes.bookingListContainer} onScroll={ () => onDisableScroll(true)}>
             <Spinner loading={fetching && showBookings}>

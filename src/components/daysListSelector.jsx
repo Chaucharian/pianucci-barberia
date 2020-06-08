@@ -29,17 +29,16 @@ const styles = {
         cursor: "default"
     }
 }
-export const isDateDisabled = date => isSunday(date) || isMonday(date);
+export const isDateDisabled = (daysOff, date) => daysOff.filter( dayOff => new Date(date).getDay() === dayOff).length !== 0 ? true : false;
 
 export const DaysListSelector = (props) => {
-    const { classes, date, showBookings, onOpenCalendar, onDaySelected } = props; 
+    const { classes, date, showBookings, daysOff, onOpenCalendar, onDaySelected } = props; 
     const isOtherDay = date => !isTomorrow(date) && !isToday(date);
     const dateToUnix = date => date.getTime();
     const startDate = dateToUnix(addDays(new Date(), 1));
     const endDate = dateToUnix(addDays(new Date(), 15));
 
     const daySelection = (date, calendarSelection = false) => {
-        console.log(date)
         const unixDate = dateToUnix(date);
         const newBookingStatus = calendarSelection ? calendarSelection : !isOtherDay(date);
         const dateFormated = format(date,"dd/MM/yyyy");
@@ -48,7 +47,7 @@ export const DaysListSelector = (props) => {
 
     const isWeekend = date => {
         const normalizedDate = addDays(date, 1);
-        return isSunday(normalizedDate) || isMonday(normalizedDate);
+        return isDateDisabled(daysOff, normalizedDate);
     }
 
     const disableDates = date => date < new Date().getTime() || date > endDate || isWeekend(date);
@@ -56,13 +55,13 @@ export const DaysListSelector = (props) => {
     return (
         <div className={classes.container}>
             <div className={classes.days}>
-                <h2 className={(isToday(date) ? classes.selected : '') +' '+ (isDateDisabled(new Date()) ? classes.disabled : '')} 
-                    onClick={() => !isDateDisabled(new Date()) && daySelection( new Date() ) }
+                <h2 className={(isToday(date) ? classes.selected : '') +' '+ (isDateDisabled(daysOff,new Date()) ? classes.disabled : '')} 
+                    onClick={() => !isDateDisabled(daysOff,new Date()) && daySelection( new Date() ) }
                 >
                     HOY 
                 </h2>
-                <h2 className={(isTomorrow(date) ? classes.selected : '') +' '+ (isDateDisabled(addDays(new Date(), 1)) ? classes.disabled : '')} 
-                    onClick={() => !isDateDisabled(addDays(new Date(), 1)) && daySelection( addDays(new Date(), 1)) }
+                <h2 className={(isTomorrow(date) ? classes.selected : '') +' '+ (isDateDisabled(daysOff,addDays(new Date(), 1)) ? classes.disabled : '')} 
+                    onClick={() => !isDateDisabled(daysOff,addDays(new Date(), 1)) && daySelection( addDays(new Date(), 1)) }
                 >
                     MAÑANA
                 </h2>

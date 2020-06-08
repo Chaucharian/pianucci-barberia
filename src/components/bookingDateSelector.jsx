@@ -37,7 +37,7 @@ const styles = {
 
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
-    const [{ fetching }, dispatch] = useStateValue();
+    const [{ fetching, user: { daysOff } }, dispatch] = useStateValue();
     const [state, setState] = useState({ currentDate: Date.now(), firstOpen: true, currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
     const { currentDate, firstOpen, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
 
@@ -49,7 +49,7 @@ export const BookingDateSelector = (props) => {
     
     useEffect( () => {
         // While current date isn't free move one day
-        if(isDateDisabled(currentDate)) {
+        if(isDateDisabled(daysOff, currentDate)) {
             setState( state => ({ ...state, currentDate: addDays(currentDate, 1).getTime() }));
         } else {
             // This is for hidding calendar when view first open
@@ -58,12 +58,6 @@ export const BookingDateSelector = (props) => {
             }
             api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));
-                
-                // const normalizedTimeZoneBookings = bookings.map( booking =>{
-                //     const date = TimeZone(booking.date, "America/Buenos_Aires")._i;
-                //     return { ...booking, date };
-                // });
-
                 setState( state => ({ ...state, bookings }));
             });
         }
@@ -71,7 +65,7 @@ export const BookingDateSelector = (props) => {
 
     return (
         <div className={classes.container}>
-            <DaysListSelector date={currentDate} showBookings={showBookings} onDaySelected={changeCurrentDate} onOpenCalendar={openCalendar}/>
+            <DaysListSelector date={currentDate} showBookings={showBookings} daysOff={daysOff} onDaySelected={changeCurrentDate} onOpenCalendar={openCalendar}/>
             <Spinner loading={fetching && showBookings}>
                 { (showBookings && comesFromCalendar) && <h3 className={classes.dateIndicator} >TURNOS PARA {currentDateFormated}</h3> }
                 <div className={classes.bookings}>

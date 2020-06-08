@@ -226,18 +226,25 @@ app.post('/api/getUserData', (request, response) => {
     const { userId } = request.body;
     const usersRef = firebaseDB.ref('/users');
     const bookingsRef = firebaseDB.ref('/bookings');
+    const daysOffRef = firebaseDB.ref('/daysOff');
 
     usersRef.once('value', snapshot => {
         snapshot.forEach(user => {
             const userIdTemp = user.val().id;
             if (userIdTemp === userId) {
                 bookingsRef.once('value', bookingRef => {
-                    const bookings = [];
-                    bookingRef.forEach(booking => {
-                        bookings.push({ ...booking.val(), id: booking.key });
+                    daysOffRef.once('value', daysOff => {
+                        const days = [];
+                        daysOff.forEach( dayOff => {
+                            days.push(dayOff.val());
+                        });
+                        const bookings = [];
+                        bookingRef.forEach(booking => {
+                            bookings.push({ ...booking.val(), id: booking.key });
+                        });
+                        const filterdBookings = bookings.filter(booking => booking.clientId === userId);
+                        response.json({ status: 'user logged in successfullt!', daysOff: days, user: { ...user.val(), bookings: filterdBookings } });
                     });
-                    const filterdBookings = bookings.filter(booking => booking.clientId === userId);
-                    response.json({ status: 'user logged in successfullt!', user: { ...user.val(), bookings: filterdBookings } });
                 });
             }
         });
@@ -401,11 +408,18 @@ app.post('/api/updateBooking', (request, response) => {
 app.post('/api/createUser', (request, response) => {
     const { name, email, phone, id } = request.body;
     const usersRef = firebaseDB.ref('users');
+    const daysOffRef = firebaseDB.ref('/daysOff');
     const userModel = { name, email, id, phone, bookings: [] };
+    const days = [];
 
     usersRef.push(userModel);
 
-    response.json({ status: 'user created successfully!', user: userModel });
+    daysOffRef.once('value', daysOff => {
+        daysOff.forEach( dayOff => {
+            days.push(dayOff.val());
+        });
+        response.json({ status: 'user created successfully!', daysOff: days, user: userModel });
+    });
 });
 
 

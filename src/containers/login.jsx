@@ -110,10 +110,10 @@ const Login = (props) => {
             .then(response => {
                 const { uid: userId } = response.user;
 
-                api.getUserData(userId).then(({ user }) => {
+                api.getUserData(userId).then(({ user, daysOff }) => {
                     // api.getUserBookings(userId).then(({ bookings }) => {
                         const login = token => {
-                            const userData = { ...user, notificationToken: token };
+                            const userData = { ...user, notificationToken: token, daysOff };
                             dispatch(appActions.fetching(false));
                             window.localStorage.setItem("user", JSON.stringify(userData));
                             dispatch(appActions.userLoggedIn(userData));

@@ -107,7 +107,6 @@ const DaysOff = props => {
     const deleteDay = day => setDaysOff(daysOff.filter( dayOff => dayOff !== day ));
 
     const submit = () => {
-        console.log(daysOff.map( day => fromNameDayToNumber(day)))
         const days = daysOff.map( day => fromNameDayToNumber(day));
         api.setDaysOff(days).then( (response) => console.log(response) );
     }

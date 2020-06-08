@@ -45,25 +45,25 @@ const DaysOff = props => {
     const fromNameDayToNumber = dayName => {
         let numberDay = 0;
         switch(dayName) {
-            case dayName === 'Domingo':
+            case 'Domingo':
                 numberDay = 0;
             break;
-            case dayName === 'Lunes':
+            case 'Lunes':
                 numberDay = 1;
             break;
-            case dayName === 'Martes':
+            case 'Martes':
                 numberDay = 2;
             break;
-            case dayName === 'Miercoles':
+            case 'Miercoles':
                 numberDay = 3;
             break;
-            case dayName === 'Jueves':
+            case 'Jueves':
                 numberDay = 4;
             break;
-            case dayName === 'Viernes':
+            case 'Viernes':
                 numberDay = 5;
             break;
-            case dayName === 'Sabado':
+            case 'Sabado':
                 numberDay = 6;
             break;
         }
@@ -98,16 +98,18 @@ const DaysOff = props => {
         return nameDay;
     }
 
-    const selectDay = (day) => {
-        console.log(day)
+    const selectDay = (label, day) => {
+        // if day exists do nothing
+        if(daysOff.filter( dayOff => dayOff === day ).length !== 0) return;
+        setDaysOff([...daysOff, day]);
     }
 
     const deleteDay = day => setDaysOff(daysOff.filter( dayOff => dayOff !== day ));
 
     const submit = () => {
-        api.setDaysOff().then( ({ days }) => {
-            setDaysOff(days);
-        });
+        console.log(daysOff.map( day => fromNameDayToNumber(day)))
+        const days = daysOff.map( day => fromNameDayToNumber(day));
+        api.setDaysOff(days).then( (response) => console.log(response) );
     }
 
     useEffect( () => {

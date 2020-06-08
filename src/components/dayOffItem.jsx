@@ -26,6 +26,9 @@ const styles = {
         "& :hover": {
             color: "#e21111"
         }
+    },
+    nameContainer: {
+        width: "150px"
     }
 }
 
@@ -34,7 +37,9 @@ const DayOffItem = (props) => {
 
     return (
         <div className={classes.container}>
-            <h2>{ nameDay }</h2>
+            <div className={classes.nameContainer}>
+                <h2>{ nameDay }</h2>
+            </div>
             <button className={classes.crossButton} onClick={() => onDelete(nameDay) }><i className="fas fa-times"></i></button>
         </div>
     );

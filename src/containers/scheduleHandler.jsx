@@ -42,7 +42,7 @@ const ScheduleHandler = props => {
     const { from: morningFrom, to: morningTo } = morningSchedule;
     const { from: afternoonFrom, to: afternoonTo } = afternoonSchedule;
     const defaultMorningTimeRange = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
-    const defaultAfternoonTimeRange = ["16:00", "17:00", "18:00", "19:00", "20:00", "21:00"];
+    const defaultAfternoonTimeRange = ["14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"];
 
     const morningSelection = (label, time) => {
         if(label === 'Desde') {

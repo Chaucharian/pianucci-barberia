@@ -75,9 +75,9 @@ const Login = (props) => {
                 const newUser = { email, id, name, phone };
 
                 api.createUser(newUser)
-                    .then(({ user }) => {
+                    .then(({ user, daysOff }) => {
                         const sigin = token => {
-                            const userData = { ...user, notificationToken: token };
+                            const userData = { ...user, notificationToken: token, daysOff };
                             dispatch(appActions.fetching(false));
                             window.localStorage.setItem("user", JSON.stringify(userData));
                             dispatch(appActions.userLoggedIn(userData));

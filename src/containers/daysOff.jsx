@@ -23,12 +23,6 @@ const styles = {
             fontWeight: "lighter"
         }
     },
-    morningSchedule: {
-        marginBottom: "60px"
-    },
-    timeRange: {
-        display: "flex"
-    },
     buttonContainer: {
         display: "flex",
         justifyContent: "center",
@@ -42,7 +36,6 @@ const styles = {
 
 const DaysOff = props => {
     const { classes } = props;
-    const [newDayOff, setNewDayOff] = useState('');
     const [daysOff, setDaysOff] = useState([]);
     const defaultDaysSelection = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
 
@@ -125,12 +118,12 @@ const DaysOff = props => {
     return (
         <div className={classes.container}>
             <h1>DIAS CHILL</h1>
-            <div className={classes.morningSchedule}>
+            <div>
                 <div className={classes.daysOffContainer}>
                     { daysOff.map( (nameDay, index) => <DayOffItem key={index} nameDay={nameDay} onDelete={deleteDay} />) }
                 </div>
-                <div className={classes.timeRange}>
-                    <Select label="Dia libre" selection={newDayOff} onChange={selectDay}> 
+                <div>
+                    <Select label="Dia libre" selection={""} onChange={selectDay}> 
                         {defaultDaysSelection}
                     </Select>
                 </div>

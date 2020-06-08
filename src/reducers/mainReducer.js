@@ -4,7 +4,7 @@ export const initialState = {
     currentPage: 0,
     showBookingSection: false,
     showUserProfileSection: false,
-    user: { id: '', bookings: [], name: '' },
+    user: { id: '', bookings: [], name: '', daysOff: [], notificationToken: '', phone: '', isAdmin: false },
     scrollUpDisabled: false,
     scrollDownDisabled: false,
     bookingCreated: false,

@@ -37,8 +37,10 @@ const styles = {
         }
     },
     option1: {
+        marginBottom: "10px",
         width: "100%",
-        height: "200px"
+        height: "200px",
+        background: "url(https://pianuccibarberia.com/assets/corte1.jpg)"
     },
     option2: {
         width: "50%",
@@ -56,6 +58,14 @@ const styles = {
     secondButtonsRow: {
         display: "flex",
         marginTop: "5px"
+    },
+    time: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        "& svg":{
+            fontSize: "20px",
+        }
     }
 }
 
@@ -66,21 +76,20 @@ export const ServiceTypeSelector = (props) => {
         <div className={classes.container}>
             <div className={classes.servicesContainer}>
                 <div className={classes.option1}>
-                    <button onClick={() => serviceSelected({ name: 'classic', duration: 30})}>
-                        CLASSIC
+                    <button onClick={() => serviceSelected({ name: 'Corte', duration: 30})}>
+                        <p>V.I.P</p>
+                        <div className={classes.time}> 
+                        sin limite<i className="far fa-clock"></i>
+                        </div>
                     </button>    
                 </div>
-                <div className={classes.secondButtonsRow}>
-                    <div className={classes.option2}>
-                        <button onClick={() => serviceSelected({ name: 'complete', duration: 60})}>
-                            COMPLETE
-                        </button>    
-                    </div>
-                    <div className={classes.option3}>
-                        <button onClick={() => serviceSelected({ name: 'custom', duration: 120})}>
-                            CUSTOM
-                        </button>    
-                    </div>
+                <div className={classes.option1}>
+                    <button onClick={() => serviceSelected({ name: 'Corte', duration: 30})}>
+                        <p>CLASSIC</p>
+                        <div className={classes.time}> 
+                            30<i className="far fa-clock"></i>
+                        </div>
+                    </button>    
                 </div>
             </div>
         </div>

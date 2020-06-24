@@ -9,8 +9,8 @@ import { NotFoundPage } from '../components/notFoundPage';
 import MainViewer from './mainViewer';
 import MainAdminViewer from './mainAdminViewer';
 import Login from './login';
-import loadingGif from '../assets/pianucci-loading.gif';
 import * as api from '../services/api';
+import { useHistory } from "react-router-dom";
 
 const routes = {
     '/': () => <MainViewer />,
@@ -57,9 +57,9 @@ export const Router = () => {
     }
 
     const viewToRender = () => {
-        let resultView = <LoadingImg image={loadingGif} />
+        let resultView = <LoadingImg image={'https://pianuccibarberia.com/assets/pianucci-scissors.gif'} />
         if (!loading) {
-            resultView = routeResult;
+           resultView = routeResult;
         }
         return resultView;
     }

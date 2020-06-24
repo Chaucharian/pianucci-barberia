@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import BurgerButton from './burgerButton';
 import { fonts, colorScheme } from '../styles/styles';
-import otra from "../assets/a.png";
-import logoImage from '../assets/logo.png';
-import darkLogoImage from '../assets/dark_logo.png';
+import logo from '../assets/logo.png';
 
 const styles = {
     header: {
@@ -69,8 +67,9 @@ const styles = {
             width: "100%",
             height: "100%",
             display: "flex",
-            background: `url(${logoImage})`,
-            backgroundPosition: "-5px -6px",
+            background: `url(${logo})`,
+            backgroundSize: "195px",
+            backgroundPosition: "-20px -90px"
         }
     },
     logoHidden: {
@@ -91,7 +90,7 @@ const styles = {
             display: "block",
             width: "100%",
             height: "100%",
-            background: "url("+darkLogoImage+")",
+            background: "url("+logo+") no-repeat center center fixed",
         }
     },
     logoBlackVisible: {

@@ -70,13 +70,13 @@ const styles = {
 }
 
 export const ServiceTypeSelector = (props) => {
-    const { classes, serviceSelected } = props; 
+    const { classes, onServiceSelected } = props; 
 
     return (
         <div className={classes.container}>
             <div className={classes.servicesContainer}>
                 <div className={classes.option1}>
-                    <button onClick={() => serviceSelected({ name: 'Corte', duration: 30})}>
+                    <button onClick={() => onServiceSelected({ name: 'VIP', duration: 'Sin limite de tiempo'})}>
                         <p>V.I.P</p>
                         <div className={classes.time}> 
                         sin limite<i className="far fa-clock"></i>
@@ -84,10 +84,10 @@ export const ServiceTypeSelector = (props) => {
                     </button>    
                 </div>
                 <div className={classes.option1}>
-                    <button onClick={() => serviceSelected({ name: 'Corte', duration: 30})}>
+                    <button onClick={() => onServiceSelected({ name: 'Classic', duration: 30})}>
                         <p>CLASSIC</p>
                         <div className={classes.time}> 
-                            30<i className="far fa-clock"></i>
+                            60<i className="far fa-clock"></i>
                         </div>
                     </button>    
                 </div>

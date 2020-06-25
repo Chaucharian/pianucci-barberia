@@ -7,6 +7,7 @@ import ViewSwitcher from '../components/viewSwitcher';
 import ServiceTypeSelector from '../components/serviceTypeSelector';
 import BookingConfirmation from '../components/bookingConfirmation';
 import BookingDateSelector from '../components/bookingDateSelector';
+import VipDescriptionBooking from '../components/vipDescriptionBooking';
 import * as userActions from '../actions/user';
 import * as api from '../services/api';
 
@@ -40,17 +41,20 @@ export const BookingHandler = (props) => {
             setState({ serviceSelected: '', currentStep: 1, bookingSelected: {} });
         }
     }
-    // const createBooking = booking => dispatch(userActions.createBooking(booking));
 
-    const selectService = service => {
-        setState({ ...internalState, serviceSelected: service, currentStep: 2 });
-    }
+    const selectService = service => setState({ ...internalState, serviceSelected: service, currentStep: 2 });
+
+    const selectBooking = bookingSelected => setState({ ...internalState, currentStep: 3, bookingSelected });
+
+    const vipConfirmation = () => setState({ ...internalState, currentStep: 3, bookingSelected: { date: 'A confirmar'} });
 
     const changeStep = (newStep) => {
         if(newStep < currentStep) {
             setState({ ...internalState, currentStep: newStep });
         } 
     } 
+
+    const viewBasedOnServiceSelected = () => serviceSelected.name === 'VIP' ? <VipDescriptionBooking onConfirm={vipConfirmation} /> :  <BookingDateSelector onBookingSelect={selectBooking} />;
 
     useEffect( () => {
         if(confirmBookingCreation) {
@@ -74,28 +78,20 @@ export const BookingHandler = (props) => {
         }
     }, [currentStep]);
 
-    // useEffect( () => {
-    //     console.log("BOOKING ",bookingSelected)
-    // }, [bookingSelected]);
-
     return (
         <div className={classes.container}>
             <h2>RESERVA UN TURNO</h2>
             <StepIndicator currentStep={currentStep} clicked={changeStep}></StepIndicator>
             <ViewSwitcher targetView={currentStep}>
                 <ServiceTypeSelector 
-                    serviceSelected={selectService}
-                ></ServiceTypeSelector>
-                <BookingDateSelector 
-                    onBookingSelect={ bookingSelected => {
-                        setState({ ...internalState, currentStep: 3, bookingSelected });
-                    }}
-                ></BookingDateSelector>
+                    onServiceSelected={selectService}
+                />
+                {viewBasedOnServiceSelected()}
                 <BookingConfirmation 
                     bookingSelected={bookingSelected} 
                     serviceSelected={serviceSelected}
-                    onSubmit={ response => submitBooking(response) }  
-                ></BookingConfirmation>
+                    onSubmit={submitBooking}  
+                />
             </ViewSwitcher>
         </div>
     );

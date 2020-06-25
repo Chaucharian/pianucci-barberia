@@ -44,6 +44,10 @@ const BookingList = props => {
 
     const hasBookings = () => bookings.length > 0;
 
+    const normalizeInfo = (booking, index) => booking.type === 'VIP' ? <h2 key={index} >Se comunicaran contigo para coordinar tu visita <br></br>&#x1F44C; </h2> : <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} />;
+
+    const showBookings = () => hasBookings() ? bookings.map( (booking, index) => normalizeInfo(booking,index)) : false;
+
     const deleteBookingHandler = ({ id }) => {
         api.deleteBooking(id).then( () => setRefreshList(true) );
     }
@@ -62,8 +66,7 @@ const BookingList = props => {
             <h1>TUS TURNOS</h1>
             <div className={classes.bookingListContainer}>
             { 
-                hasBookings() ? bookings.map( (booking, index) => 
-                <UserBooking key={index} booking={booking} onDelete={deleteBookingHandler} />) :
+                showBookings() ||
                 <h2>No tienes ningun turno activo &#x1F625;</h2>  
             }
             </div>

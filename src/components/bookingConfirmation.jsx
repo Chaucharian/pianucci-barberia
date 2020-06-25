@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/styles';
 import { format, isToday } from 'date-fns';
-import AnimatedButton from './animatedButton';
 import ReflectButton from './reflectButton';
 
 const styles = {
@@ -38,8 +37,8 @@ export const BookingConfirmation = (props) => {
     const { classes, bookingSelected, serviceSelected, onSubmit } = props; 
     const { date } = bookingSelected;
     const { name: serviceName, duration } = serviceSelected;
-    const dateFormated = format(date,"dd/MM/yyyy");
-    const hours = new Date(date).getHours();
+    const dateFormated = typeof date === 'string' ? date : format(date,"dd/MM/yyyy");
+    const hours = typeof date === 'string' ? null : new Date(date).getHours();
 
     return (
         <div className={classes.container}>
@@ -48,9 +47,9 @@ export const BookingConfirmation = (props) => {
                 <ul className={classes.list}>
                     <li>
                         <p><b>Día </b> {dateFormated}</p>
-                        <p><b>Hora </b> {hours}</p>
-                        <p><b>Duración </b> {duration} minutos</p>
-                        <p><b>Estilo </b> {serviceName}</p>
+                        { hours && <p><b>Hora </b> {hours}</p> }
+                        <p><b>Duración </b> {duration}</p>
+                        <p><b>Turno </b> {serviceName}</p>
                         <p><b>Ubicación </b> Pianucci Barberia - 25 de Mayo 1234 2 º B</p>
                     </li>
                 </ul>

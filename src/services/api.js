@@ -158,3 +158,15 @@ export const setDaysOff = days => (
     })
     .then( response => response.json() )
 );
+
+export const getBookingsByType = bookingType => (
+    fetch(enviroment.baseUrl + '/getBookingsByType', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bookingType })
+    })
+    .then( response => response.json() )
+);

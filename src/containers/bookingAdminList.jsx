@@ -60,7 +60,7 @@ const BookingAdminList = props => {
     }
 
     useEffect( () => {
-        if(currentDate || refreshList || currentPage === 1) {
+        if(currentDate || refreshList || currentPage === 2) {
             dispatch(appActions.fetching(true))
             api.getAllBookingsByDate(currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));

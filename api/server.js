@@ -30,6 +30,7 @@ admin.initializeApp({
     databaseURL: "https://pianucci-barberia.firebaseio.com"
 });
 const firebaseDB = admin.database();
+const NOTIFICATION_INTERVAL = 1000 * 60 * 10; // 10 min
 app.use(express.static(rootPath+"dist"));
 app.use("/assets", express.static(rootPath+"src/assets"));
 app.use(express.static(rootPath));
@@ -144,7 +145,7 @@ const notificationDispatcher = () => {
     });
 }
 
-setInterval(() => notificationDispatcher(), 1000 * 60 * 60);
+setInterval(() => notificationDispatcher(), NOTIFICATION_INTERVAL);
 
 // END POINTS 
 
@@ -285,6 +286,33 @@ app.get('/api/getAvailableHours', (request, response) => {
         const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
 
         response.json({ status: "hours retrieved!", morning: { from: mStartingTime, to: mEndingTime }, afternoon: { from: aStartingTime, to: aEndingTime } });
+    });
+});
+
+app.post('/api/getBookingsByType', (request, response) => {
+    const { bookingType } = request.body;
+    const bookingRef = firebaseDB.ref('/bookings');
+    const usersRef = firebaseDB.ref('/users');
+    const bookings = [];
+
+    bookingRef.once('value', async bookingSnapshot => {
+        const bookingsRaw = [];
+        bookingSnapshot.forEach(booking => {
+            bookingsRaw.push({ ...booking.val(), id: booking.key });
+        });
+        // filtered by type
+        const filteredBookings = bookingsRaw.filter(booking => booking.type === bookingType);
+        usersRef.once('value', usersSnapshot => {
+            usersSnapshot.forEach(user => {
+                const { name, phone, id } = user.val();
+                filteredBookings.map(booking => {
+                    if (booking.clientId === id) {
+                        bookings.push({ ...booking, name, phone });
+                    }
+                });
+            });
+            response.json({ status: "bookings retrived!", bookings });
+        });
     });
 });
 

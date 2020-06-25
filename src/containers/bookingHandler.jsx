@@ -62,7 +62,7 @@ export const BookingHandler = (props) => {
                 userId: user.id,
                 type: serviceSelected.name,
                 duration: serviceSelected.duration,
-                date: bookingSelected.date
+                date: bookingSelected.date === 'A confirmar' ? 0 : bookingSelected.date
             };
             api.createBooking(requestPayload).then( response => {
                 onGoUp();

@@ -74,10 +74,11 @@ const styles = {
 const UserBooking = (props) => {
     const { classes, booking, isAdmin, onDelete } = props;
     const [ isModalOpen, showModal] = useState(false);
-    const { date, status, name, phone } = booking;
+    const { date, status, type, name, phone } = booking;
     const dateFormated = format(date,"dd/MM/yyyy");
     const hour = getHours(date) >= 10 ? getHours(date)+":00" : "0"+getHours(date)+":00";
     const isBookingReserved = status === 'reserved';
+    const isVIP = type === 'VIP';
 
     const modalHandler = action => {
         if(action === "confirm") {
@@ -97,7 +98,7 @@ const UserBooking = (props) => {
                     <a href={`tel:${phone}`}><strong>{ phone }</strong></a>
                 </> 
                 }
-                { !name && <p>{ dateFormated }</p> }
+                { (!name && !isVIP) && <p>{ dateFormated }</p> }
             </>
         );
     }
@@ -117,9 +118,9 @@ const UserBooking = (props) => {
                 <div className={classes.description}>
                     { descriptionToShow()}
                 </div>
-                <div className={classes.time}>
+                { !isVIP && <div className={classes.time}>
                     <strong>{ hour }</strong>
-                </div>
+                </div> }
                 { isBookingReserved && <button className={classes.crossButton} onClick={() => showModal(true)}><i className="fas fa-times"></i></button> }
             </div>
         </>

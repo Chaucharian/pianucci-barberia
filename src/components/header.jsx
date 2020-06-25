@@ -140,6 +140,15 @@ const Header = (props) => {
                     TURNOS
                     </a>
                 </li> 
+                <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("vip");
+                    }}>
+                    VIP
+                    </a>
+                </li> 
                 <li><a onClick={() => onAction("logout")}>SALIR</a></li>
             </>
         );

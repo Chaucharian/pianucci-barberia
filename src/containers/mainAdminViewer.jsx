@@ -7,6 +7,7 @@ import { withStyles } from '@material-ui/styles';
 import BookingAdminList from './bookingAdminList';
 import ScheduleHandler from './scheduleHandler';
 import DaysOff from './daysOff';
+import SpecialBookings from './specialBookings';
 
 const styles = {
     container: {
@@ -77,6 +78,8 @@ export const MainAdminViewer = (props) => {
             dispatch(appActions.changePage(1));
         } else if(action === "bookings") {
             dispatch(appActions.changePage(2));
+        } else if(action === "vip") {
+            dispatch(appActions.changePage(3));
         }
     }
 
@@ -92,6 +95,7 @@ export const MainAdminViewer = (props) => {
                     <DaysOff />
                     <ScheduleHandler />
                     <BookingAdminList onDisableScroll={disableScroll} />
+                    <SpecialBookings />
                 </ReactPageScroller>
             </div>
         </div>

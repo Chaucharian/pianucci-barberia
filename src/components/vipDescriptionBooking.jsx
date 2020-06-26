@@ -32,8 +32,11 @@ export const VipDescriptionBooking = (props) => {
 
     return (
         <div className={classes.container}>
-            <h1>ESTE TURNO ES VIP PAPI AGARRATE EL OPI</h1>
-            <ReflectButton text="CONFIRMAR" clicked={() => onConfirm("confirm")} />
+            <div >
+                <h1>Reserva espcial</h1>
+                <h2>Este tipo de reservas son coordinadas directamen</h2>
+            </div>
+            <ReflectButton text="ESTOY DE ACUERDO" clicked={() => onConfirm("confirm")} />
         </div>
     );
 }

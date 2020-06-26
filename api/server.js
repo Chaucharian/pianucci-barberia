@@ -1,5 +1,4 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
 const fetch = require('node-fetch');
 const luxon = require('luxon');
 const { isSameDay, isSameHour } = require('date-fns');
@@ -14,17 +13,6 @@ const rootPath = path.join(__dirname, '../');
 const distPath = path.join(__dirname, '../') + 'dist/'
 const assetsPath = path.join(__dirname, '../') + 'src/assets/'
 const port = process.env.PORT || 8080;
-const credentials = {
-    client: {
-        id: '6630f184387c425e8912e1495be328c9',
-        secret: '6d61d7e4b38f4b0e828091f01b16f46b',
-    },
-    auth: {
-        tokenHost: 'https://api.instagram.com',
-        tokenPath: '/oauth/access_token'
-    }
-};
-const oauth2 = require('simple-oauth2').create(credentials);
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://pianucci-barberia.firebaseio.com"
@@ -34,6 +22,8 @@ const NOTIFICATION_INTERVAL = 1000 * 60 * 10; // 10 min
 app.use(express.static(rootPath+"dist"));
 app.use("/assets", express.static(rootPath+"src/assets"));
 app.use(express.static(rootPath));
+app.use(express.static(rootPath+'src/'));
+console.log(rootPath)
 app.use(cors());
 app.use(express.json());
 app.use('/', router);
@@ -41,10 +31,10 @@ app.use('/', router);
 router.use(function (req, res, next) {
     console.log(`${req.method} ${req.originalUrl}`);
     // Handling not found manually and always redirecting to root in that case
-    if (!req.originalUrl.includes('/api') && (!req.originalUrl.includes('/login') || !req.originalUrl.includes('/admin') )) {
-        res.sendFile(distPath+'index.html');
-        return;
-    }
+    // if (!req.originalUrl.includes('/api') && (!req.originalUrl.includes('/login') || !req.originalUrl.includes('/admin') )) {
+    //     res.sendFile(distPath+'index.html');
+    //     return;
+    // }
     next();
 });
 

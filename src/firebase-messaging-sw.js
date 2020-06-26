@@ -1,7 +1,9 @@
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
-// importScripts('/__/firebase/init.js');
-const firebaseConfig = {
+
+// Initialize the Firebase app in the service worker by passing in the
+// messagingSenderId.
+firebase.initializeApp({
     apiKey: "AIzaSyD2y6eJmIuI-aT0muEMFtURhsXSev0HLhA",
     authDomain: "pianucci-barberia.firebaseapp.com",
     databaseURL: "https://pianucci-barberia.firebaseio.com",
@@ -10,10 +12,7 @@ const firebaseConfig = {
     messagingSenderId: "276894270634",
     appId: "1:276894270634:web:663b249fd6a3c0e5827cd3",
     measurementId: "G-3BBYNVTEQR"
-};
-// Initialize the Firebase app in the service worker by passing in the
-// messagingSenderId.
-firebase.initializeApp(firebaseConfig);
+});
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.

@@ -4,7 +4,7 @@ import firebase from "firebase";
 import "firebase/auth";
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
-import firebaseConfig from '../firebaseToken';
+import firebaseConfig from '../../credentials/firebaseToken';
 import { NotFoundPage } from '../components/notFoundPage';
 import MainViewer from './mainViewer';
 import MainAdminViewer from './mainAdminViewer';

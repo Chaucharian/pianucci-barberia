@@ -53,7 +53,7 @@ export const BookingConfirmation = (props) => {
                         <p><b>Ubicación </b> Pianucci Barberia - 25 de Mayo 1234 2 º B</p>
                     </li>
                 </ul>
-                { isToday(date) && <p className={classes.warning}><b>¡ESPERA! Verifica que los datos sean correctos, este turno no se podra cancelar</b></p> }
+                { (hours && isToday(date)) && <p className={classes.warning}><b>¡ESPERA! Verifica que los datos sean correctos, este turno no se podra cancelar</b></p> }
             </div>
             <div className={classes.buttons}>
                 <ReflectButton text="CANCELAR" clicked={() => onSubmit("cancel")} />

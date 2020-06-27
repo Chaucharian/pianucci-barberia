@@ -111,7 +111,7 @@ const UserBooking = (props) => {
                 onlyConfirm={sameDay()}
                 open={isModalOpen} 
                 title={sameDay() ?  "No puedes eliminar esta reserva" : "¿Seguro quieres eliminar esta reserva?" }
-                content={ sameDay() ? "No puedes eliminar una reserva en la misma fecha que la creaste, contactate con la barberia para realizar este cambio" : "Una vez hecho tendras que crear una nueva reserva" }
+                content={ sameDay() ? "No puedes eliminar una reserva sobre la misma fecha, contactate con la barberia para realizar este cambio" : "Una vez hecho tendras que crear una nueva reserva" }
                 onAction={modalHandler}
             />
             <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>

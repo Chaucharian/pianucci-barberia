@@ -67,7 +67,7 @@ const BookingList = props => {
             <div className={classes.bookingListContainer}>
             { 
                 showBookings() ||
-                <h2>No tienes ningun turno activo &#x1F625;</h2>  
+                <h2>No tienes ningun turno activo <br></br>&#x1F625;</h2>  
             }
             </div>
             <div className={classes.bookingButton} >

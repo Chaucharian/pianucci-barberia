@@ -84,7 +84,7 @@ const LogInForm = (props) => {
             <Modal 
                     onlyConfirm={true}
                     open={showModal} 
-                    title={"Accepta las notificaciones :)" }
+                    title={"Accepta las notificaciones" }
                     content={"Asi puedes estar al tanto de tus turnos"}
                     onAction={onModalClose}
               />

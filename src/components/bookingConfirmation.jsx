@@ -40,6 +40,8 @@ export const BookingConfirmation = (props) => {
     const dateFormated = typeof date === 'string' ? date : format(date,"dd/MM/yyyy");
     const hours = typeof date === 'string' ? null : new Date(date).getHours();
 
+    const showWarning = () => (hours && isToday(date)) || hours === null; 
+
     return (
         <div className={classes.container}>
             <div className={classes.description}>
@@ -53,7 +55,7 @@ export const BookingConfirmation = (props) => {
                         <p><b>Ubicación </b> Pianucci Barberia - 25 de Mayo 1234 2 º B</p>
                     </li>
                 </ul>
-                { (hours && isToday(date)) && <p className={classes.warning}><b>¡ESPERA! Verifica que los datos sean correctos, este turno no se podra cancelar</b></p> }
+                { showWarning() && <p className={classes.warning}><b>¡ESPERA! Verifica que los datos sean correctos, este turno no se podra cancelar</b></p> }
             </div>
             <div className={classes.buttons}>
                 <ReflectButton text="CANCELAR" clicked={() => onSubmit("cancel")} />

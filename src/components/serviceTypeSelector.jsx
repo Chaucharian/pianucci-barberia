@@ -39,21 +39,15 @@ const styles = {
     option1: {
         marginBottom: "10px",
         width: "100%",
-        height: "200px",
-        background: "url(https://pianuccibarberia.com/assets/corte1.jpg)"
-    },
-    option2: {
-        width: "50%",
-        height: "150px",
-        marginRight: "5px"
-    },
-    option3: {
-        width: "50%",
-        height: "150px"
+        height: "200px"
     },
     servicesContainer: {
         width: "400px",
-        margin: "5px"
+        margin: "5px",
+        "& p": {
+            fontFamily: 'Raleway, sans-serif',
+            fontSize: '20px'
+        }
     },
     secondButtonsRow: {
         display: "flex",

@@ -11,7 +11,14 @@ const styles = {
         height: "100vh", 
         backgroundColor: "#000",
         textAlign: "center",
-        color: "#FFF"
+        color: "#FFF",
+    },
+    description: {
+        paddingRight: "25px",
+        paddingLeft: "25px",
+        "& h3": {
+            fontWeight: "lighter"
+        }
     },
     bookings: {
         width: "60%",
@@ -21,9 +28,8 @@ const styles = {
         flexDirection: "column",
         alignItems: "center"
     },
-    dateIndicator: {
-        transition: "all 200ms ease",
-        color: "red"
+    button: {
+        display: "flex"
     }
 }
 
@@ -32,11 +38,15 @@ export const VipDescriptionBooking = (props) => {
 
     return (
         <div className={classes.container}>
-            <div >
-                <h1>Reserva espcial</h1>
-                <h2>Este tipo de reservas son coordinadas directamen</h2>
+            <div className={classes.description}>
+                <h2>Reserva especial</h2>
+                <h3>Esta es una cita totalmente personalizada, sin tiempo límite para estar en todo detalle,
+                    servicio completo de corte, barba, cejas y diseño a coordinar con el barbero.<br></br> Además incluye sesión de fotos y video.
+                </h3>
             </div>
-            <ReflectButton text="ESTOY DE ACUERDO" clicked={() => onConfirm("confirm")} />
+            <div className={classes.button} >
+                <ReflectButton text="ESTOY DE ACUERDO" clicked={() => onConfirm("confirm")} />
+            </div>
         </div>
     );
 }

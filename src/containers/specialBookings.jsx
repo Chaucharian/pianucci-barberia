@@ -60,7 +60,7 @@ const SpecialBookings = props => {
             <h1>VIP</h1>
             <Spinner loading={fetching && showBookings}>
                 <div className={classes.bookingListContainer}>
-                    { showBookings() || <h2>No hay reservas &#x1F625;</h2> }
+                    { showBookings() || <h2>No hay reservas <br></br>&#x1F625;</h2> }
                 </div>
             </Spinner>
         </div>

@@ -52,7 +52,7 @@ const Fade = React.forwardRef(function Fade(props, ref) {
 const styles = {
 }
 
-const CustomModal = ({ open, title, content, onlyConfirm, onAction }) => {
+const CustomModal = ({ open, title, content, onlyConfirm, isAdmin,onAction }) => {
     const classes = useStyles();
 
     return (
@@ -71,12 +71,13 @@ const CustomModal = ({ open, title, content, onlyConfirm, onAction }) => {
         <Fade in={open}>
           <div className={classes.paper}>
             <h2 id="spring-modal-title">{title}</h2>
-            <p id="spring-modal-description">{content}</p>
+            { isAdmin ? content : <p id="spring-modal-description">{content}</p>}
             <div>
               { onlyConfirm ? 
               <ReflectButton text="ACEPTAR" clicked={() => onAction("cancel")} />
               :
               <>
+                { isAdmin && <ReflectButton text="COBRAR" clicked={() => onAction("pay")} />}
                 <ReflectButton text="CONFIRMAR" clicked={() => onAction("confirm")} />
                 <ReflectButton text="CANCELAR" clicked={() => onAction("cancel")} />
               </>

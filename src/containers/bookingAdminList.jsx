@@ -5,7 +5,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useStateValue } from '../state/rootState';
 import * as api from '../services/api';
 import * as appActions from '../actions/app';
-import UserBooking from '../components/userBooking';
+import ClientBookingItem from '../components/clientBookingItem';
 import DaysListSelector from '../components/daysListSelector';
 import Spinner from '../components/spinner';
 
@@ -49,6 +49,10 @@ const BookingAdminList = props => {
         api.deleteBooking(id).then( () => setRefreshList(true) );
     }
 
+    const payBooking = ({ amount }) => {
+        api.payBooking(amount).then( () => setRefreshList(true) );
+    }
+
     const openCalendar = defaultDate => {
         setCurrentDate(defaultDate);
         setShowBookings(false);
@@ -81,7 +85,7 @@ const BookingAdminList = props => {
                 {
                     showBookings && (
                         hasBookings() ?
-                            bookings.map((booking, index) => <UserBooking key={index} booking={booking} isAdmin={true} onDelete={deleteBookingHandler} />)
+                            bookings.map((booking, index) => <ClientBookingItem key={index} booking={booking} isAdmin={true} onDelete={deleteBookingHandler} onPay={payBooking} />)
                             :
                             <h2>No hay turnos para la fecha seleccionada</h2>
                     )

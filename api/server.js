@@ -413,12 +413,22 @@ app.post('/api/deleteBooking', (request, response) => {
     response.json({ status: 'booking removed!' });
 });
 
+app.post('/api/payBooking', (request, response) => {
+    const { amount } = request.body;
+    const bookingRef = firebaseDB.ref('/bookings');
+    const billingRef = firebaseDB.ref('/billing');
+    
+    bookingRef.set({ ...bookingRef.val(), status: 'paid' }); 
+    billingRef.push({ date: Date.now(), amount });
+
+    response.json({ status: 'billing saved!' });
+});
 
 app.post('/api/updateBooking', (request, response) => {
     const { userId, bookingId, type, duration, date, status } = request.body;
     const bookingRef = firebaseDB.ref('bookings/' + bookingId);
 
-    bookingRef.set({ type, date, duration, status, clientId: userId }); // TODO FOR EXAMPLE 
+    bookingRef.set({ type, date, duration, status, clientId: userId }); 
 
     response.json({ status: 'booking updated!' });
 });

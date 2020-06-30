@@ -171,14 +171,14 @@ export const getBookingsByType = bookingType => (
     .then( response => response.json() )
 );
 
-export const payBooking = amount => (
+export const payBooking = payload => (
     fetch(enviroment.baseUrl + '/payBooking', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ amount })
+        body: JSON.stringify(payload)
     })
     .then( response => response.json() )
 );

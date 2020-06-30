@@ -251,7 +251,7 @@ app.post('/api/getUserBookings', (request, response) => {
         bookingRef.forEach(booking => {
             bookings.push({ ...booking.val(), id: booking.key });
         });
-        const filterdBookings = bookings.filter(booking => booking.clientId === userId);
+        const filterdBookings = bookings.filter(booking => booking.clientId === userId && booking.status === 'reserved');
         response.json({ status: "bookings retrived!", bookings: filterdBookings });
     });
 });
@@ -414,13 +414,13 @@ app.post('/api/deleteBooking', (request, response) => {
 });
 
 app.post('/api/payBooking', (request, response) => {
-    const { amount } = request.body;
+    const { bookingId, amount } = request.body;
     const bookingRef = firebaseDB.ref('/bookings');
     const billingRef = firebaseDB.ref('/billing');
     
-    bookingRef.set({ ...bookingRef.val(), status: 'paid' }); 
-    billingRef.push({ date: Date.now(), amount });
-
+    bookingRef.child(bookingId).update({ status: 'paid' });
+    billingRef.push({ date: Date.now(), amount, bookingId });
+    
     response.json({ status: 'billing saved!' });
 });
 

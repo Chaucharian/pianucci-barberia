@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/styles';
 import  { getHours, isSameDay,format } from 'date-fns';
-import Modal from '../components/modal';
-import WhiteTextField from './textField'; 
+import PayModal from '../components/payModal';
 
 const styles = {
     container: {
@@ -73,7 +72,7 @@ const styles = {
 }
 
 const ClientBookingItem = (props) => {
-    const { classes, booking, isAdmin, onDelete } = props;
+    const { classes, booking, isAdmin, onPay } = props;
     const [ isModalOpen, showModal] = useState(false);
     const { date, status, type, name, phone } = booking;
     const dateFormated = format(date,"dd/MM/yyyy");
@@ -81,10 +80,10 @@ const ClientBookingItem = (props) => {
     const isBookingReserved = status === 'reserved';
     const isVIP = type === 'VIP';
 
-    const modalHandler = action => {
+    const modalHandler = (action, amount) => {
         if(action === "confirm") {
             showModal(false);
-            onDelete(booking);
+            onPay({ bookingId: booking.id, amount });
         } else {
             showModal(false);
         }
@@ -108,19 +107,9 @@ const ClientBookingItem = (props) => {
 
     return (
         <>
-            <Modal 
-                isAdmin={isAdmin}
-                onlyConfirm={sameDay()}
+            <PayModal 
                 open={isModalOpen} 
                 title={"Ingresa monto"}
-                content={   <WhiteTextField
-                    // classes={ { root: errors.password ? classes.fieldError : '' } }
-                    name="amount"
-                    onChange={ data => console.log(data)}
-                    label="Monto"
-                    margin="normal"
-                    type="number" 
-                    /> }
                 onAction={modalHandler}
             />
             <div className={classes.container +' '+ (isBookingReserved ? classes.active : classes.inactive) }>

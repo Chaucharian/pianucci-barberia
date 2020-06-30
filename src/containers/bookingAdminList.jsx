@@ -45,12 +45,8 @@ const BookingAdminList = props => {
 
     const hasBookings = () => bookings.length > 0;
 
-    const deleteBookingHandler = ({ id }) => {
-        api.deleteBooking(id).then( () => setRefreshList(true) );
-    }
-
-    const payBooking = ({ amount }) => {
-        api.payBooking(amount).then( () => setRefreshList(true) );
+    const payBooking = (payload) => {
+        api.payBooking(payload).then( () => setRefreshList(true) );
     }
 
     const openCalendar = defaultDate => {
@@ -85,7 +81,7 @@ const BookingAdminList = props => {
                 {
                     showBookings && (
                         hasBookings() ?
-                            bookings.map((booking, index) => <ClientBookingItem key={index} booking={booking} isAdmin={true} onDelete={deleteBookingHandler} onPay={payBooking} />)
+                            bookings.map((booking, index) => <ClientBookingItem key={index} booking={booking} isAdmin={true} onPay={payBooking} />)
                             :
                             <h2>No hay turnos para la fecha seleccionada</h2>
                     )

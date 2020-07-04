@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useRoutes, navigate } from 'hookrouter';
+import { useRoutes, navigate, useControlledInterceptor } from 'hookrouter';
 import firebase from "firebase";
 import "firebase/auth";
 import { useStateValue } from '../state/rootState';
@@ -23,6 +23,7 @@ export const Router = () => {
     const [state, setState] = useState({ loading: true });
     const [{ user, logout }, dispatch] = useStateValue();
     const routeResult = useRoutes(routes);
+    const [nextPath, confirmNavigation] = useControlledInterceptor();
     const { loading } = state;
 
     const userHandler = () => {
@@ -88,6 +89,14 @@ export const Router = () => {
             logoutHandler();
         }
     }, [logout]);
+
+    useEffect(() => {
+        if(nextPath === null) return;
+        if (user.id !== '' && nextPath === '/login') {
+            logoutHandler();
+        }
+        confirmNavigation();
+    }, [nextPath]);
 
     return viewToRender() || <NotFoundPage />;
 }

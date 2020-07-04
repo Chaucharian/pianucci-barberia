@@ -25,13 +25,16 @@ const styles = {
 const UserProfile = (props) => {
     const { classes } = props;
     const [state, dispatch] = useStateValue();
-    const { user: { name, email, phone } } = state;
+    const { user: { name, lastname, email, phone } } = state;
 
     return (
         <div className={classes.container}>
             <ul>
                 <li>
                     <h1>Nombre <i className={classes.userData}>{name}</i></h1>
+                </li>
+                <li>
+                    <h1>Apellido <i className={classes.userData}>{lastname}</i></h1>
                 </li>
                 <li>
                     <h1>Email <i className={classes.userData}>{email}</i></h1>

@@ -71,8 +71,8 @@ const Login = (props) => {
         firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
             .then(response => {
                 const { email, uid: id } = response.user;
-                const { name, phone } = user;
-                const newUser = { email, id, name, phone };
+                const { name, lastname, phone } = user;
+                const newUser = { email, id, name, lastname, phone };
 
                 api.createUser(newUser)
                     .then(({ user, daysOff }) => {

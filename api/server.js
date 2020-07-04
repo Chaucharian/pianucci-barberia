@@ -294,10 +294,11 @@ app.post('/api/getBookingsByType', (request, response) => {
         const filteredBookings = bookingsRaw.filter(booking => booking.type === bookingType && booking.status !== 'paid');
         usersRef.once('value', usersSnapshot => {
             usersSnapshot.forEach(user => {
-                const { name, phone, id } = user.val();
+                const { name, lastname, phone, id } = user.val();
+                const fullName = name + ' ' + lastname;
                 filteredBookings.map(booking => {
                     if (booking.clientId === id) {
-                        bookings.push({ ...booking, name, phone });
+                        bookings.push({ ...booking, name: fullName, phone });
                     }
                 });
             });
@@ -326,10 +327,11 @@ app.post('/api/getAllBookingsByDate', (request, response) => {
 
         usersRef.once('value', usersSnapshot => {
             usersSnapshot.forEach(user => {
-                const { name, phone, id } = user.val();
+                const { name, lastname, phone, id } = user.val();
+                const fullName = name + ' ' + lastname;
                 reservedBookings.map(booking => {
                     if (booking.clientId === id) {
-                        bookings.push({ ...booking, name, phone });
+                        bookings.push({ ...booking, name: fullName, phone });
                     }
                 });
             });
@@ -434,10 +436,10 @@ app.post('/api/updateBooking', (request, response) => {
 });
 
 app.post('/api/createUser', (request, response) => {
-    const { name, email, phone, id } = request.body;
+    const userRequest = request.body;
     const usersRef = firebaseDB.ref('users');
     const daysOffRef = firebaseDB.ref('/daysOff');
-    const userModel = { name, email, id, phone, bookings: [] };
+    const userModel = { ...userRequest, bookings: [] };
     const days = [];
 
     usersRef.push(userModel);

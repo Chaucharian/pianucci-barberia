@@ -39,7 +39,7 @@ const styles = {
     option: {
         marginBottom: "10px",
         width: "100%",
-        height: "200px"
+        height: "150px"
     },
     servicesContainer: {
         width: "400px",

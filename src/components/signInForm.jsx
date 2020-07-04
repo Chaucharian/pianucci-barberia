@@ -70,6 +70,14 @@ const SignInForm = (props) => {
                         />
                         <WhiteTextField
                             className={classes.textField}
+                            inputRef={register({ required: true })}
+                            classes={ { root: errors.lastname ? classes.fieldError : '' } }
+                            name="lastname"
+                            label="Apellido"
+                            margin="normal"
+                        />
+                        <WhiteTextField
+                            className={classes.textField}
                             inputRef={register({ 
                                 required: true,   
                                 pattern: {

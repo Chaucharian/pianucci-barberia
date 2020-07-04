@@ -194,7 +194,7 @@ app.post('/api/logout', (request, response) => {
             }
         });
     });
-    response.setHeader('Clear-Site-Data', '*');
+    response.setHeader('Cache-Control', 'no-cache');
     response.json({ status: "user logged out succesfully!" });
 });
 

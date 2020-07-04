@@ -36,7 +36,7 @@ const styles = {
             },
         }
     },
-    option1: {
+    option: {
         marginBottom: "10px",
         width: "100%",
         height: "200px"
@@ -69,21 +69,21 @@ export const ServiceTypeSelector = (props) => {
     return (
         <div className={classes.container}>
             <div className={classes.servicesContainer}>
-                <div className={classes.option1}>
-                    <button onClick={() => onServiceSelected({ name: 'VIP', duration: 'Sin limite de tiempo'})}>
-                        <p>V.I.P</p>
-                        <div className={classes.time}> 
-                        sin limite<i className="far fa-clock"></i>
-                        </div>
-                    </button>    
-                </div>
-                <div className={classes.option1}>
-                    <button onClick={() => onServiceSelected({ name: 'Classic', duration: 30})}>
+                <div className={classes.option}>
+                    <button onClick={() => onServiceSelected({ name: 'Classic', duration: 30 })}>
                         <p>CLASSIC</p>
-                        <div className={classes.time}> 
+                        <div className={classes.time}>
                             60<i className="far fa-clock"></i>
                         </div>
-                    </button>    
+                    </button>
+                </div>
+                <div className={classes.option}>
+                    <button onClick={() => onServiceSelected({ name: 'VIP', duration: 'Sin limite de tiempo' })}>
+                        <p>V.I.P</p>
+                        <div className={classes.time}>
+                            sin limite<i className="far fa-clock"></i>
+                        </div>
+                    </button>
                 </div>
             </div>
         </div>

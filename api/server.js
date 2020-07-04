@@ -291,7 +291,7 @@ app.post('/api/getBookingsByType', (request, response) => {
             bookingsRaw.push({ ...booking.val(), id: booking.key });
         });
         // filtered by type
-        const filteredBookings = bookingsRaw.filter(booking => booking.type === bookingType);
+        const filteredBookings = bookingsRaw.filter(booking => booking.type === bookingType && booking.status !== 'paid');
         usersRef.once('value', usersSnapshot => {
             usersSnapshot.forEach(user => {
                 const { name, phone, id } = user.val();

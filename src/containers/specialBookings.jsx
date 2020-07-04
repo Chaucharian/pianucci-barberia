@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/styles';
 import { useStateValue } from '../state/rootState';
 import * as api from '../services/api';
 import Spinner from '../components/spinner';
-import UserBooking from '../components/userBooking';
+import ClientBookingItem from '../components/clientBookingItem';
 
 const styles = {
     container: {
@@ -36,15 +36,13 @@ const SpecialBookings = props => {
     const [state] = useStateValue();
     const { fetching, currentPage } = state;
 
-    const deleteBookingHandler = ({ id }) => {
-        api.deleteBooking(id).then( () => setRefreshList(true) );
+    const payBooking = (payload) => {
+        api.payBooking(payload).then( () => setRefreshList(true) );
     }
 
     const hasBookings = () => bookings.length > 0;
 
-    const normalizeBooking = booking => ({ ...booking, date: 0 });
-
-    const showBookings = () => hasBookings() ? bookings.map( (booking, index) => <UserBooking key={index} booking={normalizeBooking(booking)} onDelete={deleteBookingHandler} />) : false;
+    const showBookings = () => hasBookings() ? bookings.map( (booking, index) => <ClientBookingItem key={index} booking={booking} onPay={payBooking} />) : false;
 
     useEffect( () => {
         if(refreshList || currentPage === 3) {

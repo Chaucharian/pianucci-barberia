@@ -119,7 +119,7 @@ const ClientBookingItem = (props) => {
                 { !isVIP && <div className={classes.time}>
                     <strong>{ hour }</strong>
                 </div> }
-                { isBookingReserved && <button className={classes.crossButton} onClick={() => showModal(true)}><i className="fas fa-times"></i></button> }
+                <button className={classes.crossButton} onClick={() => showModal(true)}><i className="fas fa-times"></i></button>
             </div>
         </>
     );

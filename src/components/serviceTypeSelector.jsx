@@ -70,7 +70,7 @@ export const ServiceTypeSelector = (props) => {
         <div className={classes.container}>
             <div className={classes.servicesContainer}>
                 <div className={classes.option}>
-                    <button onClick={() => onServiceSelected({ name: 'Classic', duration: 30 })}>
+                    <button onClick={() => onServiceSelected({ name: 'Classic', duration: 60 })}>
                         <p>CLASSIC</p>
                         <div className={classes.time}>
                             60<i className="far fa-clock"></i>

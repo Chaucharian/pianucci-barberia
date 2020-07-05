@@ -327,7 +327,7 @@ app.post('/api/getBookingsByType', (request, response) => {
         usersRef.once('value', usersSnapshot => {
             usersSnapshot.forEach(user => {
                 const { name, lastname, phone, id } = user.val();
-                const fullName = name + ' ' + lastname;
+                const fullName = `${name} ${lastname ? lastname : ''}`;
                 filteredBookings.map(booking => {
                     if (booking.clientId === id) {
                         bookings.push({ ...booking, name: fullName, phone });
@@ -360,7 +360,7 @@ app.post('/api/getAllBookingsByDate', (request, response) => {
         usersRef.once('value', usersSnapshot => {
             usersSnapshot.forEach(user => {
                 const { name, lastname, phone, id } = user.val();
-                const fullName = name + ' ' + lastname;
+                const fullName = `${name} ${lastname ? lastname : ''}`;
                 reservedBookings.map(booking => {
                     if (booking.clientId === id) {
                         bookings.push({ ...booking, name: fullName, phone });

@@ -182,3 +182,10 @@ export const payBooking = payload => (
     })
     .then( response => response.json() )
 );
+
+export const getBusinessStats = () => (
+    fetch(enviroment.baseUrl + '/getBusinessStats', {
+        method: 'GET'
+    })
+    .then( response => response.json() )
+);

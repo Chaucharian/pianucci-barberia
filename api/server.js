@@ -1,7 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const luxon = require('luxon');
-const { isSameDay, isSameHour } = require('date-fns');
+const { isSameDay, isSameHour, isSameMonth, isToday, isSameWeek } = require('date-fns');
 const path = require('path');
 const app = express();
 // const app = require("https-localhost")() // DEV ONLY
@@ -139,6 +139,7 @@ setInterval(() => notificationDispatcher(), NOTIFICATION_INTERVAL);
 
 // END POINTS 
 
+// GET
 app.get('/api/getDaysOff', (request, response) => {
     const daysOffRef = firebaseDB.ref('/daysOff');
     const days = [];
@@ -151,14 +152,6 @@ app.get('/api/getDaysOff', (request, response) => {
     });
 });
 
-app.post('/api/setDaysOff', (request, response) => {
-    const { days } = request.body;
-    const daysOffRef = firebaseDB.ref('/daysOff');
-    
-    daysOffRef.set(days);
-    response.json({ status: 'days off updated!' });
-});
-
 app.get('/api/getImageGalery', (request, response) => {
     const imageGaleryRef = firebaseDB.ref('/imageGalery');
     const images = [];
@@ -169,6 +162,57 @@ app.get('/api/getImageGalery', (request, response) => {
         });
         response.json({ status: "images for galery!", images });
     });
+});
+
+app.get('/api/getAvailableHours', (request, response) => {
+    const timeRangeRef = firebaseDB.ref('/timeRange');
+
+    timeRangeRef.once('value', timeRangeSnapshot => {
+        const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
+        const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map(unixDate => Number(unixDate));
+        const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
+
+        response.json({ status: "hours retrieved!", morning: { from: mStartingTime, to: mEndingTime }, afternoon: { from: aStartingTime, to: aEndingTime } });
+    });
+});
+
+app.get('/api/getBusinessStats', (request, response) => {
+    const billingRef = firebaseDB.ref('/billing');
+    let stats = { bookings: { today: 0, currentMonth: 0 }, billing: { today: 0, currentMonth: 0 } };
+    const billingRaw = [];
+
+    billingRef.once('value', billingSnapshot => {
+        billingSnapshot.forEach( billing => {
+            billingRaw.push(billing.val());
+        });
+
+        const currentMonthBilling = billingRaw.filter(({ date }) => isSameMonth(date, new Date()));
+        const currentWeekBilling = billingRaw.filter(({ date }) => isSameWeek(date, new Date()));
+        const todayBilling = billingRaw.filter(({ date }) => isToday(date, new Date()));
+
+        if(todayBilling.length !== 0 && currentMonthBilling.length !== 0 && currentWeekBilling.length !== 0) {
+            const todayBookingsStats = todayBilling.reduce( counter => counter + 1 , 0);
+            const currentWeekBookingStats = currentWeekBilling.reduce( counter => counter + 1, 0);
+            const currentMonthBookingsStats = currentMonthBilling.reduce( counter => counter + 1, 0);
+            const todayBillingStats = todayBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
+            const currentWeekBillingStats = currentWeekBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
+            const currentMonthBillingStats = currentMonthBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
+
+            stats = { bookings: { today: todayBookingsStats, currentWeek: currentWeekBookingStats, currentMonth: currentMonthBookingsStats }, billing: { today: todayBillingStats, currentWeek: currentWeekBillingStats, currentMonth: currentMonthBillingStats } };
+        }
+
+        response.json({ status: 'billing stats retrieved!', stats });
+    
+    });
+});
+
+// POST
+app.post('/api/setDaysOff', (request, response) => {
+    const { days } = request.body;
+    const daysOffRef = firebaseDB.ref('/daysOff');
+    
+    daysOffRef.set(days);
+    response.json({ status: 'days off updated!' });
 });
 
 app.post('/api/setImageGalery', (request, response) => {
@@ -265,18 +309,6 @@ app.post('/api/setAvailableHours', (request, response) => {
     afternoonRef.set(`${afternoonFrom}/${afternoonTo}`);
 
     response.json({ status: "hours updated!" });
-});
-
-app.get('/api/getAvailableHours', (request, response) => {
-    const timeRangeRef = firebaseDB.ref('/timeRange');
-
-    timeRangeRef.once('value', timeRangeSnapshot => {
-        const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
-        const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map(unixDate => Number(unixDate));
-        const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
-
-        response.json({ status: "hours retrieved!", morning: { from: mStartingTime, to: mEndingTime }, afternoon: { from: aStartingTime, to: aEndingTime } });
-    });
 });
 
 app.post('/api/getBookingsByType', (request, response) => {

@@ -149,6 +149,15 @@ const Header = (props) => {
                     VIP
                     </a>
                 </li> 
+                <li>
+                    <a 
+                    onClick={() => {
+                        showNavbar(false);
+                        onAction("stats");
+                    }}>
+                    ESTADISTICAS
+                    </a>
+                </li> 
                 <li><a onClick={() => onAction("logout")}>SALIR</a></li>
             </>
         );

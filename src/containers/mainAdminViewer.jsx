@@ -8,6 +8,7 @@ import BookingAdminList from './bookingAdminList';
 import ScheduleHandler from './scheduleHandler';
 import DaysOff from './daysOff';
 import SpecialBookings from './specialBookings';
+import BusinessStats from './businessStats';
 
 const styles = {
     container: {
@@ -80,6 +81,8 @@ export const MainAdminViewer = (props) => {
             dispatch(appActions.changePage(2));
         } else if(action === "vip") {
             dispatch(appActions.changePage(3));
+        } else if(action === "stats") {
+            dispatch(appActions.changePage(4));
         }
     }
 
@@ -96,6 +99,7 @@ export const MainAdminViewer = (props) => {
                     <ScheduleHandler />
                     <BookingAdminList onDisableScroll={disableScroll} />
                     <SpecialBookings />
+                    <BusinessStats />
                 </ReactPageScroller>
             </div>
         </div>

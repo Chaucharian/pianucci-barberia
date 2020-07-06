@@ -52,7 +52,7 @@ export const BookingConfirmation = (props) => {
                         { hours && <p><b>Hora </b> {hours}</p> }
                         <p><b>Duración </b> {duration}</p>
                         <p><b>Turno </b> {serviceName}</p>
-                        <p><b>Ubicación </b> Pianucci Barberia - 25 de Mayo 1234 2 º B</p>
+                        <p><b>Ubicación </b> Pianucci Barberia - 25 de Mayo 3337 2º Oficina 2</p>
                     </li>
                 </ul>
                 { showWarning() && <p className={classes.warning}><b>¡ESPERA! Verifica que los datos sean correctos, este turno no se podra cancelar</b></p> }

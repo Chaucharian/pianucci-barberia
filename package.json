@@ -4,7 +4,7 @@
   "description": "Barber appointment web",
   "scripts": {
     "start": "parcel --host 0.0.0.0 ./src/index.html",
-    "build": "parcel build ./src/index.html",
+    "build": "parcel build ./src/index.html --no-source-maps",
     "watch:dev": "NODE_ENV=development parcel watch ./src/index.html",
     "watch:prod": "NODE_ENV=production parcel watch ./src/index.html",
     "api": "env TZ='America/Buenos_Aires'  pm2 start ./api/server.js --name pianucciweb --watch "

@@ -59,7 +59,6 @@ const styles = {
     buttonContainer: {
         display: "flex",
         justifyContent: "center",
-        marginTop: "20%"
     },
     calendar: {
         display: "flex",

@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/styles';
 import Calendar from '@lls/react-light-calendar';
 import '@lls/react-light-calendar/dist/index.css' // Default Style
 import  { addDays, isToday, isTomorrow, format } from 'date-fns';
+import { START_DATE, END_DATE, dateToUnix, isDateDisabled } from '../utils/dates';
 
 const styles = {
     container: {
@@ -35,14 +36,11 @@ const styles = {
         cursor: "default"
     }
 }
-export const isDateDisabled = (daysOff, date) => daysOff.filter( dayOff => new Date(date).getDay() === dayOff).length !== 0 ? true : false;
+
 
 export const DaysListSelector = (props) => {
     const { classes, date, showBookings, daysOff, onOpenCalendar, onDaySelected } = props; 
     const isOtherDay = date => !isTomorrow(date) && !isToday(date);
-    const dateToUnix = date => date.getTime();
-    const startDate = dateToUnix(addDays(new Date(), 1));
-    const endDate = dateToUnix(addDays(new Date(), 60));
 
     const daySelection = (date, calendarSelection = false) => {
         const unixDate = dateToUnix(date);
@@ -51,7 +49,7 @@ export const DaysListSelector = (props) => {
         onDaySelected({ date: unixDate, dateFormated, showBookings: newBookingStatus, comesFromCalendar: calendarSelection });
     }
 
-    const disableDates = date => date < new Date().getTime() || date > endDate || date < startDate || isDateDisabled(daysOff, date);
+    const disableDates = date => date < new Date().getTime() || date > END_DATE || date < START_DATE || isDateDisabled(daysOff, date);
 
     return (
         <div className={classes.container}>

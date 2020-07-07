@@ -7,8 +7,7 @@ import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import Spinner from './spinner';
 import  { addDays, isToday, isTomorrow } from 'date-fns';
-import { isDateDisabled } from './daysListSelector';
-import TimeZone from 'moment-timezone';
+import { isDateDisabled } from '../utils/dates';
 
 const styles = {
     container: {

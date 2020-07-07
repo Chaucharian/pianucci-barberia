@@ -86,13 +86,14 @@ export const getAllBookingsByDate = userDate => (
     .then( response => response.json() )
 );
 
-export const getAvailableHours = () => (
+export const getAvailableHours = requestDate => (
     fetch(enviroment.baseUrl + '/getAvailableHours', {
-        method: 'GET',
+        method: 'POST',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
+        body: JSON.stringify({requestDate}),
     })
     .then( response => response.json() )
 );

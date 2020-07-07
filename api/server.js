@@ -164,18 +164,6 @@ app.get('/api/getImageGalery', (request, response) => {
     });
 });
 
-app.get('/api/getAvailableHours', (request, response) => {
-    const timeRangeRef = firebaseDB.ref('/timeRange');
-
-    timeRangeRef.once('value', timeRangeSnapshot => {
-        const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
-        const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map(unixDate => Number(unixDate));
-        const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
-
-        response.json({ status: "hours retrieved!", morning: { from: mStartingTime, to: mEndingTime }, afternoon: { from: aStartingTime, to: aEndingTime } });
-    });
-});
-
 app.get('/api/getBusinessStats', (request, response) => {
     const billingRef = firebaseDB.ref('/billing');
     let stats = { bookings: { today: 0, currentMonth: 0 }, billing: { today: 0, currentMonth: 0 } };
@@ -226,6 +214,32 @@ app.get('/api/getBusinessStats', (request, response) => {
 });
 
 // POST
+app.post('/api/getAvailableHours', (request, response) => {
+    const { requestDate } = request.body;
+    const timeRangeRef = firebaseDB.ref('/timeRange');
+    const datesTimeRangeRef = firebaseDB.ref('/timeRange/dates');
+
+    timeRangeRef.once('value', timeRangeSnapshot => {
+        datesTimeRangeRef.once('value', datesTimeRangeSnapshot => {
+            // use default schedule
+            const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
+            let [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map(unixDate => Number(unixDate));
+            let [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
+
+            // override schedule if date is found
+            datesTimeRangeSnapshot.forEach(date => {
+                const scheduleForDate = date.val();
+                if (isSameDay(scheduleForDate.date, requestDate)) {
+                    [mStartingTime, mEndingTime] = scheduleForDate.schedule.morningScheduleTime.split("/").map(unixDate => Number(unixDate));
+                    [aStartingTime, aEndingTime] = scheduleForDate.schedule.afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
+                }
+            });
+
+            response.json({ status: "hours retrieved!", morning: { from: mStartingTime, to: mEndingTime }, afternoon: { from: aStartingTime, to: aEndingTime } });
+        });
+    });
+});
+
 app.post('/api/setDaysOff', (request, response) => {
     const { days } = request.body;
     const daysOffRef = firebaseDB.ref('/daysOff');
@@ -320,14 +334,19 @@ app.post('/api/getUserBookings', (request, response) => {
 });
 
 app.post('/api/setAvailableHours', (request, response) => {
-    const { morning: { from: morningFrom, to: morningTo }, afternoon: { from: afternoonFrom, to: afternoonTo } } = request.body;
+    const { morning: { from: morningFrom, to: morningTo }, afternoon: { from: afternoonFrom, to: afternoonTo }, requestDate } = request.body;
+    const timeRangeRef = firebaseDB.ref('/timeRange/dates');
     const afternoonRef = firebaseDB.ref('/timeRange/afternoonScheduleTime');
     const morningRef = firebaseDB.ref('/timeRange/morningScheduleTime');
 
-    morningRef.set(`${morningFrom}/${morningTo}`);
-    afternoonRef.set(`${afternoonFrom}/${afternoonTo}`);
-
-    response.json({ status: "hours updated!" });
+    if(morningFrom && afternoonFrom && !requestDate) {
+        morningRef.set(`${morningFrom}/${morningTo}`);
+        afternoonRef.set(`${afternoonFrom}/${afternoonTo}`);
+        response.json({ status: "daily hours updated!" });
+    } else if(requestDate) {
+        timeRangeRef.push({ schedule: { morningScheduleTime: `${morningFrom}/${morningTo}`, afternoonScheduleTime: `${afternoonFrom}/${afternoonTo}` }, date: requestDate });
+        response.json({ status: "hours for date updated!" });
+    }
 });
 
 app.post('/api/getBookingsByType', (request, response) => {
@@ -396,6 +415,7 @@ app.post('/api/getScheduleForDate', (request, response) => {
     const { userDate, bookingDuration = 60 } = request.body;
     const bookingRef = firebaseDB.ref('/bookings');
     const timeRangeRef = firebaseDB.ref('/timeRange');
+    const datesTimeRangeRef = firebaseDB.ref('/timeRange/dates');
     const bookingModel = { status: "available", duration: bookingDuration, date: Date.now(), type: "", cliendId: "" }; // status: available, reserved, done
     const bookings = [];
 
@@ -414,37 +434,49 @@ app.post('/api/getScheduleForDate', (request, response) => {
         reservedBookings.sort((firstBooking, secondBooking) => firstBooking.date - secondBooking.date);
 
         timeRangeRef.once('value', timeRangeSnapshot => {
-            // calculate schedule range for date
-            const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
-            const [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map(unixDate => Number(unixDate));
-            const [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
-            const hoursAmount = (new Date(mEndingTime).getHours() - new Date(mStartingTime).getHours()) + (new Date(aEndingTime).getHours() - new Date(aStartingTime).getHours());
-            let hoursCount = 0;
-            let currentHour = new Date(Number(mStartingTime)).getHours();
+            datesTimeRangeRef.once('value', datesTimeRangeSnapshot => {
+                // use default schedule
+                const { morningScheduleTime, afternoonScheduleTime } = timeRangeSnapshot.val();
+                let [mStartingTime, mEndingTime] = morningScheduleTime.split("/").map(unixDate => Number(unixDate));
+                let [aStartingTime, aEndingTime] = afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
 
-            // create spaces to set up bookings for any date
-            while (hoursCount < hoursAmount) {
-                const bookingDate = new Date(userDate).setHours(currentHour, 00, 00);
-                bookings.push({ ...bookingModel, date: bookingDate });
-
-                currentHour += 1;
-                hoursCount += 1;
-
-                if (currentHour === new Date(mEndingTime).getHours()) {
-                    currentHour = new Date(aStartingTime).getHours();
-                }
-            }
-            // populate reserved bookings is there any
-            if (reservedBookings.length !== 0) {
-                bookings.map((bookingTemplate, index) => {
-                    reservedBookings.map(bookingReserved => {
-                        if (new Date(bookingReserved.date).getHours() === new Date(bookingTemplate.date).getHours()) {
-                            bookings[index] = bookingReserved;
-                        }
-                    });
+                // override schedule if date is found
+                datesTimeRangeSnapshot.forEach(date => {
+                    const scheduleForDate = date.val();
+                    if (isSameDay(scheduleForDate.date, userDate)) {
+                        [mStartingTime, mEndingTime] = scheduleForDate.schedule.morningScheduleTime.split("/").map(unixDate => Number(unixDate));
+                        [aStartingTime, aEndingTime] = scheduleForDate.schedule.afternoonScheduleTime.split("/").map(unixDate => Number(unixDate));
+                    }
                 });
-            }
-            response.json({ status: "bookings retrived!", bookings });
+
+                const hoursAmount = (new Date(mEndingTime).getHours() - new Date(mStartingTime).getHours()) + (new Date(aEndingTime).getHours() - new Date(aStartingTime).getHours());
+                let hoursCount = 0;
+                let currentHour = new Date(Number(mStartingTime)).getHours();
+
+                // create spaces to set up bookings for any date
+                while (hoursCount < hoursAmount) {
+                    const bookingDate = new Date(userDate).setHours(currentHour, 00, 00);
+                    bookings.push({ ...bookingModel, date: bookingDate });
+
+                    currentHour += 1;
+                    hoursCount += 1;
+
+                    if (currentHour === new Date(mEndingTime).getHours()) {
+                        currentHour = new Date(aStartingTime).getHours();
+                    }
+                }
+                // populate reserved bookings is there any
+                if (reservedBookings.length !== 0) {
+                    bookings.map((bookingTemplate, index) => {
+                        reservedBookings.map(bookingReserved => {
+                            if (new Date(bookingReserved.date).getHours() === new Date(bookingTemplate.date).getHours()) {
+                                bookings[index] = bookingReserved;
+                            }
+                        });
+                    });
+                }
+                response.json({ status: "bookings retrived!", bookings });
+            });
         });
     });
 });

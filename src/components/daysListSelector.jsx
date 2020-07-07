@@ -41,8 +41,8 @@ export const DaysListSelector = (props) => {
     const { classes, date, showBookings, daysOff, onOpenCalendar, onDaySelected } = props; 
     const isOtherDay = date => !isTomorrow(date) && !isToday(date);
     const dateToUnix = date => date.getTime();
-    const startDate = dateToUnix(addDays(new Date(), 2));
-    const endDate = dateToUnix(addDays(new Date(), 15));
+    const startDate = dateToUnix(addDays(new Date(), 1));
+    const endDate = dateToUnix(addDays(new Date(), 60));
 
     const daySelection = (date, calendarSelection = false) => {
         const unixDate = dateToUnix(date);

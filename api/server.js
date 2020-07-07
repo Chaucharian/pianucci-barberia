@@ -191,9 +191,21 @@ app.get('/api/getBusinessStats', (request, response) => {
         const todayBilling = billingRaw.filter(({ date }) => isToday(date, new Date()));
 
         if(todayBilling.length !== 0 && currentMonthBilling.length !== 0 && currentWeekBilling.length !== 0) {
-            const todayBookingsStats = todayBilling.reduce( counter => counter + 1 , 0);
-            const currentWeekBookingStats = currentWeekBilling.reduce( counter => counter + 1, 0);
-            const currentMonthBookingsStats = currentMonthBilling.reduce( counter => counter + 1, 0);
+            const todayBookingsStats = todayBilling.reduce( (counter, billing) => {
+                if(Number(billing.amount) !== 0) {
+                    return counter + 1;
+                }
+            }, 0);
+            const currentWeekBookingStats = currentWeekBilling.reduce( (counter, billing) => {
+                if(Number(billing.amount) !== 0) {
+                    return counter + 1;
+                }
+            }, 0);
+            const currentMonthBookingsStats = currentMonthBilling.reduce( (counter, billing) => {
+                if(Number(billing.amount) !== 0) {
+                    return counter + 1;
+                }
+            }, 0);
             const todayBillingStats = todayBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
             const currentWeekBillingStats = currentWeekBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
             const currentMonthBillingStats = currentMonthBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);

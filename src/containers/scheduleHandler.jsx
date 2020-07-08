@@ -95,8 +95,8 @@ const ScheduleHandler = props => {
     const { fetching, currentPage, user: { daysOff } } = state;
     const { from: morningFrom, to: morningTo } = morningSchedule;
     const { from: afternoonFrom, to: afternoonTo } = afternoonSchedule;
-    const defaultMorningTimeRange = ["8:00", "9:00", "10:00", "11:00", "12:00", "13:00"];
-    const defaultAfternoonTimeRange = ["13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00"];
+    const defaultMorningTimeRange = ["6:00","7:00","8:00", "9:00", "10:00", "11:00", "12:00","13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00"];
+    const defaultAfternoonTimeRange = ["6:00","7:00","8:00", "9:00", "10:00", "11:00", "12:00","13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00", "00:00"];
 
     const disableDates = date => date < new Date().getTime() || date > END_DATE || date < START_DATE || isDateDisabled(daysOff, date);
 

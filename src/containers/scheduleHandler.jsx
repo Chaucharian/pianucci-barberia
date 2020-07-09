@@ -88,7 +88,7 @@ const ScheduleHandler = props => {
     const [state, dispatch] = useStateValue();
     const [morningSchedule, setMorningSchedule] = useState({ from: '', to: ''});
     const [afternoonSchedule, setAfternoonSchedule] = useState({ from: '', to: ''});
-    const [showCalendar, setShowCalendar] = useState(false);
+    const [showCalendar, setShowCalendar] = useState(true);
     const [currentTab, setCurrentTab] = useState(0);
     const [currentDate, setCurrentDate] = useState(null);
     const [currentDateFormated, setCurrentDateFormated] = useState(null);
@@ -98,7 +98,7 @@ const ScheduleHandler = props => {
     const defaultMorningTimeRange = ["","7:00","8:00", "9:00", "10:00", "11:00", "12:00","13:00"];
     const defaultAfternoonTimeRange = ["","13:00", "14:00", "15:00", "16:00", "17:00", "18:00","19:00", "20:00", "21:00", "22:00", "23:00", "00:00"];
 
-    const disableDates = date => date < new Date().getTime() || date > END_DATE || date < START_DATE || isDateDisabled(daysOff, date);
+    const disableDates = date => date < new Date().getTime() || date > END_DATE || date < START_DATE;
 
     const changeTab = (event, nextTab) => {
         if(nextTab === 0) setCurrentDate(null); // set to initial state
@@ -114,6 +114,7 @@ const ScheduleHandler = props => {
     }
 
     const morningSelection = (label, time) => {
+        console.log(time)
         if(label === 'Desde') {
             setMorningSchedule({ ...morningSchedule, from: time });
         } else {
@@ -130,8 +131,8 @@ const ScheduleHandler = props => {
     }
 
     const submit = () => {
-        const morningTimeToUnix = { from: new Date().setHours(Number(morningFrom.split(":")[0]), 0), to: new Date().setHours(Number(morningTo.split(":")[0]), 0) };
-        const afternoonTimeToUnix = { from: new Date().setHours(Number(afternoonFrom.split(":")[0]), 0), to: new Date().setHours(Number(afternoonTo.split(":")[0]), 0) };
+        const morningTimeToUnix = { from: new Date().setHours(Number(morningFrom.split(":")[0]), 0), to: morningTo === '' ? 0 : new Date().setHours(Number(morningTo.split(":")[0]), 0) };
+        const afternoonTimeToUnix = { from: afternoonFrom === '' ? 0 : new Date().setHours(Number(afternoonFrom.split(":")[0]), 0), to: new Date().setHours(Number(afternoonTo.split(":")[0]), 0) };
 
         api.setAvailableHours({ morning: morningTimeToUnix, afternoon: afternoonTimeToUnix, requestDate: currentDate }).then( data => console.log (data));
     }
@@ -217,8 +218,8 @@ const ScheduleHandler = props => {
 
     useEffect( () => {
         api.getAvailableHours(currentDate).then( ({ morning, afternoon }) => {
-            setMorningSchedule({ from: getHours(morning.from)+":00", to: getHours(morning.to)+":00" });
-            setAfternoonSchedule({ from: getHours(afternoon.from)+":00", to: getHours(afternoon.to)+":00" });
+            setMorningSchedule({ from: getHours(morning.from)+":00", to: morning.to === 0 ? "" : getHours(morning.to)+":00" });
+            setAfternoonSchedule({ from: afternoon.from === 0 ? "" :getHours(afternoon.from)+":00", to: getHours(afternoon.to)+":00" });
         });
     }, [currentDate]);
 

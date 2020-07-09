@@ -94,7 +94,6 @@ export const Router = () => {
         if(nextPath === null) return;
         if (user.id !== '' && nextPath === '/login') {
             logoutHandler();
-            window.location.reload();
         }
         confirmNavigation();
     }, [nextPath]);

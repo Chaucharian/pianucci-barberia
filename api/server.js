@@ -339,7 +339,7 @@ app.post('/api/setAvailableHours', (request, response) => {
     const afternoonRef = firebaseDB.ref('/timeRange/afternoonScheduleTime');
     const morningRef = firebaseDB.ref('/timeRange/morningScheduleTime');
 
-    if(morningFrom && afternoonFrom && !requestDate) {
+    if(morningFrom && afternoonTo && !requestDate) {
         morningRef.set(`${morningFrom}/${morningTo}`);
         afternoonRef.set(`${afternoonFrom}/${afternoonTo}`);
         response.json({ status: "daily hours updated!" });

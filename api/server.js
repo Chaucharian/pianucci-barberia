@@ -18,7 +18,7 @@ admin.initializeApp({
     databaseURL: "https://pianucci-barberia.firebaseio.com"
 });
 const firebaseDB = admin.database();
-const NOTIFICATION_INTERVAL = 1000 * 60 * 10; // 10 min
+const NOTIFICATION_INTERVAL = 1000 * 60 * 60; // 10 min
 app.use(express.static(rootPath+"dist"));
 app.use("/assets", express.static(rootPath+"src/assets"));
 app.use(express.static(rootPath));

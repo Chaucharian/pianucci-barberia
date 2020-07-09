@@ -147,7 +147,7 @@ const ScheduleHandler = props => {
                             <Select label="Desde" selection={morningFrom} onChange={morningSelection}>
                                 {defaultMorningTimeRange}
                             </Select>
-                            <Select label="Hasta" selection={afternoonTo} onChange={morningSelection}>
+                            <Select label="Hasta" selection={morningTo} onChange={morningSelection}>
                                 {defaultMorningTimeRange}
                             </Select>
                         </div>
@@ -155,7 +155,7 @@ const ScheduleHandler = props => {
                     <div>
                         <h2>TARDE</h2>
                         <div className={classes.timeRange}>
-                            <Select label="Desde" selection={morningFrom} onChange={afternoonSelection}>
+                            <Select label="Desde" selection={afternoonFrom} onChange={afternoonSelection}>
                                 {defaultAfternoonTimeRange}
                             </Select>
                             <Select label="Hasta" selection={afternoonTo} onChange={afternoonSelection}>

@@ -1,7 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const luxon = require('luxon');
-const { isSameDay, isSameHour, isSameMonth, isToday, isSameWeek } = require('date-fns');
+const { isSameDay, isSameHour, isSameMonth, isToday, format, isSameWeek, isSameYear, getDay } = require('date-fns');
 const path = require('path');
 const app = express();
 // const app = require("https-localhost")() // DEV ONLY
@@ -164,10 +164,33 @@ app.get('/api/getImageGalery', (request, response) => {
     });
 });
 
-app.get('/api/getBusinessStats', (request, response) => {
+// POST
+app.post('/api/getBusinessStats', (request, response) => {
+    const { filterBy, timeRange } = request.body;
     const billingRef = firebaseDB.ref('/billing');
     let stats = { bookings: { today: 0, currentMonth: 0 }, billing: { today: 0, currentMonth: 0 } };
     const billingRaw = [];
+    let billing = [];
+    let bookings = [];
+
+    const getDayName = date => {
+        switch(date) {
+            case 0:
+                return 'Domingo';
+            case 1: 
+                return 'Lunes';
+            case 2: 
+                return 'Martes';
+            case 3:
+                return 'Miercoles';
+            case 4:
+                return 'Jueves';
+            case 5:
+                return 'Viernes';
+            case 6:
+                return 'Sabado';
+        }
+    }
 
     billingRef.once('value', billingSnapshot => {
         billingSnapshot.forEach( billing => {
@@ -176,36 +199,81 @@ app.get('/api/getBusinessStats', (request, response) => {
 
         const currentMonthBilling = billingRaw.filter(({ date }) => isSameMonth(date, new Date()));
         const currentWeekBilling = billingRaw.filter(({ date }) => isSameWeek(date, new Date()));
-        const todayBilling = billingRaw.filter(({ date }) => isToday(date, new Date()));
+        const currentYearBilling = billingRaw.filter(({ date }) => isSameYear(date, new Date()));
+        // const todayBilling = billingRaw.filter(({ date }) => isToday(date, new Date()));
 
-        if(todayBilling.length !== 0 && currentMonthBilling.length !== 0 && currentWeekBilling.length !== 0) {
-            const todayBookingsStats = todayBilling.reduce( (counter, billing) => {
-                // no amount then take it as lost booking
-                if(Number(billing.amount) !== 0) {
-                    return counter + 1;
-                } else {
-                    return 0;
-                }
-            }, 0);
-            const currentWeekBookingStats = currentWeekBilling.reduce( (counter, billing) => {
-                if(Number(billing.amount) !== 0) {
-                    return counter + 1;
-                } else {
-                    return 0;
-                }
-            }, 0);
-            const currentMonthBookingsStats = currentMonthBilling.reduce( (counter, billing) => {
-                if(Number(billing.amount) !== 0) {
-                    return counter + 1;
-                } else {
-                    return 0;
-                }
-            }, 0);
-            const todayBillingStats = todayBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
-            const currentWeekBillingStats = currentWeekBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
-            const currentMonthBillingStats = currentMonthBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
+        if(currentYearBilling.length !== 0 && currentMonthBilling.length !== 0 ){//&& currentWeekBilling.length !== 0) {
+            if(filterBy === 'mony') {
+                if(timeRange === 'week') {
+                    let lastDay = null;
+                    let currentDayAmount = 0;
+                    currentMonthBilling.map( dayBilling => {
+                        let currentDay = getDayName(getDay(dayBilling.date));
+                        if(currentDay !== lastDay) {
+                            lastDay = currentDay;
+                            console.log(" DAY ",currentMonthBilling.filter( ({date}) => getDayName(getDay(date)) === lastDay).map( ({date, amount}) => [getDayName(getDay(date)), Number(amount)] ));
+                        } 
+                        // let currentDay = getDayName(getDay(dayBilling.date));
+                        // currentDayAmount = Number(dayBilling.amount);
+                        // if(currentDay !== lastDay) {
+                        //     billing.push([ currentDay, currentDayAmount ]);
+                        //     lastDay = currentDay;
+                        //     currentDayAmount = 0;
+                        // } else {
+                        //     console.log(" DAY ",currentDay, currentDayAmount);
+                        //     currentDayAmount += Number(dayBilling.amount);
+                        // }
+                    });
+                    // billing = currentWeekBilling.map( dayBilling => [getDayName(getDay(dayBilling.date)), Number(dayBilling.amount)] );
+                    // const currentWeekBillingStats = currentWeekBilling.map( dayBilling => {
+                    //         billing.push(dayBilling.amount+' '+format(dayBilling.date, 'dd'));
+                    // });
+                    // console.log(" WEEK ",billing);
+                } else if(timeRange === 'month') {
 
-            stats = { bookings: { today: todayBookingsStats, currentWeek: currentWeekBookingStats, currentMonth: currentMonthBookingsStats }, billing: { today: todayBillingStats, currentWeek: currentWeekBillingStats, currentMonth: currentMonthBillingStats } };
+                } else if(timeRange === 'year') {
+                    
+                }
+            } else if(filterBy === 'cuts') {
+                if(timeRange === 'week') {
+
+                } else if(timeRange === 'month') {
+    
+                } else if(timeRange === 'year') {
+                    
+                }
+            }
+
+         
+
+        //     const todayBookingsStats = todayBilling.reduce( (counter, billing) => {
+        //         // no amount then take it as lost booking
+        //         if(Number(billing.amount) !== 0) {
+        //             return counter + 1;
+        //         } else {
+        //             return counter;
+        //         }
+        //     }, 0);
+        //     const currentWeekBookingStats = currentWeekBilling.reduce( (counter, billing) => {
+        //         if(Number(billing.amount) !== 0) {
+        //             return counter + 1;
+        //         } else {
+        //             return counter;
+        //         }
+        //     }, 0);
+        //     const currentMonthBookingsStats = currentMonthBilling.reduce( (counter, billing) => {
+        //         if(Number(billing.amount) !== 0) {
+        //             return counter + 1;
+        //         } else {
+        //             return counter;
+        //         }
+        //     }, 0);
+            
+            
+        //     const currentMonthBillingStats = currentMonthBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
+        //     const yearBillingStats = todayBilling.reduce( (counter, billing) => counter + Number(billing.amount), 0);
+
+            stats = { bookings, billing };
         }
 
         response.json({ status: 'billing stats retrieved!', stats });
@@ -213,7 +281,6 @@ app.get('/api/getBusinessStats', (request, response) => {
     });
 });
 
-// POST
 app.post('/api/getAvailableHours', (request, response) => {
     const { requestDate } = request.body;
     const timeRangeRef = firebaseDB.ref('/timeRange');

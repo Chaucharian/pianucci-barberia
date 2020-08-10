@@ -29,6 +29,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-gesture-responder": "^2.1.0",
+    "react-google-charts": "^3.0.15",
     "react-hook-form": "^5.2.0",
     "react-page-scroller": "^1.5.1",
     "react-router-dom": "^5.2.0",

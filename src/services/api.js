@@ -184,9 +184,14 @@ export const payBooking = payload => (
     .then( response => response.json() )
 );
 
-export const getBusinessStats = () => (
+export const getBusinessStats = payload => (
     fetch(enviroment.baseUrl + '/getBusinessStats', {
-        method: 'GET'
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
     })
     .then( response => response.json() )
 );

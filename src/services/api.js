@@ -1,5 +1,4 @@
 import { enviroment } from '../enviroment';
-import { fetching } from '../actions/app';
 
 export const createUser = user => (
     fetch(enviroment.baseUrl + '/createUser', {
@@ -61,8 +60,7 @@ export const getUserBookings = userId => (
     .then( response => response.json() )
 );
 
-export const getSchedule = (dispatch, userDate) => {
-    dispatch(fetching(true));
+export const getSchedule = (userDate) => {
     return fetch(enviroment.baseUrl + '/getScheduleForDate', {
         method: 'POST',
         headers: {

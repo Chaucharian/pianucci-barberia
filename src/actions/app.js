@@ -64,3 +64,8 @@ export const hideBookingHandlerView = action => ({
 export const bookingHandlerVisited = () => ({
     type: actionTypes.BOOKING_HANDLER_VISITED,
 }); 
+
+export const setDaysOff = days => ({
+    type: actionTypes.SET_DAYSOFF,
+    payload: days
+});

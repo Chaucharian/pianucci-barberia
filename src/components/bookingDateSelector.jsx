@@ -6,7 +6,7 @@ import DaysListSelector from './daysListSelector';
 import { useStateValue } from '../state/rootState';
 import * as appActions from '../actions/app';
 import Spinner from './spinner';
-import  { addDays, isToday, isTomorrow } from 'date-fns';
+import  { addDays, isToday, isTomorrow, getHours, getDay } from 'date-fns';
 import { isDateDisabled } from '../utils/dates';
 
 const styles = {
@@ -37,30 +37,58 @@ const styles = {
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props; 
     const [{ fetching, user: { daysOff } }, dispatch] = useStateValue();
-    const [state, setState] = useState({ currentDate: Date.now(), firstOpen: true, currentDateFormated: '', bookings: [], showBookings: true, comesFromCalendar: false});
-    const { currentDate, firstOpen, currentDateFormated, showBookings, comesFromCalendar, bookings } = state;
+    const [state, setState] = useState({ 
+        currentDate: Date.now(),
+        firstOpen: true,
+        currentDateFormated: '',
+        bookings: [],
+        showBookings: true,
+        comesFromCalendar: false
+     });
+    const { currentDate, 
+            firstOpen,
+            currentDateFormated,
+            showBookings,
+            comesFromCalendar,
+            bookings } = state;
 
     const changeCurrentDate = ({date, dateFormated, showBookings, comesFromCalendar }) => {
         setState({ ...state, currentDate: date, currentDateFormated: dateFormated, showBookings, comesFromCalendar });
     }
 
+    const todayEnd = bookings => {
+        let dayEnded = false;
+        if(bookings.length !== 0 && isToday(currentDate)) {
+            dayEnded = getHours(currentDate) >= getHours(bookings[bookings.length -1].date);
+        }
+        return dayEnded;
+    }
+
+    const moveNextDay = () => setState( state => ({ ...state, currentDate: addDays(currentDate, 1).getTime() }));
+
     const openCalendar = defaultDate => setState({ ...state, currentDate: defaultDate, showBookings: false });
     
     useEffect( () => {
+        console.log(daysOff);
         // While current date isn't free move one day
         if(isDateDisabled(daysOff, currentDate)) {
-            setState( state => ({ ...state, currentDate: addDays(currentDate, 1).getTime() }));
+            moveNextDay();
         } else {
             // This is for hidding calendar when view first open
             if(firstOpen && !isToday(currentDate) && !isTomorrow(currentDate)) {
                 setState( state => ({ ...state, firstOpen: false, showBookings: false }));
             }
-            api.getSchedule(dispatch, currentDate).then( ({bookings}) => {
+            dispatch(appActions.fetching(true));
+            api.getSchedule(currentDate).then( ({bookings}) => {
                 dispatch(appActions.fetching(false));
                 setState( state => ({ ...state, bookings }));
+                // if today has ended, add it as a day off
+                if(todayEnd(bookings)) {
+                    dispatch(appActions.setDaysOff([...daysOff, getDay(currentDate) ]));
+                }
             });
         }
-    }, [currentDate]);
+    }, [currentDate, daysOff]);
 
     return (
         <div className={classes.container}>

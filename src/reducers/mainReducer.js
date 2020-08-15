@@ -30,11 +30,10 @@ export const reducer = (state, action) => {
               logout
             }
         case actionTypes.BOOKINGS_FETCHED:
-            const { user: userState } = state;
             const bookings = action.payload;
             return {
               ...state,
-              user: { ...userState, bookings }
+              user: { ...state.user, bookings }
             }
         case actionTypes.DISABLE_SCROLL_UP:
             const scrollUpDisabled = action.payload;
@@ -49,10 +48,9 @@ export const reducer = (state, action) => {
                 scrollDownDisabled
             }
         case actionTypes.USER_LOGGED_IN:
-            const user = action.payload;
             return {
               ...state,
-              user
+              user: action.payload
             }
         case actionTypes.CHANGE_PAGE:
             const currentPage = action.payload;
@@ -82,6 +80,11 @@ export const reducer = (state, action) => {
             return {
                 ...state,
                 bookingCreated
+            };
+        case actionTypes.SET_DAYSOFF:
+            return {
+                ...state,
+                user: { ...state.user, daysOff: action.payload }
             };
       default:
         return state;

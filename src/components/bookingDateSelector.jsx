@@ -69,7 +69,6 @@ export const BookingDateSelector = (props) => {
     const openCalendar = defaultDate => setState({ ...state, currentDate: defaultDate, showBookings: false });
     
     useEffect( () => {
-        console.log(daysOff);
         // While current date isn't free move one day
         if(isDateDisabled(daysOff, currentDate)) {
             moveNextDay();

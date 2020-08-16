@@ -149,6 +149,8 @@ const Header = (props) => {
                     VIP
                     </a>
                 </li> 
+                {/* 
+                ENABLE THIS WHEN SECTION IS WORKING
                 <li>
                     <a 
                     onClick={() => {
@@ -157,7 +159,7 @@ const Header = (props) => {
                     }}>
                     ESTADISTICAS
                     </a>
-                </li> 
+                </li>  */}
                 <li><a onClick={() => onAction("logout")}>SALIR</a></li>
             </>
         );

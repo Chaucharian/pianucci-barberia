@@ -7,7 +7,7 @@
     "build": "parcel build ./src/index.html --no-source-maps",
     "watch:prod": "NODE_ENV=production parcel watch ./src/index.html",
     "api:dev": "NODE_ENV=development env TZ='America/Buenos_Aires' pm2 start ./api/server.js --name pianucciweb --watch",
-    "api": "env TZ='America/Buenos_Aires' pm2 start ./api/server.js --name pianucciweb --watch"
+    "api": "NODE_ENV=production env TZ='America/Buenos_Aires' pm2 start ./api/server.js --name pianucciweb --watch"
   },
   "author": "AS",
   "license": "MIT",

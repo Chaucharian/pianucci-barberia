@@ -1,22 +1,22 @@
 {
-    "name": "Pianucci Barberia",
-    "short_name": "Pianucci Barberia",
-    "gcm_sender_id": "276894270634",
-    "scope": "/",
-    "start_url": "/",
-    "icons": [
-        {
-            "src": "/assets/icons/android-chrome-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/assets/icons/android-chrome-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "theme_color": "#000",
-    "background_color": "#000",
-    "display": "fullscreen"
+  "name": "Pianucci Barberia",
+  "short_name": "Pianucci Barberia",
+  "gcm_sender_id": "276894270634",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/assets/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#000",
+  "background_color": "#000",
+  "display": "fullscreen"
 }

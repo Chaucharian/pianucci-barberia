@@ -1,144 +1,204 @@
-import React, { useEffect, useState } from 'react'
-import { withStyles } from '@material-ui/styles';
-import { Tabs, Tab } from '@material-ui/core';
-import { useStateValue } from '../state/rootState';
-import * as api from '../services/api';
-import * as appActions from '../actions/app';
-import Spinner from '../components/spinner';
-import { Chart } from "react-google-charts";
+import React, { useEffect, useState } from "react";
+import { withStyles } from "@material-ui/styles";
+import { Tabs, Tab } from "@material-ui/core";
+import { useStateValue } from "../state/rootState";
+import * as api from "../services/api";
+import * as appActions from "../actions/app";
+import Spinner from "../components/spinner";
+import Calendar from "@lls/react-light-calendar";
+import "@lls/react-light-calendar/dist/index.css"; // Default Style
+import { addDays, getDay, format } from "date-fns";
 
 const styles = {
-    container: {
-        width: "100%",
-        height: "100vh", 
-        backgroundColor: "#000",
-        textAlign: "center",
-        paddingTop: "76px",
-        color: "#FFF",
-        "& h1": {
-            marginBottom: "0px"
-        },
-        "& h2": {
-            fontWeight: "lighter"
-        },
-        "& .MuiTabs-root ": {
-            "& button": {
-                width: "50%"
-            },
-            "& .MuiTabs-indicator": {
-                backgroundColor: "white"
-            }
-        } 
+  container: {
+    width: "100%",
+    height: "100vh",
+    backgroundColor: "#000",
+    textAlign: "center",
+    paddingTop: "76px",
+    color: "#FFF",
+    "& h1": {
+      marginBottom: "0px",
     },
-    data: {
-        fontStyle: "normal",
-        fontWeight: "lighter"
+    "& h2": {
+      fontWeight: "lighter",
     },
-    options: {
-        display: "flex",
-        justifyContent: "space-around",
-        "& h2": {
-            fontWeight: "bold",
-            cursor: "pointer",
-            "&:hover": {
-                color: "red"
-            }
-        }
+    "& .MuiTabs-root ": {
+      "& button": {
+        width: "50%",
+      },
+      "& .MuiTabs-indicator": {
+        backgroundColor: "white",
+      },
     },
-    chart: {
-        display: "flex"
+  },
+  data: {
+    fontStyle: "normal",
+    fontWeight: "lighter",
+  },
+  options: {
+    display: "flex",
+    justifyContent: "space-around",
+    "& h2": {
+      fontWeight: "bold",
+      cursor: "pointer",
+      "&:hover": {
+        color: "red",
+      },
     },
-    selected: {
-        color: "red"
-    }
-}
+  },
+  content: {
+    display: "flex",
+    justifyContent: "center",
+    padding: "15px",
+  },
+  textContainer: {
+    display: "block",
+  },
+  halfContent: {
+    width: "50%",
+  },
+  selected: {
+    color: "red",
+  },
+  calendar: {
+    overflow: "auto",
+    "& .rlc-day": {
+      color: "white",
+    },
+    "& .rlc-day-disabled": {
+      color: "#cecece",
+    },
+  },
+};
 
-const BusinessStats = props => {
-    const { classes } = props;
-    const [state, dispatch] = useStateValue();
-    const [timeRange, setTimeRange] = useState('week');
-    const [bookings, bookingsFetched] = useState({});
-    const [billing, billingFetched] = useState([]);
-    const { fetching, currentPage } = state;
-    const [currentTab, setCurrentTab] = useState(0);
+const days = {
+  0: "Domingo",
+  1: "Lunes",
+  2: "Martes",
+  3: "Miercoles",
+  4: "Jueves",
+  5: "Viernes",
+  6: "Sabado",
+};
 
-    const changeTab = (event, nextTab) => setCurrentTab(nextTab);
+const BusinessStats = (props) => {
+  const { classes } = props;
+  const [state, dispatch] = useStateValue();
+  const [date, setDate] = useState();
+  const [bookings, bookingsFetched] = useState({});
+  const [billing, billingFetched] = useState([]);
+  const [currentTab, setCurrentTab] = useState(0);
+  const { fetching, currentPage } = state;
 
-    const getTabName = currentTab => currentTab === 0 ? 'Mony' : 'Cortes'
-    
-    const changeView = view => setView(view);
+  const changeTab = (event, nextTab) => setCurrentTab(nextTab);
 
-    const showChart = () => {
-        let chart = <></>;
+  const fullDate = (date) =>
+    `${days[getDay(date)]} ${format(date, "dd/MM/yyyy")}`;
 
-        if(timeRange === 'week') {
-            console.log('data', billing);
-            chart = 
-            <Chart
-                width='100%'
-                height={300}
-                chartType="ColumnChart"
-                loader={<div>Cargando grafico</div>}
-                data={[
-                ['Dia', getTabName(currentTab)],
-                billing
-                ]}
-                options={{
-                hAxis: { textStyle: { fontWeight: "bold",fill: "white"} }, 
-                // title: 'Population of Largest U.S. Cities',
-                chartArea: { width: '60%' },
-                hAxis: {
-                    title: 'Total Population',
-                    minValue: 0,
-                },
-                // vAxis: {
-                //     title: 'City',
-                // },
-                backgroundColor: 'black'
-                }}
-                legendToggle
-            />
-            ;
-        } else if(timeRange === 'month') {
-          
-        } else if(timeRange === 'year') {
-        
-        }
-        return chart;
-    }
+  const showView = () => {
+    let view = <></>;
 
-    useEffect( () => {
-        if(currentPage === 4) {
-            dispatch(appActions.fetching(true));
-            api.getBusinessStats({ timeRange, filterBy: currentTab === 0 ? 'mony' : 'cuts' }).then( ({ stats }) => {
-                const { bookings, billing } = stats;
-                bookingsFetched(bookings);
-                billingFetched(billing);
-                dispatch(appActions.fetching(false));
-            });
-        }
-    }, [currentTab, timeRange]); 
-
-    return (
-        <div className={classes.container}>
-            <h1>ESTADISTICAS</h1>
-            <Tabs value={currentTab} onChange={changeTab} >
-                <Tab label="MONY" />
-                <Tab label="CORTES" />
-            </Tabs>
-            <div className={classes.options} >
-                <h2 className={timeRange === 'week' && classes.selected} onClick={() => setTimeRange('week')}>SEMANA</h2>
-                <h2 className={timeRange === 'month' && classes.selected} onClick={() => setTimeRange('month')}>MES</h2>
-                <h2 className={timeRange === 'year' && classes.selected} onClick={() => setTimeRange('year')}>AÑO</h2>
+    if (currentTab) {
+      view = (
+        <>
+          {date && (
+            <div className={classes.textContainer}>
+              <h3>{fullDate(date)}</h3>
+              <h2>Cortes {bookings.selectedDate}</h2>
+              <h2>Mony {billing.selectedDate}$</h2>
             </div>
-            <Spinner loading={fetching}>
-                <div className={classes.chart}>
-                { showChart() }
-                </div>
-            </Spinner>
-        </div>
-    );  
-  }
-  
+          )}
+          {!date && (
+            <div className={classes.calendar}>
+              <Calendar
+                dayLabels={[
+                  "Lunes",
+                  "Martes",
+                  "Miercoles",
+                  "Jueves",
+                  "Viernes",
+                  "Sabado",
+                  "Domingo",
+                ]}
+                monthLabels={[
+                  "Enero",
+                  "Febrero",
+                  "Marzo",
+                  "Abril",
+                  "Mayo",
+                  "Junio",
+                  "Julio",
+                  "Agosto",
+                  "Septiembre",
+                  "Octubre",
+                  "Noviembre",
+                  "Diciembre",
+                ]}
+                onChange={(date) => setDate(addDays(date, 1))}
+              />
+            </div>
+          )}
+        </>
+      );
+    } else {
+      view = (
+        <>
+          <div>
+            <h2>&#x1F4C5;</h2>
+            <h3>HOY</h3>
+            <h3>SEMANA</h3>
+            <h3>MES</h3>
+          </div>
+          <div className={classes.halfContent}>
+            <h2>CORTES</h2>
+            <h3>{bookings.today}</h3>
+            <h3>{bookings.week}</h3>
+            <h3>{bookings.month}</h3>
+          </div>
+          <div className={classes.halfContent}>
+            <h2>MONY</h2>
+            <h3>{billing.today}$</h3>
+            <h3>{billing.week}$</h3>
+            <h3>{billing.month}$</h3>
+          </div>
+        </>
+      );
+    }
+
+    return view;
+  };
+
+  useEffect(() => {
+    if (currentPage === 4) {
+      currentTab === 0 && setDate(null);
+      dispatch(appActions.fetching(true));
+      api
+        .getBusinessStats({
+          date: new Date(date).getTime(),
+        })
+        .then(({ stats }) => {
+          const { bookings, billing } = stats;
+          // always apply last state update
+          bookingsFetched((state) => ({ ...state, ...bookings }));
+          billingFetched((state) => ({ ...state, ...billing }));
+          dispatch(appActions.fetching(false));
+        });
+    }
+  }, [date, currentTab]);
+
+  return (
+    <div className={classes.container}>
+      <h1>ESTADISTICAS</h1>
+      <Tabs value={currentTab} onChange={changeTab}>
+        <Tab label="GENERAL" />
+        <Tab label="POR FECHA" />
+      </Tabs>
+      <Spinner loading={fetching}>
+        <div className={classes.content}>{showView()}</div>
+      </Spinner>
+    </div>
+  );
+};
 
 export default withStyles(styles)(BusinessStats);

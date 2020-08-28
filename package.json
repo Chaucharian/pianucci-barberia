@@ -3,11 +3,10 @@
   "version": "1.0.0",
   "description": "Barber appointment web",
   "scripts": {
-    "start": "parcel --host 0.0.0.0 ./src/index.html",
+    "start": "NODE_ENV=development parcel watch ./src/index.html & npm run api",
     "build": "parcel build ./src/index.html --no-source-maps",
-    "watch:dev": "NODE_ENV=development parcel watch ./src/index.html",
     "watch:prod": "NODE_ENV=production parcel watch ./src/index.html",
-    "api": "env TZ='America/Buenos_Aires'  pm2 start ./api/server.js --name pianucciweb --watch "
+    "api": "env TZ='America/Buenos_Aires' pm2 start ./api/server.js --name pianucciweb --watch "
   },
   "author": "AS",
   "license": "MIT",
@@ -29,7 +28,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-gesture-responder": "^2.1.0",
-    "react-google-charts": "^3.0.15",
     "react-hook-form": "^5.2.0",
     "react-page-scroller": "^1.5.1",
     "react-router-dom": "^5.2.0",
@@ -48,6 +46,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "cookie-parser": "^1.4.5",
     "https-localhost": "^4.5.2",
+    "prettier": "2.0.5",
     "react-hot-loader": "^4.12.20"
   },
   "keywords": [

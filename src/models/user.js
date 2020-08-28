@@ -1,7 +1,7 @@
-export default { 
-    name: '',
-    email: '',
-    id: '',
-    password: '',
-    bookings: []
+export default {
+  name: "",
+  email: "",
+  id: "",
+  password: "",
+  bookings: [],
 };

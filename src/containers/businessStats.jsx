@@ -93,6 +93,8 @@ const BusinessStats = (props) => {
 
   const changeTab = (event, nextTab) => setCurrentTab(nextTab);
 
+  const disableDates = (date) => date >= new Date().getTime();
+
   const fullDate = (date) =>
     `${days[getDay(date)]} ${format(date, "dd/MM/yyyy")}`;
 
@@ -135,6 +137,7 @@ const BusinessStats = (props) => {
                   "Noviembre",
                   "Diciembre",
                 ]}
+                disableDates={(date) => disableDates(addDays(date, 1))}
                 onChange={(date) => setDate(addDays(date, 1))}
               />
             </div>
@@ -145,7 +148,7 @@ const BusinessStats = (props) => {
       view = (
         <>
           <div>
-            <h2>&#x1F4C5;</h2>
+            <h2>&#x1F5DE;</h2>
             <h3>HOY</h3>
             <h3>SEMANA</h3>
             <h3>MES</h3>

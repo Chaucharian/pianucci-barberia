@@ -227,95 +227,90 @@ app.post("/api/getBusinessStats", (request, response) => {
       isSameYear(date, new Date())
     );
 
-    if (todayBilling.length !== 0) {
-      if (requestDate) {
-        const requestDateBilling = billingRaw.filter(({ date }) =>
-          isSameDay(requestDate, date)
-        );
-        const requestDateBookingsStats = requestDateBilling.reduce(
-          (counter, billing) => {
-            // if no amount, then take it as lost booking
-            if (Number(billing.amount) !== 0) {
-              return counter + 1;
-            } else {
-              return counter;
-            }
-            return counter + 1;
-          },
-          0
-        );
-        const requestDateBillingStats = requestDateBilling.reduce(
-          (counter, billing) => counter + Number(billing.amount),
-          0
-        );
-
-        stats = {
-          bookings: {
-            selectedDate: requestDateBookingsStats,
-          },
-          billing: {
-            selectedDate: requestDateBillingStats,
-          },
-        };
-      } else {
-        const todayBookingsStats = todayBilling.reduce((counter, billing) => {
+    if (requestDate) {
+      const requestDateBilling = billingRaw.filter(({ date }) =>
+        isSameDay(requestDate, date)
+      );
+      const requestDateBookingsStats = requestDateBilling.reduce(
+        (counter, billing) => {
           // if no amount, then take it as lost booking
           if (Number(billing.amount) !== 0) {
             return counter + 1;
           } else {
             return counter;
           }
-        }, 0);
-        const weekBookingStats = currentWeekBilling.reduce(
-          (counter, billing) => {
-            if (Number(billing.amount) !== 0) {
-              return counter + 1;
-            } else {
-              return counter;
-            }
-          },
-          0
-        );
-        const monthBookingsStats = currentMonthBilling.reduce(
-          (counter, billing) => {
-            if (Number(billing.amount) !== 0) {
-              return counter + 1;
-            } else {
-              return counter;
-            }
-          },
-          0
-        );
-        const todayBillingStats = todayBilling.reduce(
-          (counter, billing) => counter + Number(billing.amount),
-          0
-        );
-        const weekBillingStats = currentWeekBilling.reduce(
-          (counter, billing) => counter + Number(billing.amount),
-          0
-        );
-        const monthBillingStats = currentMonthBilling.reduce(
-          (counter, billing) => counter + Number(billing.amount),
-          0
-        );
-        const yearBillingStats = todayBilling.reduce(
-          (counter, billing) => counter + Number(billing.amount),
-          0
-        );
+          return counter + 1;
+        },
+        0
+      );
+      const requestDateBillingStats = requestDateBilling.reduce(
+        (counter, billing) => counter + Number(billing.amount),
+        0
+      );
 
-        stats = {
-          bookings: {
-            today: todayBookingsStats,
-            week: weekBookingStats,
-            month: monthBookingsStats,
-          },
-          billing: {
-            today: todayBillingStats,
-            week: weekBillingStats,
-            month: monthBillingStats,
-          },
-        };
-      }
+      stats = {
+        bookings: {
+          selectedDate: requestDateBookingsStats,
+        },
+        billing: {
+          selectedDate: requestDateBillingStats,
+        },
+      };
+    } else {
+      const todayBookingsStats = todayBilling.reduce((counter, billing) => {
+        // if no amount, then take it as lost booking
+        if (Number(billing.amount) !== 0) {
+          return counter + 1;
+        } else {
+          return counter;
+        }
+      }, 0);
+      const weekBookingStats = currentWeekBilling.reduce((counter, billing) => {
+        if (Number(billing.amount) !== 0) {
+          return counter + 1;
+        } else {
+          return counter;
+        }
+      }, 0);
+      const monthBookingsStats = currentMonthBilling.reduce(
+        (counter, billing) => {
+          if (Number(billing.amount) !== 0) {
+            return counter + 1;
+          } else {
+            return counter;
+          }
+        },
+        0
+      );
+      const todayBillingStats = todayBilling.reduce(
+        (counter, billing) => counter + Number(billing.amount),
+        0
+      );
+      const weekBillingStats = currentWeekBilling.reduce(
+        (counter, billing) => counter + Number(billing.amount),
+        0
+      );
+      const monthBillingStats = currentMonthBilling.reduce(
+        (counter, billing) => counter + Number(billing.amount),
+        0
+      );
+      const yearBillingStats = todayBilling.reduce(
+        (counter, billing) => counter + Number(billing.amount),
+        0
+      );
+
+      stats = {
+        bookings: {
+          today: todayBookingsStats,
+          week: weekBookingStats,
+          month: monthBookingsStats,
+        },
+        billing: {
+          today: todayBillingStats,
+          week: weekBillingStats,
+          month: monthBillingStats,
+        },
+      };
     }
 
     response.json({ status: "billing stats retrieved!", stats });

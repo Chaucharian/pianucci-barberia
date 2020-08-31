@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useStateValue } from "../state/rootState";
-import * as appActions from "../actions/app";
+import { useStateValue } from "../context/context";
 import { withStyles } from "@material-ui/styles";
 import StepIndicator from "../components/stepIndicator";
 import ViewSwitcher from "../components/viewSwitcher";
@@ -8,7 +7,6 @@ import ServiceTypeSelector from "../components/serviceTypeSelector";
 import BookingConfirmation from "../components/bookingConfirmation";
 import BookingDateSelector from "../components/bookingDateSelector";
 import VipDescriptionBooking from "../components/vipDescriptionBooking";
-import * as userActions from "../actions/user";
 import * as api from "../services/api";
 
 const styles = {

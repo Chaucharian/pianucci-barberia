@@ -2,7 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as api from "../services/api";
 import * as appActions from "../actions/app";
 import RealBarberButton from "../components/realBarberButton";

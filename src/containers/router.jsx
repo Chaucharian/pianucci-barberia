@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useRoutes, navigate, useControlledInterceptor } from "hookrouter";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import "firebase/auth";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as appActions from "../actions/app";
 import firebaseConfig from "../../credentials/firebaseToken";
 import { NotFoundPage } from "../components/notFoundPage";

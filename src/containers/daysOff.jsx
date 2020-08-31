@@ -1,20 +1,8 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
-import { useStateValue } from "../state/rootState";
 import * as api from "../services/api";
-import * as appActions from "../actions/app";
 import Select from "../components/select";
 import ReflectButton from "../components/reflectButton";
-import {
-  isMonday,
-  isFriday,
-  isSunday,
-  isWednesday,
-  isThursday,
-  isSaturday,
-  isTuesday,
-  setDay,
-} from "date-fns/esm";
 import DayOffItem from "../components/dayOffItem";
 
 const styles = {

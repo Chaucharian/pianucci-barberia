@@ -1,12 +1,7 @@
-import React, { useRef, useEffect, useState } from "react";
+import React from "react";
 import { withStyles } from "@material-ui/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-import { useStateValue } from "../state/rootState";
-import * as api from "../services/api";
-import * as appActions from "../actions/app";
-import RealBarberButton from "../components/realBarberButton";
-import UserBooking from "../components/userBooking";
+import { useStateValue } from "../context/context";
 
 const styles = {
   container: {

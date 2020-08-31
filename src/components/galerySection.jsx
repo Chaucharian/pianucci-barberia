@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/styles";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as appActions from "../actions/app";
 import * as api from "../services/api";
 import ImageSlideGalery from "./imageSlideGalery";
@@ -44,7 +44,7 @@ export const GalerySection = ({ classes }) => {
     dispatch(appActions.fetching(true));
     api.getImageGalery().then(({ images }) => {
       dispatch(appActions.fetching(false));
-      setImages(images);
+      setImages(images.map((image, index) => ({ id: index, url: image.url })));
     });
   }, []);
 

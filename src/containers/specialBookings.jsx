@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as api from "../services/api";
 import Spinner from "../components/spinner";
 import ClientBookingItem from "../components/clientBookingItem";

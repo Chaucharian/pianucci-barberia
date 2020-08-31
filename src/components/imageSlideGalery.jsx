@@ -25,27 +25,25 @@ const styles = {
 
 const ImageSlideGalery = (props) => {
   const { classes, images } = props;
-  const _images = [];
-  images.map((image, index) => {
-    _images.push({ id: index, url: image.url });
-  });
   const [index, set] = useState(0);
-  const transitions = useTransition(_images[index], (item) => item.id, {
+  const transitions = useTransition(images[index], (item) => item.id, {
     from: { opacity: 0 },
     enter: { opacity: 1 },
     leave: { opacity: 0 },
     config: config.molasses,
   });
+
   useEffect(() => {
-    setInterval(
+    const interval = setInterval(
       () =>
         set((state) => {
-          if (state === _images.length - 1) return 0;
+          if (state === images.length - 1) return 0;
           return state + 1;
         }),
       4000
     );
-  }, []);
+    return () => clearInterval(interval);
+  }, [index]);
 
   return (
     <div className={classes.container}>

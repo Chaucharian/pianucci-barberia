@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
 import { Tabs, Tab } from "@material-ui/core";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as api from "../services/api";
 import * as appActions from "../actions/app";
 import Spinner from "../components/spinner";

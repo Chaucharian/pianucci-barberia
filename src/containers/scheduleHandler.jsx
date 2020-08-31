@@ -1,22 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles } from "@material-ui/styles";
 import { getHours } from "date-fns";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as api from "../services/api";
-import * as appActions from "../actions/app";
 import Select from "../components/select";
 import ReflectButton from "../components/reflectButton";
 import { Tabs, Tab } from "@material-ui/core";
 import Spinner from "../components/spinner";
 import Calendar from "@lls/react-light-calendar";
 import "@lls/react-light-calendar/dist/index.css"; // Default Style
-import { addDays, isToday, isTomorrow, format } from "date-fns";
-import {
-  START_DATE,
-  END_DATE,
-  dateToUnix,
-  isDateDisabled,
-} from "../utils/dates";
+import { addDays, format } from "date-fns";
+import { END_DATE, dateToUnix } from "../utils/dates";
 
 const styles = {
   container: {

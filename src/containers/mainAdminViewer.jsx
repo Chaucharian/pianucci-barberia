@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as appActions from "../actions/app";
 import Header from "../components/header";
 import ReactPageScroller from "react-page-scroller";

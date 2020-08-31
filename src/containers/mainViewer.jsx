@@ -1,10 +1,9 @@
-import React, { useEffect, useLayoutEffect } from "react";
-import { useStateValue } from "../state/rootState";
+import React, { useEffect } from "react";
+import { useStateValue } from "../context/context";
 import * as appActions from "../actions/app";
 import Header from "../components/header";
 import ReactPageScroller from "react-page-scroller";
 import { withStyles } from "@material-ui/styles";
-import ImageSlideGalery from "../components/imageSlideGalery";
 import BookingList from "./bookingList";
 import BookingHandler from "./bookingHandler";
 import UserProfile from "./userProfile";

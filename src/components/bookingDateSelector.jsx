@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/styles";
 import * as api from "../services/api";
 import BookingItem from "./bookingItem";
 import DaysListSelector from "./daysListSelector";
-import { useStateValue } from "../state/rootState";
+import { useStateValue } from "../context/context";
 import * as appActions from "../actions/app";
 import Spinner from "./spinner";
 import { addDays, isToday, isTomorrow, getHours, getDay } from "date-fns";

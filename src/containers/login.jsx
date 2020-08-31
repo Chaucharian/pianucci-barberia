@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/styles";
-import { useStateValue } from "../state/rootState";
-import firebase from "firebase";
+import { useStateValue } from "../context/context";
+import firebase from "firebase/app";
 import "firebase/auth";
 import * as api from "../services/api";
 import * as appActions from "../actions/app";

@@ -160,3 +160,13 @@ export const getBusinessStats = (payload) =>
     },
     body: JSON.stringify(payload),
   }).then((response) => response.json());
+
+export const sendNotification = (payload) =>
+  fetch(enviroment.baseUrl + "/sendNotification", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  }).then((response) => response.json());

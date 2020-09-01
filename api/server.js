@@ -421,6 +421,7 @@ app.post("/api/setDaysOff", (request, response) => {
 });
 
 app.post("/api/setImageGalery", (request, response) => {
+  // request example "images": ["https://pianuccibarberia.com/assets/cut1.jpeg", "https://pianuccibarberia.com/assets/cut2.jpeg",]
   const { images: requestImages } = request.body;
   const imageGaleryRef = firebaseDB.ref("/imageGalery");
   const images = [];

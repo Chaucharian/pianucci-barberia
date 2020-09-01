@@ -77,33 +77,6 @@ const styles = {
     transform: "translateY(-10px)",
     transition: ".1s ease-in-out",
   },
-  logoBlack: {
-    width: "150px",
-    height: "70px",
-    marginTop: "86%",
-    marginLeft: "auto",
-    marginRight: "auto",
-    opacity: 0,
-    transition: "1s ease-in-out",
-    // display: "none",
-    "& span": {
-      display: "block",
-      width: "100%",
-      height: "100%",
-      background: "url(" + logo + ") no-repeat center center fixed",
-    },
-  },
-  logoBlackVisible: {
-    opacity: 1,
-    // display: "block",
-    transform: "translateY(-15px)",
-    transition: ".5s ease-in-out",
-  },
-  logoBlackHidden: {
-    opacity: 0,
-    transform: "translateX(-400px)",
-    transition: ".1s ease-in-out",
-  },
 };
 
 const Header = (props) => {
@@ -161,6 +134,16 @@ const Header = (props) => {
             }}
           >
             ESTADISTICAS
+          </a>
+        </li>
+        <li>
+          <a
+            onClick={() => {
+              showNavbar(false);
+              onAction("notifications");
+            }}
+          >
+            NOTIFICACIONES
           </a>
         </li>
         <li>
@@ -222,15 +205,6 @@ const Header = (props) => {
           {isAdmin ? adminMenu() : userMenu()}
         </ul>
       </nav>
-      <div
-        className={
-          classes.logoBlack +
-          " " +
-          (open ? classes.logoBlackVisible : classes.logoBlackHidden)
-        }
-      >
-        <span></span>
-      </div>
     </header>
   );
 };

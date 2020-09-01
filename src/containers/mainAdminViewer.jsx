@@ -9,6 +9,7 @@ import ScheduleHandler from "./scheduleHandler";
 import DaysOff from "./daysOff";
 import SpecialBookings from "./specialBookings";
 import BusinessStats from "./businessStats";
+import NotificationSender from "./notificationSender";
 
 const styles = {
   container: {
@@ -83,6 +84,8 @@ export const MainAdminViewer = (props) => {
       dispatch(appActions.changePage(3));
     } else if (action === "stats") {
       dispatch(appActions.changePage(4));
+    } else if (action === "notifications") {
+      dispatch(appActions.changePage(5));
     }
   };
 
@@ -105,6 +108,7 @@ export const MainAdminViewer = (props) => {
           <BookingAdminList onDisableScroll={disableScroll} />
           <SpecialBookings />
           <BusinessStats />
+          <NotificationSender />
         </ReactPageScroller>
       </div>
     </div>

@@ -92,7 +92,10 @@ export const BookingDateSelector = (props) => {
 
   const onlyAvailableBookings = (bookings) =>
     bookings.map((booking) => {
-      if (getHours(booking.date) <= getHours(currentDate)) {
+      if (
+        isToday(currentDate) &&
+        getHours(booking.date) <= getHours(currentDate)
+      ) {
         booking.status = "reserved";
       }
       return booking;

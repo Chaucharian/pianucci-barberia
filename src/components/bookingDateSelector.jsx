@@ -90,6 +90,14 @@ export const BookingDateSelector = (props) => {
       currentDate: addDays(currentDate, 1).getTime(),
     }));
 
+  const onlyAvailableBookings = (bookings) =>
+    bookings.map((booking) => {
+      if (getHours(booking.date) <= getHours(currentDate)) {
+        booking.status = "reserved";
+      }
+      return booking;
+    });
+
   const openCalendar = (defaultDate) =>
     setState({ ...state, currentDate: defaultDate, showBookings: false });
 
@@ -109,7 +117,10 @@ export const BookingDateSelector = (props) => {
       dispatch(appActions.fetching(true));
       api.getSchedule(currentDate).then(({ bookings }) => {
         dispatch(appActions.fetching(false));
-        setState((state) => ({ ...state, bookings }));
+        setState((state) => ({
+          ...state,
+          bookings: onlyAvailableBookings(bookings),
+        }));
         // if today has ended, add it as a day off
         if (todayEnd(bookings)) {
           dispatch(appActions.setDaysOff([...daysOff, getDay(currentDate)]));

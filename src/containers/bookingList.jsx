@@ -82,11 +82,7 @@ const BookingList = (props) => {
     <div className={classes.container}>
       <h1>TUS TURNOS</h1>
       <div className={classes.bookingListContainer}>
-        {showBookings() || (
-          <h2>
-            No tienes ningun turno activo <br></br>&#x1F625;
-          </h2>
-        )}
+        {showBookings() || <h2>No hay reservas</h2>}
       </div>
       <div className={classes.bookingButton}>
         <RealBarberButton

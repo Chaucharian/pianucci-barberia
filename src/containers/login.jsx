@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/styles";
 import { useStateValue } from "../context/context";
-import firebase from "firebase/app";
-import "firebase/auth";
 import * as api from "../services/api";
 import * as appActions from "../actions/app";
 import ReactPageScroller from "react-page-scroller";
 import SignInForm from "../components/signInForm";
 import LogInForm from "../components/logInForm";
 import { requestNotificationPermission } from "../notificationHelper";
+import { useSelector, selectFirebase } from "/context/mainReducer";
 
 const styles = {
   login: {
@@ -36,6 +35,8 @@ const Login = (props) => {
   const [isModalOpen, showModal] = useState(false);
   const [formErrors, setFormErrors] = useState([]);
   const [{ currentPage, fetching }, dispatch] = useStateValue();
+  const firebase = useSelector(selectFirebase);
+
   let pageScroller = null;
 
   const pageOnChange = (scroll) => {
@@ -69,8 +70,7 @@ const Login = (props) => {
   const submitSignIn = (user) => {
     dispatch(appActions.fetching(true));
     firebase
-      .auth()
-      .createUserWithEmailAndPassword(user.email, user.password)
+      .signIn(user.email, user.password)
       .then((response) => {
         const { email, uid: id } = response.user;
         const { name, lastname, phone } = user;
@@ -110,8 +110,7 @@ const Login = (props) => {
   const submitLogin = (user) => {
     dispatch(appActions.fetching(true));
     firebase
-      .auth()
-      .signInWithEmailAndPassword(user.email, user.password)
+      .login(user.email, user.password)
       .then((response) => {
         const { uid: userId } = response.user;
 

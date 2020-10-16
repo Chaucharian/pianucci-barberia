@@ -1,9 +1,9 @@
 import * as actionTypes from "/actions/types";
 import { useStateValue } from "./context";
-import Firebase from "/core/auth/Firebase";
+import { AuthService } from "/core/auth";
 
 export const initialState = {
-  firebase: new Firebase(),
+  auth: new AuthService(),
   currentPage: 0,
   showBookingSection: false,
   showUserProfileSection: false,
@@ -107,6 +107,6 @@ export const useSelector = (selector) => {
   return selector(state);
 };
 
-export const selectFirebase = (state) => state.firebase;
+export const selectAuth = (state) => state.auth;
 export const selectUser = (state) =>
   JSON.parse(window.localStorage.getItem("user")) ?? state.user;

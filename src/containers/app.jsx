@@ -1,7 +1,12 @@
 import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 import { reducer, initialState, StateProvider } from "/context";
-import { PrivateRoute } from "/core";
+import { PrivateRoute } from "/core/auth";
 import { Login, MainViewer, MainAdminViewer } from "/containers";
 
 const App = () => {
@@ -11,7 +16,12 @@ const App = () => {
         <Switch>
           <Route path="/login" component={Login} />
           <PrivateRoute path="/" component={MainViewer} />
-          {/* <PrivateRoute path="/admin" component={MainAdminViewer} /> */}
+          <PrivateRoute
+            path="/admin"
+            admin={"asd"}
+            component={MainAdminViewer}
+          />
+          <Redirect to="/login" />
         </Switch>
       </Router>
     </StateProvider>

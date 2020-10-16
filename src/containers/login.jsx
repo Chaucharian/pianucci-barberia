@@ -6,8 +6,9 @@ import * as appActions from "../actions/app";
 import ReactPageScroller from "react-page-scroller";
 import SignInForm from "../components/signInForm";
 import LogInForm from "../components/logInForm";
-import { requestNotificationPermission } from "../notificationHelper";
-import { useSelector, selectFirebase } from "/context/mainReducer";
+import { requestNotificationPermission } from "/utils/notificationHelper";
+import { useSelector, selectAuth, selectUser } from "/context";
+import { useHistory } from "react-router-dom";
 
 const styles = {
   login: {
@@ -35,7 +36,9 @@ const Login = (props) => {
   const [isModalOpen, showModal] = useState(false);
   const [formErrors, setFormErrors] = useState([]);
   const [{ currentPage, fetching }, dispatch] = useStateValue();
-  const firebase = useSelector(selectFirebase);
+  const auth = useSelector(selectAuth);
+  const history = useHistory();
+  const user = useSelector(selectUser);
 
   let pageScroller = null;
 
@@ -69,7 +72,7 @@ const Login = (props) => {
 
   const submitSignIn = (user) => {
     dispatch(appActions.fetching(true));
-    firebase
+    auth
       .signIn(user.email, user.password)
       .then((response) => {
         const { email, uid: id } = response.user;
@@ -82,6 +85,7 @@ const Login = (props) => {
             dispatch(appActions.fetching(false));
             window.localStorage.setItem("user", JSON.stringify(userData));
             dispatch(appActions.userLoggedIn(userData));
+            history.push("/");
           };
           showModal(true);
           // whichever be the notification flow, login the user
@@ -109,18 +113,23 @@ const Login = (props) => {
 
   const submitLogin = (user) => {
     dispatch(appActions.fetching(true));
-    firebase
+    auth
       .login(user.email, user.password)
       .then((response) => {
         const { uid: userId } = response.user;
 
         api.getUserData(userId).then(({ user, daysOff }) => {
           // api.getUserBookings(userId).then(({ bookings }) => {
-          const login = (token) => {
+          const login = async (token) => {
             const userData = { ...user, notificationToken: token, daysOff };
             dispatch(appActions.fetching(false));
             window.localStorage.setItem("user", JSON.stringify(userData));
-            dispatch(appActions.userLoggedIn(userData));
+            await dispatch(appActions.userLoggedIn(userData));
+            if (userData.isAdmin) {
+              history.push("/admin");
+            } else {
+              history.push("/");
+            }
           };
           showModal(true);
           // whichever be the notification flow, login the user
@@ -151,6 +160,12 @@ const Login = (props) => {
   useEffect(() => {
     pageScroller.goToPage(currentPage);
   }, [currentPage]);
+
+  // useEffect(() => {
+  //   if (user.id !== "") {
+  //     history.push("/");
+  //   }
+  // }, [user]);
 
   return (
     <div className={classes.login}>

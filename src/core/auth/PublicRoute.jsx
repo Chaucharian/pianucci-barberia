@@ -2,33 +2,30 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useSelector, selectUser } from "/context";
 
-export const PrivateRoute = ({
+export const PublicRoute = ({
   component: Component,
   adminRequired,
-  redirectPath = "/login",
+  redirectPath = "/",
   ...rest
 }) => {
   const user = useSelector(selectUser);
   const userLogged = user.id !== "";
-  let newRedirectPath = redirectPath;
 
+  console.log(adminRequired);
   const showRoute = () => {
     if (userLogged) {
-      if (adminRequired) {
-        if (user.isAdmin) {
-          return true;
-        } else {
-          return false;
-        }
-      } else if (user.isAdmin) {
-        // if user is admin redirect to admin panel
-        newRedirectPath = "/admin";
-        return false;
-      }
-      return true;
-    } else {
+      // if (adminRequired) {
+      //   if (user.isAdmin) {
+      //     return true;
+      //   } else {
+      //     return false;
+      //   }
       return false;
+      // } else if (user.isAdmin) {
+      //   return false;
+      // }
     }
+    return true;
   };
 
   return (
@@ -40,7 +37,7 @@ export const PrivateRoute = ({
         ) : (
           <Redirect
             to={{
-              pathname: newRedirectPath,
+              pathname: redirectPath,
               state: { from: location },
             }}
           />

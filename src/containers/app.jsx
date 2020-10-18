@@ -15,12 +15,13 @@ const App = () => {
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
-          <PrivateRoute path="/" component={MainViewer} />
           <PrivateRoute
             path="/admin"
-            admin={"asd"}
+            redirectPath="/"
             component={MainAdminViewer}
+            adminRequired
           />
+          <PrivateRoute path="/" component={MainViewer} />
           <Redirect to="/login" />
         </Switch>
       </Router>

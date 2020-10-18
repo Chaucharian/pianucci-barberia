@@ -161,11 +161,11 @@ const Login = (props) => {
     pageScroller.goToPage(currentPage);
   }, [currentPage]);
 
-  // useEffect(() => {
-  //   if (user.id !== "") {
-  //     history.push("/");
-  //   }
-  // }, [user]);
+  useEffect(() => {
+    if (user.id !== "") {
+      history.push("/");
+    }
+  }, [user]);
 
   return (
     <div className={classes.login}>

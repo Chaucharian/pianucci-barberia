@@ -1,7 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
-import clamp from "lodash-es/clamp";
-import { useSprings, useTransition, animated, config } from "react-spring";
-import { useDrag } from "react-use-gesture";
+import React, { useEffect, useState } from "react";
+import { useTransition, animated, config } from "react-spring";
 import { withStyles } from "@material-ui/styles";
 
 const styles = {

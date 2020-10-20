@@ -20,9 +20,7 @@
     "express-crypto": "^1.0.5",
     "firebase": "^7.15.5",
     "firebase-admin": "^8.10.0",
-    "hookrouter": "^1.2.3",
     "instafeed.js": "^1.4.1",
-    "lodash-es": "^4.17.15",
     "luxon": "^1.24.1",
     "node-fetch": "^2.6.0",
     "pm2": "^4.4.0",
@@ -35,7 +33,6 @@
     "react-scripts": "1.1.4",
     "react-spring": "^8.0.27",
     "react-transition-group": "^4.3.0",
-    "react-use-gesture": "^6.0.3",
     "request": "^2.88.2",
     "simple-oauth2": "^2.5.2"
   },
@@ -45,11 +42,15 @@
     "@babel/preset-react": "^7.9.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "cookie-parser": "^1.4.5",
     "https-localhost": "^4.5.2",
     "prettier": "2.0.5",
     "react-hot-loader": "^4.12.20"
   },
+  "browserslist": [
+    "last 1 Chrome versions"
+  ],
   "keywords": [
     "react",
     "reactjs",

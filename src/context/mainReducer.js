@@ -1,6 +1,9 @@
-import * as actionTypes from "../actions/types";
+import * as actionTypes from "/actions/types";
+import { useStateValue } from "./context";
+import { AuthService } from "/core/auth";
 
 export const initialState = {
+  auth: new AuthService(),
   currentPage: 0,
   showBookingSection: false,
   showUserProfileSection: false,
@@ -98,3 +101,12 @@ export const reducer = (state, action) => {
       return state;
   }
 };
+
+export const useSelector = (selector) => {
+  const [state] = useStateValue();
+  return selector(state);
+};
+
+export const selectAuth = (state) => state.auth;
+export const selectUser = (state) =>
+  JSON.parse(window.localStorage.getItem("user")) ?? state.user;

@@ -8,6 +8,8 @@ import BookingList from "./bookingList";
 import BookingHandler from "./bookingHandler";
 import UserProfile from "./userProfile";
 import GalerySection from "../components/galerySection";
+import { useSelector, selectAuth, selectUser } from "/context";
+import { useHistory } from "react-router-dom";
 
 const styles = {
   container: {
@@ -24,6 +26,9 @@ const styles = {
 export const MainViewer = (props) => {
   const { classes } = props;
   const [state, dispatch] = useStateValue();
+  const auth = useSelector(selectAuth);
+  const user = useSelector(selectUser);
+  const history = useHistory();
   const {
     scrollDownDisabled,
     scrollUpDisabled,
@@ -60,10 +65,12 @@ export const MainViewer = (props) => {
     setTimeout(() => dispatch(appActions.showBookingHandlerView(false)), 1000);
   };
 
-  const actionHeaderHandler = (action) => {
+  const actionHeaderHandler = async (action) => {
     switch (action) {
       case "logout":
-        dispatch(appActions.logoutUser(true));
+        await auth.logout(user);
+        dispatch(appActions.reset());
+        history.push("/login");
         break;
       case "profile":
         dispatch(appActions.changePage(2));

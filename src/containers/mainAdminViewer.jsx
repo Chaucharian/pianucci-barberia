@@ -10,6 +10,8 @@ import DaysOff from "./daysOff";
 import SpecialBookings from "./specialBookings";
 import BusinessStats from "./businessStats";
 import NotificationSender from "./notificationSender";
+import { useSelector, selectAuth, selectUser } from "/context";
+import { useHistory } from "react-router-dom";
 
 const styles = {
   container: {
@@ -47,6 +49,9 @@ const styles = {
 export const MainAdminViewer = (props) => {
   const { classes } = props;
   const [state, dispatch] = useStateValue();
+  const auth = useSelector(selectAuth);
+  const user = useSelector(selectUser);
+  const history = useHistory();
   const { scrollDownDisabled, scrollUpDisabled, currentPage } = state;
   let pageScroller = null;
 
@@ -71,9 +76,11 @@ export const MainAdminViewer = (props) => {
     dispatch(appActions.disableScrollDown(disable));
   };
 
-  const actionHeaderHandler = (action) => {
+  const actionHeaderHandler = async (action) => {
     if (action === "logout") {
-      dispatch(appActions.logoutUser(true));
+      await auth.logout(user);
+      dispatch(appActions.reset());
+      history.push("/login");
     } else if (action === "daysOff") {
       dispatch(appActions.changePage(0));
     } else if (action === "schedule") {

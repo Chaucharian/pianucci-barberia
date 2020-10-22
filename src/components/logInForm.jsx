@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/styles";
 import WhiteTextField from "./textField";
 import ReflectButton from "./reflectButton";
 import Spinner from "./spinner";
-import Modal from "./modal";
+import { Modal } from "./Modal";
 
 const styles = {
   centerContainer: {

@@ -6,7 +6,6 @@ import * as appActions from "../actions/app";
 import ReactPageScroller from "react-page-scroller";
 import SignInForm from "../components/signInForm";
 import LogInForm from "../components/logInForm";
-import { requestNotificationPermission } from "/utils/notificationHelper";
 import { useSelector, selectAuth, selectUser } from "/context";
 import { useHistory } from "react-router-dom";
 
@@ -89,7 +88,7 @@ const Login = (props) => {
           };
           showModal(true);
           // whichever be the notification flow, login the user
-          requestNotificationPermission()
+          auth.requestNotificationPermission()
             .then((token) => {
               api
                 .sendNotificationToken({ notificationToken: token, userId })
@@ -133,7 +132,7 @@ const Login = (props) => {
           };
           showModal(true);
           // whichever be the notification flow, login the user
-          requestNotificationPermission()
+          auth.requestNotificationPermission()
             .then((token) => {
               api
                 .sendNotificationToken({ notificationToken: token, userId })

@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useEffect} from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
   Redirect,
 } from "react-router-dom";
-import { reducer, initialState, StateProvider } from "/context";
 import { PrivateRoute } from "/core/auth";
 import { Login, MainViewer, MainAdminViewer } from "/containers";
+import { useSelector, selectAuth } from "/context";
 
 const App = () => {
+  const auth = useSelector(selectAuth);
+
+  useEffect( () => {
+    auth.setSW();
+  }, []);
+  
   return (
-    <StateProvider initialState={initialState} reducer={reducer}>
       <Router>
         <Switch>
           <Route path="/login" component={Login} />
@@ -25,7 +30,6 @@ const App = () => {
           <Redirect to="/login" />
         </Switch>
       </Router>
-    </StateProvider>
   );
 };
 

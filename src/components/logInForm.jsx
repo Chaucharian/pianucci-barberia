@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/styles";
 import WhiteTextField from "./textField";
 import ReflectButton from "./reflectButton";
 import Spinner from "./spinner";
-import { Modal } from "./Modal";
+import { ConfirmModal } from "./Modal";
 
 const styles = {
   centerContainer: {
@@ -88,8 +88,8 @@ const LogInForm = (props) => {
 
   return (
     <div className={classes.centerContainer}>
-      <Modal
-        onlyConfirm={true}
+      <ConfirmModal
+        onlyConfirm
         open={showModal}
         title={"Accepta las notificaciones"}
         content={"Asi puedes estar al tanto de tus turnos"}

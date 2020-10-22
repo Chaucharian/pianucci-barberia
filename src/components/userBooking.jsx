@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { withStyles } from "@material-ui/styles";
 import { getHours, isSameDay, format } from "date-fns";
-import { Modal } from "../components/Modal";
+import { ConfirmModal } from "/components/Modal/ConfirmModal";
 
 const styles = {
   container: {
@@ -114,7 +114,7 @@ const UserBooking = (props) => {
 
   return (
     <>
-      <Modal
+      <ConfirmModal
         onlyConfirm={sameDay()}
         open={isModalOpen}
         title={
@@ -122,7 +122,7 @@ const UserBooking = (props) => {
             ? "No puedes eliminar esta reserva"
             : "¿Seguro quieres eliminar esta reserva?"
         }
-        content={
+        description={
           sameDay()
             ? "No puedes eliminar una reserva sobre la misma fecha, contactate con la barberia para realizar este cambio"
             : "Una vez hecho tendras que crear una nueva reserva"

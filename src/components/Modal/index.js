@@ -1,2 +1,2 @@
-export { default as PayModal } from './payModal';
-export { default as Modal } from './modal';
+export * from './payModal';
+export * from './confirmModal';

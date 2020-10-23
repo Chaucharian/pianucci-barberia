@@ -4,7 +4,8 @@ import { withStyles } from "@material-ui/styles";
 import WhiteTextField from "./textField";
 import ReflectButton from "./reflectButton";
 import Spinner from "./spinner";
-import { ConfirmModal } from "./Modal";
+import { MODAL_TYPES, ConfirmModal } from '/components/Modal';
+import { ForgotPass } from '/core/user';
 
 const styles = {
   centerContainer: {
@@ -26,6 +27,7 @@ const styles = {
     flexDirection: "column",
     paddingLeft: "10px",
     paddingRight: "10px",
+    marginBottom: "10px",
     "& button": {
       marginTop: "60px",
     },
@@ -90,9 +92,9 @@ const LogInForm = (props) => {
     <div className={classes.centerContainer}>
       <ConfirmModal
         onlyConfirm
-        open={showModal}
-        title={"Accepta las notificaciones"}
-        content={"Asi puedes estar al tanto de tus turnos"}
+        open={showModal === MODAL_TYPES.notification}
+        title={"Acepta las notificaciones"}
+        description={"Asi puedes estar al tanto de tus turnos"}
         onAction={onModalClose}
       />
       <div className={classes.contentContainer}>
@@ -133,6 +135,7 @@ const LogInForm = (props) => {
             />
           </form>
         </div>
+        <ForgotPass />
         <div className={classes.spinnerContainer}>
           <Spinner loading={fetching} />
         </div>

@@ -170,3 +170,8 @@ export const sendNotification = (payload) =>
     },
     body: JSON.stringify(payload),
   }).then((response) => response.json());
+
+export const checkEmailExists = (email) =>
+  fetch(`${enviroment.baseUrl}/checkEmailExists?email=${email}`, {
+    method: "GET",
+  }).then((response) => response.json());

@@ -8,6 +8,7 @@ import SignInForm from "../components/signInForm";
 import LogInForm from "../components/logInForm";
 import { useSelector, selectAuth, selectUser } from "/context";
 import { useHistory } from "react-router-dom";
+import { MODAL_TYPES } from '/components/Modal';
 
 const styles = {
   login: {
@@ -32,7 +33,7 @@ const styles = {
 
 const Login = (props) => {
   const { classes } = props;
-  const [isModalOpen, showModal] = useState(false);
+  const [isModalOpen, showModal] = useState('');
   const [formErrors, setFormErrors] = useState([]);
   const [{ currentPage, fetching }, dispatch] = useStateValue();
   const auth = useSelector(selectAuth);
@@ -86,19 +87,19 @@ const Login = (props) => {
             dispatch(appActions.userLoggedIn(userData));
             history.push("/");
           };
-          showModal(true);
+          showModal(MODAL_TYPES.notification);
           // whichever be the notification flow, login the user
           auth.requestNotificationPermission()
             .then((token) => {
               api
                 .sendNotificationToken({ notificationToken: token, userId })
                 .then(() => {});
-              showModal(false);
+              showModal('');
               sigin(token);
             })
             .catch((error) => {
               sigin(error);
-              showModal(false);
+              showModal('');
               sigin(error);
             });
         });
@@ -130,19 +131,19 @@ const Login = (props) => {
               history.push("/");
             }
           };
-          showModal(true);
+          showModal(MODAL_TYPES.notification);
           // whichever be the notification flow, login the user
           auth.requestNotificationPermission()
             .then((token) => {
               api
                 .sendNotificationToken({ notificationToken: token, userId })
                 .then(() => {});
-              showModal(false);
+              showModal('');
               console.log(token);
               login(token);
             })
             .catch((error) => {
-              showModal(false);
+              showModal('');
               console.log(error);
               login();
             });

@@ -1,8 +1,9 @@
+import React from "react";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import styled from 'styled-components'; 
 
-const MaterialTextField = withStyles({
+const CustomTextField = withStyles({
   root: {
     "& label": {
       color: "#615a5a",
@@ -36,8 +37,9 @@ const MaterialTextField = withStyles({
   },
 })(TextField);
 
-export const TextField = styld(MaterialTextField)` 
+export default styled(CustomTextField)` 
 ${({ error }) => `
+    width: 100%;
     ${error && `
     & label: {
         color: red !important;

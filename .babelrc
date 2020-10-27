@@ -1,8 +1,14 @@
 {
-  "presets": ["@babel/preset-react"],
-  "plugins": [
-    "transform-class-properties",
-    "transform-object-rest-spread",
-    "react-hot-loader/babel"
-  ]
+    "presets": ["@babel/preset-react"],
+    "plugins": [
+        "transform-class-properties",
+        "transform-object-rest-spread",
+        "react-hot-loader/babel",
+        [
+            "module-resolver",
+            {
+                "root": ["./src"]
+            }
+        ]
+    ]
 }

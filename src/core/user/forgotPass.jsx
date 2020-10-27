@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import { ForgotPassModal } from '/components/Modal'
+import { ForgotPassModal } from 'components/Modal'
 import styled from 'styled-components'
 import { useQuery } from 'react-query'
 import * as api from '/services/api'
-import { useSelector, selectAuth, selectUser } from '/context'
+import { useSelector, selectAuth, selectUser } from 'context'
 
 const Link = styled.a`
     cursor: pointer;

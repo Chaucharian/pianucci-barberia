@@ -3,12 +3,6 @@
     "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",
-        "react-hot-loader/babel",
-        [
-            "module-resolver",
-            {
-                "root": ["./src"]
-            }
-        ]
+        "react-hot-loader/babel"
     ]
 }

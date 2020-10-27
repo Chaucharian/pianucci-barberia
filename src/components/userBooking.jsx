@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { withStyles } from '@material-ui/styles'
 import { getHours, isSameDay, format } from 'date-fns'
-import { ConfirmModal } from 'components/Modal/ConfirmModal'
+import { ConfirmModal } from 'components/Modal'
 
 const styles = {
     container: {

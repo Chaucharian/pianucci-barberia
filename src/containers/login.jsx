@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { withStyles } from '@material-ui/styles'
-import { useStateValue } from '../context/context'
 import * as api from '../services/api'
 import * as appActions from '../actions/app'
 import ReactPageScroller from 'react-page-scroller'
-import SignInForm from 'components/signInForm'
-import LogInForm from 'components/logInForm'
-import { useSelector, selectAuth, selectUser } from 'context'
+import SignInForm from '../components/signInForm'
+import LogInForm from '../components/logInForm'
+import { useSelector, selectAuth, selectUser, useStateValue } from '../context'
 import { useHistory } from 'react-router-dom'
-import { MODAL_TYPES } from 'components/Modal'
+import { MODAL_TYPES } from '../components/Modal'
 
 const styles = {
     login: {

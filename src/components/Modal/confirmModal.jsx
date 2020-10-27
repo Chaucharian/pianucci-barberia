@@ -1,6 +1,6 @@
 import React from 'react'
 import Modal from './Modal'
-import ReflectButton from 'components/reflectButton'
+import ReflectButton from '../reflectButton'
 
 export const ConfirmModal = ({ ...props }) => {
     const { onlyConfirm, onAction } = props

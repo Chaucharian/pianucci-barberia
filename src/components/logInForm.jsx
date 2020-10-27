@@ -4,8 +4,8 @@ import { withStyles } from '@material-ui/styles'
 import WhiteTextField from './textField'
 import ReflectButton from './reflectButton'
 import Spinner from './spinner'
-import { MODAL_TYPES, ConfirmModal } from 'components/Modal'
-import { ForgotPass } from 'core/user'
+import { MODAL_TYPES, ConfirmModal } from './Modal'
+import { ForgotPass } from '../core/user'
 
 const styles = {
     centerContainer: {

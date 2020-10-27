@@ -1,25 +1,26 @@
-import React, { useState } from "react";
-import Modal from './modal';
-import ReflectButton from "/components/reflectButton";
-import { TextField } from "/components/Forms";
-import { useForm } from "react-hook-form";
-import styled from 'styled-components';
+import React, { useState } from 'react'
+import Modal from './modal'
+import ReflectButton from '/components/reflectButton'
+import { TextField, ResponseMessage } from '/components/Forms'
+import { useForm } from 'react-hook-form'
+import styled from 'styled-components'
 
 const TextFieldContainer = styled.div`
     padding-left: 15px;
     padding-right: 15px;
-`;
+`
 
-export const ForgotPassModal = ({ onSubmit, ...props }) => {
-    const { onAction } = props;
-    const { register, handleSubmit, errors } = useForm();
+export const ForgotPassModal = ({ onSubmit, response, ...props }) => {
+    const { onAction } = props
+    const { register, handleSubmit, errors } = useForm()
 
     return (
         <Modal {...props}>
             <>
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                >
+                <ResponseMessage error={response.error}>
+                    {response.message}
+                </ResponseMessage>
+                <form onSubmit={handleSubmit(onSubmit)}>
                     <TextFieldContainer>
                         <TextField
                             inputRef={register({
@@ -36,9 +37,12 @@ export const ForgotPassModal = ({ onSubmit, ...props }) => {
                         />
                     </TextFieldContainer>
                     <ReflectButton text="RESTAURAR" />
-                    <ReflectButton text="CANCELAR" clicked={() => onAction('cancel')} />
+                    <ReflectButton
+                        text="CANCELAR"
+                        clicked={() => onAction('cancel')}
+                    />
                 </form>
             </>
         </Modal>
-    );
+    )
 }

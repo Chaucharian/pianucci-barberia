@@ -109,6 +109,4 @@ export const useSelector = (selector) => {
 
 export const selectAuth = (state) => state.auth
 export const selectUser = (state) =>
-    JSON.parse(window.localStorage.getItem('user'))
-        ? JSON.parse(window.localStorage.getItem('user'))
-        : state.user
+    JSON.parse(window.localStorage.getItem('user')) ?? state.user

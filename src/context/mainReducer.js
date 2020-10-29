@@ -1,4 +1,3 @@
-import React, { useMemo } from 'react'
 import * as actionTypes from '/actions/types'
 import { useStateValue } from './context'
 import { AuthService } from '/core/auth'
@@ -24,14 +23,6 @@ export const initialState = {
     fetching: false,
 }
 
-const userLogged = (user) => {
-    if (user.id !== '') {
-        return user
-    } else {
-        return JSON.parse(window.localStorage.getItem('user'))
-    }
-}
-
 export const reducer = (state, action) => {
     switch (action.type) {
         case actionTypes.FETCHING:
@@ -51,10 +42,6 @@ export const reducer = (state, action) => {
             }
         case actionTypes.BOOKINGS_FETCHED:
             const bookings = action.payload
-            // window.localStorage.setItem(
-            //     'user',
-            //     JSON.stringify({ ...state.user, bookings })
-            // )
             return {
                 ...state,
                 user: { ...state.user, bookings },
@@ -106,10 +93,6 @@ export const reducer = (state, action) => {
                 bookingCreated,
             }
         case actionTypes.SET_DAYSOFF:
-            // window.localStorage.setItem(
-            //     'user',
-            //     JSON.stringify({ ...state.user, daysOff: action.payload })
-            // )
             return {
                 ...state,
                 user: { ...state.user, daysOff: action.payload },
@@ -125,20 +108,5 @@ export const useSelector = (selector) => {
 }
 
 export const selectAuth = (state) => state.auth
-export const selectUser = (state) => {
-    if (JSON.parse(window.localStorage.getItem('user'))) {
-        const storedSession = window.localStorage.getItem('user')
-        return useMemo(() => {
-            const { daysOff, id, isAdmin } = JSON.parse(storedSession)
-            return { ...state.user, daysOff, id, isAdmin }
-        }, [storedSession])
-    } else {
-        return state.user
-    }
-}
-// {
-//     const storedSession = window.localStorage.getItem('user')
-//     return (
-//         useMemo(() => JSON.parse(storedSession), [storedSession]) ?? state.user
-//     )
-// }
+export const selectUser = (state) =>
+    JSON.parse(window.localStorage.getItem('user')) ?? state.user

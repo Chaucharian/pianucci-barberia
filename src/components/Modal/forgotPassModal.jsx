@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import Modal from './modal'
-import ReflectButton from '/components/reflectButton'
-import { TextField, ResponseMessage } from '/components/Forms'
+import ReflectButton from '../reflectButton'
+import { TextField, ResponseMessage } from '../Forms'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 

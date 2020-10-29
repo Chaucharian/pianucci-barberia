@@ -4,7 +4,7 @@
     "description": "Barber appointment web",
     "scripts": {
         "start": "NODE_ENV=development parcel watch ./src/index.html",
-        "build": "parcel build ./src/index.html --no-source-maps --no-minify",
+        "build": "parcel build ./src/index.html --no-source-maps",
         "watch:prod": "NODE_ENV=production parcel watch ./src/index.html",
         "api:dev": "NODE_ENV=development env TZ='America/Buenos_Aires' pm2 start ./api/server.js --name pianucciweb --watch",
         "api": "NODE_ENV=production env TZ='America/Buenos_Aires' pm2 start ./api/server.js --name pianucciweb --watch"
@@ -41,6 +41,9 @@
     "devDependencies": {
         "@babel/core": "^7.9.0",
         "@babel/plugin-proposal-class-properties": "^7.4.4",
+        "@babel/plugin-proposal-logical-assignment-operators": "^7.12.1",
+        "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.1",
+        "@babel/plugin-proposal-optional-chaining": "^7.12.1",
         "@babel/preset-env": "^7.9.0",
         "@babel/preset-react": "^7.9.4",
         "babel-plugin-transform-class-properties": "^6.24.1",
@@ -53,6 +56,11 @@
     "browserslist": [
         "last 1 Chrome versions"
     ],
+    "alias": {
+        "components": "./src/components",
+        "core": "./src/core",
+        "context": "./src/context"
+    },
     "keywords": [
         "react",
         "reactjs",

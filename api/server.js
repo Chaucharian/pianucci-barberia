@@ -528,7 +528,8 @@ app.post('/api/getUserData', (request, response) => {
                         response.json({
                             status: 'user logged in successfullt!',
                             daysOff: days,
-                            user: { ...user.val(), bookings: filterdBookings },
+                            // user: { ...user.val(), bookings: filterdBookings },
+                            user: { ...user.val(), bookings: [] },
                         })
                     })
                 })

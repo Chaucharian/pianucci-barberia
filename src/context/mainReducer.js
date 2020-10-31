@@ -7,11 +7,13 @@ export const initialState = {
     currentPage: 0,
     showBookingSection: false,
     showUserProfileSection: false,
+    business: {
+        daysOff: [],
+    },
     user: {
         id: '',
         bookings: [],
         name: '',
-        daysOff: [],
         notificationToken: '',
         phone: '',
         isAdmin: false,
@@ -95,7 +97,7 @@ export const reducer = (state, action) => {
         case actionTypes.SET_DAYSOFF:
             return {
                 ...state,
-                user: { ...state.user, daysOff: action.payload },
+                business: { daysOff: action.payload },
             }
         default:
             return state
@@ -108,5 +110,5 @@ export const useSelector = (selector) => {
 }
 
 export const selectAuth = (state) => state.auth
-export const selectUser = (state) =>
-    JSON.parse(window.localStorage.getItem('user')) ?? state.user
+export const selectUser = (state) => state.user
+export const selectBusiness = (state) => state.business

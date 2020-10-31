@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { withStyles } from '@material-ui/styles'
 
-import { useStateValue, useSelector, selectUser } from '../context'
+import {
+    useStateValue,
+    useSelector,
+    selectUser,
+    selectBusiness,
+} from '../context'
 import * as api from '../services/api'
 import * as appActions from '../actions/app'
 import ClientBookingItem from '../components/clientBookingItem'
@@ -37,7 +42,8 @@ const styles = {
 const BookingAdminList = (props) => {
     const { classes, onDisableScroll } = props
     const [state, dispatch] = useStateValue()
-    const { bookings, daysOff } = useSelector(selectUser)
+    const { bookings } = useSelector(selectUser)
+    const { daysOff } = useSelector(selectBusiness)
     const [refreshList, setRefreshList] = useState(false)
     const [currentDate, setCurrentDate] = useState(Date.now())
     const [showBookings, setShowBookings] = useState(true)

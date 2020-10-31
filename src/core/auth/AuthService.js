@@ -25,7 +25,7 @@ export class AuthService {
         try {
             await this.auth.signOut()
             await api.logout(user.id)
-            window.localStorage.removeItem('user')
+            localStorage.removeItem('token')
         } catch (error) {
             console.error(`logout error ${error}`)
         }

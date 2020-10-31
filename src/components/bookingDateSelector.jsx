@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/styles'
 import * as api from '../services/api'
 import BookingItem from './bookingItem'
 import DaysListSelector from './daysListSelector'
-import { useStateValue, useSelector, selectUser } from '../context'
+import { useStateValue, useSelector, selectBusiness } from '../context'
 import * as appActions from '../actions/app'
 import Spinner from './spinner'
 import { addDays, isToday, isTomorrow, getHours, getDay } from 'date-fns'
@@ -37,7 +37,7 @@ const styles = {
 export const BookingDateSelector = (props) => {
     const { classes, onBookingSelect } = props
     const [{ fetching }, dispatch] = useStateValue()
-    const { daysOff } = useSelector(selectUser)
+    const { daysOff } = useSelector(selectBusiness)
 
     const [state, setState] = useState({
         currentDate: Date.now(),

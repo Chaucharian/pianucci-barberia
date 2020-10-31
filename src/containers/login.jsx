@@ -78,19 +78,14 @@ const Login = (props) => {
                 const newUser = { email, id, name, lastname, phone }
 
                 api.createUser(newUser).then(({ user, daysOff }) => {
-                    const sigin = (token) => {
+                    const sigin = async (token) => {
                         const userData = {
                             ...user,
                             notificationToken: token,
-                            daysOff,
                         }
                         dispatch(appActions.fetching(false))
-                        window.localStorage.setItem(
-                            'user',
-                            JSON.stringify(userData)
-                        )
-                        dispatch(appActions.userLoggedIn(userData))
-                        history.push('/')
+                        await dispatch(appActions.userLoggedIn(userData))
+                        await dispatch(appActions.setDaysOff(daysOff))
                     }
                     showModal(MODAL_TYPES.notification)
                     // whichever be the notification flow, login the user
@@ -129,22 +124,13 @@ const Login = (props) => {
                         const userData = {
                             ...user,
                             notificationToken: token,
-                            daysOff,
                         }
                         dispatch(appActions.fetching(false))
-                        window.localStorage.setItem(
-                            'user',
-                            JSON.stringify(userData)
-                        )
                         await dispatch(appActions.userLoggedIn(userData))
-                        if (userData.isAdmin) {
-                            history.push('/admin')
-                        } else {
-                            history.push('/')
-                        }
+                        await dispatch(appActions.setDaysOff(daysOff))
                     }
                     showModal(MODAL_TYPES.notification)
-                    // whichever be the notification flow, login the user
+                    // login user if accepts notifications or not
                     auth.requestNotificationPermission()
                         .then((token) => {
                             api.sendNotificationToken({
@@ -161,7 +147,6 @@ const Login = (props) => {
                             login()
                         })
                 })
-                // });
             })
             .catch(function (error) {
                 dispatch(appActions.fetching(false))

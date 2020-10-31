@@ -9,10 +9,9 @@ export const PrivateRoute = ({
     ...rest
 }) => {
     const user = useSelector(selectUser)
-    // const userLogged = user.id !== ''
-    const userLogged = JSON.parse(window.localStorage.getItem('user'))
+    const userLogged = user.id !== ''
     let newRedirectPath = redirectPath
-    console.log(user)
+
     const showRoute = () => {
         if (userLogged) {
             if (adminRequired) {

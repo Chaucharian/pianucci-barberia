@@ -17,15 +17,26 @@ const app = express();
 const cors = require('cors');
 const admin = require('firebase-admin');
 const serviceAccount = require('../credentials/firebaseCredentials.json');
-const atob = require('atob');
 const User = require('./user');
 const router = express.Router();
 const rootPath = path.join(__dirname, '../');
 const distPath = path.join(__dirname, '../') + 'dist/';
 const assetsPath = path.join(__dirname, '../') + 'src/assets/';
 const port = process.env.PORT || 8080;
+const env = require('dotenv').config({
+  path: `${rootPath}/.env.${process.env.NODE_ENV}`,
+});
+
+if (env.error) {
+  throw new Error('No .env file loaded');
+}
+
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    projectId: process.env.PROJECT_ID,
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY,
+  }),
   databaseURL: 'https://pianucci-barberia.firebaseio.com',
 });
 const firebaseDB = admin.database();
@@ -87,7 +98,6 @@ app.get('/admin', (req, res) => res.sendFile(distPath + 'index.html'));
 //   });
 // });
 
-// WORKING BUT IN TESTING YET
 const notificationDispatcher = () => {
   const bookingRef = firebaseDB.ref('/bookings');
   const usersRef = firebaseDB.ref('/users');
@@ -761,7 +771,7 @@ app.post('/api/createBooking', (request, response) => {
     clientId: userId,
   };
   const bookingId = bookingRef.push(booking).key;
-
+  // send notification to admin
   response.json({ status: 'booking created!', bookingId });
 });
 

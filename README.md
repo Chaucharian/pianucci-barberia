@@ -1,3 +1,3 @@
-# Pianucci Barberia appointment web
+# TeAnoto
 
-build with react and hooks
+web appointment system built with react and hooks

@@ -16,12 +16,10 @@ const app = express();
 // const app = require("https-localhost")() // DEV ONLY
 const cors = require('cors');
 const admin = require('firebase-admin');
-const serviceAccount = require('../credentials/firebaseCredentials.json');
-const User = require('./user');
+const User = require('./services/user');
 const router = express.Router();
 const rootPath = path.join(__dirname, '../');
 const distPath = path.join(__dirname, '../') + 'dist/';
-const assetsPath = path.join(__dirname, '../') + 'src/assets/';
 const port = process.env.PORT || 8080;
 const env = require('dotenv').config({
   path: `${rootPath}/.env.${process.env.NODE_ENV}`,
@@ -37,7 +35,7 @@ admin.initializeApp({
     clientEmail: process.env.CLIENT_EMAIL,
     privateKey: process.env.PRIVATE_KEY,
   }),
-  databaseURL: 'https://pianucci-barberia.firebaseio.com',
+  databaseURL: process.env.DATABASE_URL,
 });
 const firebaseDB = admin.database();
 // CREATE MODULES TO SERVICES
@@ -54,11 +52,6 @@ app.use('/', router);
 
 router.use(function (req, res, next) {
   console.log(`${req.method} ${req.originalUrl}`);
-  // Handling not found manually and always redirecting to root in that case
-  // if (!req.originalUrl.includes('/api') && (!req.originalUrl.includes('/login') || !req.originalUrl.includes('/admin') )) {
-  //     res.sendFile(distPath+'index.html');
-  //     return;
-  // }
   next();
 });
 
@@ -69,34 +62,6 @@ app.listen(port, '0.0.0.0', () =>
 app.get('/', (req, res) => res.sendFile(distPath + 'index.html'));
 app.get('/login', (req, res) => res.sendFile(distPath + 'index.html'));
 app.get('/admin', (req, res) => res.sendFile(distPath + 'index.html'));
-
-// app.get('/instagram', (req, res) => {
-//     const redirectUri = oauth2.authorizationCode.authorizeURL({
-//         redirect_uri: `${req.protocol}://${req.get('host')}/instagram-redirect`,
-//         scope: 'basic',
-//     });
-//     res.redirect(redirectUri);
-// });
-
-// app.get('/instagram-redirect', (req, res) => {
-// 	var options = {
-// 		url: 'https://api.instagram.com/oauth/access_token',
-// 		method: 'POST',
-// 		form: {
-// 			client_id: credentials.client.id,
-// 			client_secret: credentials.client.secret,
-// 			grant_type: 'authorization_code',
-// 			redirect_uri: `${req.protocol}://${req.get('host')}/instagram-redirect`,
-// 			code: req.query.code
-// 		}
-//   };
-
-// 	httpRequest(options, (error, response, body) => {
-// 		if (!error && response.statusCode == 200) {
-//       res.json(JSON.parse(body));
-//     }
-//   });
-// });
 
 const notificationDispatcher = () => {
   const bookingRef = firebaseDB.ref('/bookings');
@@ -170,8 +135,7 @@ const notificationDispatcher = () => {
             }),
             headers: {
               'Content-Type': 'application/json',
-              Authorization:
-                'key=AAAAQHgvRKo:APA91bF4_XkAk_XWc753vWpsj50SxP0tD60qJb5DXRtEFmngHB6oyr-7bX5f2DfX5LMU4gfAfJpeuqwztLCit-dxWOsY-b9sSD4DA9pCUmGbHHUywEYDk0KodPY1bDAdrcchq0uDPcu-',
+              Authorization: `key=${process.env.SERVER_MESSAGING_KEY}`,
             },
           })
             .then((response) => response.json())
@@ -219,8 +183,7 @@ app.post('/api/sendNotification', (request, response) => {
           }),
           headers: {
             'Content-Type': 'application/json',
-            Authorization:
-              'key=AAAAQHgvRKo:APA91bF4_XkAk_XWc753vWpsj50SxP0tD60qJb5DXRtEFmngHB6oyr-7bX5f2DfX5LMU4gfAfJpeuqwztLCit-dxWOsY-b9sSD4DA9pCUmGbHHUywEYDk0KodPY1bDAdrcchq0uDPcu-',
+            Authorization: `key=${process.env.SERVER_MESSAGING_KEY}`,
           },
         })
           .then((response) => response.json())

@@ -30,7 +30,8 @@ credentials
 .cache
 #dist folder
 dist
-
+#env files
+.env
 #Webstorm metadata
 .idea
 

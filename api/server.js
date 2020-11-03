@@ -106,13 +106,12 @@ const notificationDispatcher = () => {
         reservedBookings.map((booking) => {
           if (booking.clientId === id) {
             const notificationBody = {
-              title: 'Pianucci Barberia',
+              title: process.env.CLIENT_NAME,
               body: 'Tienes un turno reservado dentro de una hora',
-              click_action: 'https://pianuccibarberia.com',
+              click_action: process.env.CLIENT_URL,
               default_sound: true,
               default_vibrate_timings: true,
-              icon:
-                'https://pianuccibarberia.com/assets/icons/android-chrome-192x192.png',
+              icon: `${process.env.CLIENT_URL}/assets/icons/android-chrome-192x192.png`,
             };
             if (newDay) {
               notificationBody.body = `Hoy tienes un turno reservado para las ${new Date(
@@ -155,13 +154,12 @@ app.post('/api/sendNotification', (request, response) => {
   const usersRef = firebaseDB.ref('/users');
 
   const notificationBody = {
-    title: 'Pianucci Barberia',
+    title: process.env.CLIENT_NAME,
     body: message,
-    click_action: 'https://pianuccibarberia.com',
+    click_action: process.env.CLIENT_URL,
     default_sound: true,
     default_vibrate_timings: true,
-    icon:
-      'https://pianuccibarberia.com/assets/icons/android-chrome-192x192.png',
+    icon: `${process.env.CLIENT_URL}/assets/icons/android-chrome-192x192.png`,
   };
 
   usersRef.once('value', (usersSnapshot) => {

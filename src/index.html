@@ -6,7 +6,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#000" />
-    <title>Pianucci Barberia</title>
+    <script>
+      document.title = process.env.CLIENT_NAME;
+    </script>
     <link
       rel="icon"
       type="image/png"
@@ -33,7 +35,7 @@
         color: #fff;
         height: 100%;
         overflow: hidden;
-        font-family: "Raleway", sans-serif;
+        font-family: 'Raleway', sans-serif;
       }
       html {
         height: 100%;

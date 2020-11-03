@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-class NotificationManager {
+class NotificationService {
   constructor(firebase) {
     this.firebase = firebase;
   }

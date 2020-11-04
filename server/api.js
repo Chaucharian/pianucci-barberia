@@ -1,9 +1,40 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const router = express.Router();
-const app = express();
+const path = require('path');
+const rootPath = path.join(__dirname, '../');
+const env = require('dotenv').config({
+  path: `${rootPath}/.env.${process.env.NODE_ENV}`,
+});
 
-app.get('/getDaysOff', (request, response) => {
+if (env.error) {
+  throw new Error('No .env file loaded');
+}
+const express = require('express');
+const router = express.Router();
+const admin = require('firebase-admin');
+const {
+  isSameDay,
+  isSameMonth,
+  isToday,
+  isSameWeek,
+  isSameYear,
+} = require('date-fns');
+const NotificationService = require('./services/NotificationService');
+const BookingService = require('./services/BookingService');
+
+admin.initializeApp({
+  credential: admin.credential.cert({
+    projectId: process.env.PROJECT_ID,
+    clientEmail: process.env.CLIENT_EMAIL,
+    privateKey: process.env.PRIVATE_KEY,
+  }),
+  databaseURL: process.env.DATABASE_URL,
+});
+const firebaseDB = admin.database();
+const notificationService = new NotificationService(firebaseDB);
+const bookingService = new BookingService(firebaseDB);
+
+// GET
+
+router.get('/getDaysOff', (request, response) => {
   const daysOffRef = firebaseDB.ref('/daysOff');
   const days = [];
 
@@ -15,7 +46,7 @@ app.get('/getDaysOff', (request, response) => {
   });
 });
 
-app.get('/getImageGalery', (request, response) => {
+router.get('/getImageGalery', (request, response) => {
   const imageGaleryRef = firebaseDB.ref('/imageGalery');
   const images = [];
 
@@ -27,7 +58,7 @@ app.get('/getImageGalery', (request, response) => {
   });
 });
 
-app.get('/ /checkEmailExists', async (request, response) => {
+router.get('/checkEmailExists', async (request, response) => {
   const { email } = request.query;
   const usersRef = firebaseDB.ref('/users');
 
@@ -48,7 +79,8 @@ app.get('/ /checkEmailExists', async (request, response) => {
 });
 
 // POST
-app.post('/getBusinessStats', (request, response) => {
+
+router.post('/getBusinessStats', (request, response) => {
   const { date: requestDate } = request.body;
   const billingRef = firebaseDB.ref('/billing');
   let stats = {
@@ -165,7 +197,7 @@ app.post('/getBusinessStats', (request, response) => {
   });
 });
 
-app.post('/getAvailableHours', (request, response) => {
+router.post('/getAvailableHours', (request, response) => {
   const { requestDate } = request.body;
   const timeRangeRef = firebaseDB.ref('/timeRange');
   const datesTimeRangeRef = firebaseDB.ref('/timeRange/dates');
@@ -212,7 +244,7 @@ app.post('/getAvailableHours', (request, response) => {
   });
 });
 
-app.post('/setDaysOff', (request, response) => {
+router.post('/setDaysOff', (request, response) => {
   const { days } = request.body;
   const daysOffRef = firebaseDB.ref('/daysOff');
 
@@ -220,7 +252,7 @@ app.post('/setDaysOff', (request, response) => {
   response.json({ status: 'days off updated!' });
 });
 
-app.post('/setImageGalery', (request, response) => {
+router.post('/setImageGalery', (request, response) => {
   // request example "images": ["https://pianuccibarberia.com/assets/cut1.jpeg", "https://pianuccibarberia.com/assets/cut2.jpeg",]
   const { images: requestImages } = request.body;
   const imageGaleryRef = firebaseDB.ref('/imageGalery');
@@ -231,7 +263,7 @@ app.post('/setImageGalery', (request, response) => {
   response.json({ status: 'images added to galery!' });
 });
 
-app.post('/logout', (request, response) => {
+router.post('/logout', (request, response) => {
   const { userId } = request.body;
   const usersRef = firebaseDB.ref('/users');
 
@@ -250,7 +282,7 @@ app.post('/logout', (request, response) => {
   response.json({ status: 'user logged out succesfully!' });
 });
 
-app.post('/setNotificationToken', (request, response) => {
+router.post('/setNotificationToken', (request, response) => {
   const { notificationToken, userId } = request.body;
   const usersRef = firebaseDB.ref('/users');
 
@@ -270,7 +302,7 @@ app.post('/setNotificationToken', (request, response) => {
   });
 });
 
-app.post('/getUserData', (request, response) => {
+router.post('/getUserData', (request, response) => {
   const { userId } = request.body;
   const usersRef = firebaseDB.ref('/users');
   const bookingsRef = firebaseDB.ref('/bookings');
@@ -306,7 +338,7 @@ app.post('/getUserData', (request, response) => {
   });
 });
 
-app.post('/getUserBookings', (request, response) => {
+router.post('/getUserBookings', (request, response) => {
   const { userId } = request.body;
   const bookingsRef = firebaseDB.ref('/bookings');
 
@@ -325,7 +357,7 @@ app.post('/getUserBookings', (request, response) => {
   });
 });
 
-app.post('/setAvailableHours', (request, response) => {
+router.post('/setAvailableHours', (request, response) => {
   const {
     morning: { from: morningFrom, to: morningTo },
     afternoon: { from: afternoonFrom, to: afternoonTo },
@@ -351,7 +383,7 @@ app.post('/setAvailableHours', (request, response) => {
   }
 });
 
-app.post('/getBookingsByType', (request, response) => {
+router.post('/getBookingsByType', (request, response) => {
   const { bookingType } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const usersRef = firebaseDB.ref('/users');
@@ -381,7 +413,7 @@ app.post('/getBookingsByType', (request, response) => {
   });
 });
 
-app.post('/getAllBookingsByDate', (request, response) => {
+router.post('/getAllBookingsByDate', (request, response) => {
   const { userDate } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const usersRef = firebaseDB.ref('/users');
@@ -422,7 +454,7 @@ app.post('/getAllBookingsByDate', (request, response) => {
   });
 });
 
-app.post('/getScheduleForDate', (request, response) => {
+router.post('/getScheduleForDate', (request, response) => {
   const { userDate, bookingDuration = 60 } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const timeRangeRef = firebaseDB.ref('/timeRange');
@@ -526,7 +558,7 @@ app.post('/getScheduleForDate', (request, response) => {
   });
 });
 
-app.post('/createBooking', (request, response) => {
+router.post('/createBooking', (request, response) => {
   const { userId, type, duration, date } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
   const booking = {
@@ -537,19 +569,32 @@ app.post('/createBooking', (request, response) => {
     clientId: userId,
   };
   const bookingId = bookingRef.push(booking).key;
-  // send notification to admin
+
+  // SEND NOTIFICATION TO ADMIN
+  bookingService
+    .getNotificationAdminPayload('create', date)
+    .then((payload) => notificationService.sendNotificationToUser(payload));
+
   response.json({ status: 'booking created!', bookingId });
 });
 
-app.post('/deleteBooking', (request, response) => {
+router.post('/deleteBooking', async (request, response) => {
   const { bookingId } = request.body;
   const bookingRef = firebaseDB.ref('bookings/' + bookingId);
+
+  // SEND NOTIFICATION TO ADMIN BEFORE DELETING BOOKING
+  await bookingRef.once('value', (bookingSnapshot) =>
+    bookingService
+      .getNotificationAdminPayload('delete', bookingSnapshot.val().date)
+      .then((payload) => notificationService.sendNotificationToUser(payload)),
+  );
+
   bookingRef.remove();
 
   response.json({ status: 'booking removed!' });
 });
 
-app.post('/payBooking', (request, response) => {
+router.post('/payBooking', (request, response) => {
   const { bookingId, amount } = request.body;
   const bookingRef = firebaseDB.ref('/bookings');
   const billingRef = firebaseDB.ref('/billing');
@@ -560,7 +605,7 @@ app.post('/payBooking', (request, response) => {
   response.json({ status: 'billing saved!' });
 });
 
-app.post('/updateBooking', (request, response) => {
+router.post('/updateBooking', (request, response) => {
   const { userId, bookingId, type, duration, date, status } = request.body;
   const bookingRef = firebaseDB.ref('bookings/' + bookingId);
 
@@ -569,7 +614,7 @@ app.post('/updateBooking', (request, response) => {
   response.json({ status: 'booking updated!' });
 });
 
-app.post('/createUser', (request, response) => {
+router.post('/createUser', (request, response) => {
   const userRequest = request.body;
   const usersRef = firebaseDB.ref('users');
   const daysOffRef = firebaseDB.ref('/daysOff');
@@ -588,6 +633,16 @@ app.post('/createUser', (request, response) => {
       user: userModel,
     });
   });
+});
+
+router.post('/sendMassiveNotification', async (request, response) => {
+  const { message } = request.body;
+  try {
+    const status = await notificationService.sendMassiveNotification(message);
+    response.json(status);
+  } catch (error) {
+    response.status(500).json(error);
+  }
 });
 
 module.exports = router;

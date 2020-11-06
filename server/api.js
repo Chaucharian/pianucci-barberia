@@ -342,7 +342,7 @@ router.post('/getUserBookings', (request, response) => {
   const { userId } = request.body;
   const bookingsRef = firebaseDB.ref('/bookings');
 
-  bookingsRef.once('value', (bookingRef) => {
+  bookingsRef.once('value', async (bookingRef) => {
     const bookings = [];
     bookingRef.forEach((booking) => {
       bookings.push({ ...booking.val(), id: booking.key });
@@ -350,9 +350,12 @@ router.post('/getUserBookings', (request, response) => {
     const filterdBookings = bookings.filter(
       (booking) => booking.clientId === userId && booking.status === 'reserved',
     );
+    const freeBooking = await bookingService.calculateFreeBooking(userId);
+
     response.json({
       status: 'bookings retrived!',
       bookings: filterdBookings,
+      freeBooking,
     });
   });
 });
@@ -559,7 +562,7 @@ router.post('/getScheduleForDate', (request, response) => {
 });
 
 router.post('/createBooking', (request, response) => {
-  const { userId, type, duration, date } = request.body;
+  const { userId, type, duration, date, isFree } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
   const booking = {
     type,
@@ -567,6 +570,7 @@ router.post('/createBooking', (request, response) => {
     duration,
     status: 'reserved',
     clientId: userId,
+    isFree,
   };
   const bookingId = bookingRef.push(booking).key;
 

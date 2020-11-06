@@ -1,5 +1,5 @@
-import * as type from "./types";
-import * as actionTypes from "./types";
+import * as type from './types';
+import * as actionTypes from './types';
 
 export const userLoggedIn = (user) => ({
   type: actionTypes.USER_LOGGED_IN,
@@ -66,4 +66,9 @@ export const bookingHandlerVisited = () => ({
 export const setDaysOff = (days) => ({
   type: actionTypes.SET_DAYSOFF,
   payload: days,
+});
+
+export const setUserFreeBooking = (hasFreeBooking) => ({
+  type: actionTypes.SET_USER_FREE_BOOKING,
+  payload: hasFreeBooking,
 });

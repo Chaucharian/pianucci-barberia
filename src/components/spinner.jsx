@@ -1,18 +1,20 @@
-import React from "react";
-import { withStyles } from "@material-ui/styles";
-import scissors from "../assets/pianucci-scissors.gif";
+import React from 'react';
+import { withStyles } from '@material-ui/styles';
+import scissors from '../assets/pianucci-scissors.gif';
 
 const styles = {
   container: {
-    "& img": {
-      transition: "all .5s ease-in-out",
+    display: 'flex',
+    justifyContent: 'center',
+    '& img': {
+      transition: 'all .5s ease-in-out',
     },
   },
   show: {
-    opacity: "1",
+    opacity: '1',
   },
   hide: {
-    opacity: "0",
+    opacity: '0',
   },
 };
 

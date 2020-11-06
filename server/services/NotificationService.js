@@ -2,10 +2,9 @@ const fetch = require('node-fetch');
 const luxon = require('luxon');
 
 class NotificationService {
-  NOTIFICATION_INTERVAL = 1000 * 60 * 60; // 60 min
-
   constructor(firebaseDB) {
     this.firebaseDB = firebaseDB;
+    const NOTIFICATION_INTERVAL = 1000 * 60 * 60; // 60 min
     if (process.env.NODE_ENV === 'production') {
       setInterval(
         () => this.sendAutomaticNotification(),

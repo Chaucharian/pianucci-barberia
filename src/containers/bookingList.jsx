@@ -37,6 +37,7 @@ const BookingList = (props) => {
   const { classes, onAction } = props;
   const [state, dispatch] = useStateValue();
   const [refreshList, setRefreshList] = useState(false);
+  const [freeBookingDescription, setFreeBookingDescription] = useState('');
   const { currentPage } = state;
   const { id: userId, bookings } = useSelector(selectUser);
   const bookBooking = () => onAction('bookingHandler');
@@ -68,11 +69,14 @@ const BookingList = (props) => {
 
   useEffect(() => {
     if (refreshList || currentPage === 1) {
-      api.getUserBookings(userId).then((response) => {
-        dispatch(appActions.bookingsFetched(response.bookings));
-        dispatch(appActions.setUserFreeBooking(response.freeBooking.isFree));
-        setRefreshList(false);
-      });
+      api
+        .getUserBookings(userId)
+        .then(({ bookings, freeBooking: { isFree, description } }) => {
+          dispatch(appActions.bookingsFetched(bookings));
+          dispatch(appActions.setUserFreeBooking(isFree));
+          setFreeBookingDescription(description);
+          setRefreshList(false);
+        });
     }
   }, [refreshList, currentPage]);
 
@@ -80,6 +84,7 @@ const BookingList = (props) => {
     <div className={classes.container}>
       <h1>TUS TURNOS</h1>
       <div className={classes.bookingListContainer}>
+        <h3>{freeBookingDescription}</h3>
         {showBookings() || <h2>No hay reservas</h2>}
       </div>
       <div className={classes.bookingButton}>

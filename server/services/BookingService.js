@@ -40,7 +40,9 @@ class BookingService {
             responsePayload.isFree = true;
             return resolve(responsePayload);
           }
-          responsePayload.description = `¡${freeBookingRemaingingSpace} turnos más para un turno gratis!`;
+          responsePayload.description = `¡${freeBookingRemaingingSpace} ${
+            freeBookingRemaingingSpace === 1 ? `turno` : `turnos`
+          } más para un turno gratis!`;
           responsePayload.isFree = false;
           return resolve(responsePayload);
         }
@@ -49,17 +51,21 @@ class BookingService {
         let lastIndex = paidedBookings.findIndex(
           ({ id }) => id === lastFreeBooking.id,
         );
-
         const freeBookingRemaingingSpace =
           paidedBookings.length - (lastIndex + 1);
-        const amountLeft = FREE_BOOKING_AMOUNT - freeBookingRemaingingSpace;
+        const amountLeft =
+          freeBookingRemaingingSpace === 5
+            ? FREE_BOOKING_AMOUNT
+            : FREE_BOOKING_AMOUNT - freeBookingRemaingingSpace;
 
         if (amountLeft > FREE_BOOKING_AMOUNT || amountLeft === 0) {
-          responsePayload.description = 'Este turno es gratis';
+          responsePayload.description = '¡Este turno es gratis!';
           responsePayload.isFree = true;
           return resolve(responsePayload);
         } else {
-          responsePayload.description = `¡${amountLeft} turnos más para un turno gratis!`;
+          responsePayload.description = `¡${amountLeft} ${
+            amountLeft === 1 ? `turno` : `turnos`
+          } más para un turno gratis!`;
           responsePayload.isFree = false;
           return resolve(responsePayload);
         }

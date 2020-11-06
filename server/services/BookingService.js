@@ -8,9 +8,9 @@ class BookingService {
   calculateFreeBooking(userId) {
     return new Promise((resolve, reject) => {
       const bookingsRef = this.firebaseDB.ref('/bookings');
-      const FREE_BOOKING_AMOUNT = 4;
+      const FREE_BOOKING_AMOUNT = 3;
       const responsePayload = {
-        description: '¡4 turnos más para un turno gratis!',
+        description: `¡${FREE_BOOKING_AMOUNT} turnos más para un turno gratis!`,
         isFree: false,
       };
 
@@ -54,7 +54,7 @@ class BookingService {
         const freeBookingRemaingingSpace =
           paidedBookings.length - (lastIndex + 1);
         const amountLeft =
-          freeBookingRemaingingSpace === 5
+          freeBookingRemaingingSpace === 4
             ? FREE_BOOKING_AMOUNT
             : FREE_BOOKING_AMOUNT - freeBookingRemaingingSpace;
 

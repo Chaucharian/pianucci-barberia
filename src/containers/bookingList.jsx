@@ -73,8 +73,8 @@ const BookingList = (props) => {
         .getUserBookings(userId)
         .then(({ bookings, freeBooking: { isFree, description } }) => {
           dispatch(appActions.bookingsFetched(bookings));
-          dispatch(appActions.setUserFreeBooking(isFree));
-          setFreeBookingDescription(description);
+          // dispatch(appActions.setUserFreeBooking(isFree));
+          // setFreeBookingDescription(description);
           setRefreshList(false);
         });
     }

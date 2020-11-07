@@ -128,9 +128,9 @@ const ClientBookingItem = (props) => {
         className={
           classes.container +
           ' ' +
-          (isBookingReserved ? classes.active : classes.inactive) +
-          ' ' +
-          (isBookingFree ? classes.isFree : '')
+          (isBookingReserved ? classes.active : classes.inactive)
+          // ' ' +
+          // (isBookingFree ? classes.isFree : '')
         }
       >
         <div className={classes.description}>{descriptionToShow()}</div>

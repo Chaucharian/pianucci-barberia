@@ -83,7 +83,9 @@ export const BookingHandler = (props) => {
     if (confirmBookingCreation) {
       const requestPayload = {
         userId: user.id,
-        isFree: user.hasFreeBooking,
+        // TODO ADD FREE BOOKING FEATURE
+        // isFree: user.hasFreeBooking,
+        isFree: false,
         type: serviceSelected.name,
         duration: serviceSelected.duration,
         date: bookingSelected.date === 'A confirmar' ? 0 : bookingSelected.date,

@@ -42,7 +42,7 @@ class BookingService {
           }
           responsePayload.description = `¡${freeBookingRemaingingSpace} ${
             freeBookingRemaingingSpace === 1 ? `turno` : `turnos`
-          } más para un turno gratis!`;
+            } más para un turno gratis!`;
           responsePayload.isFree = false;
           return resolve(responsePayload);
         }
@@ -65,7 +65,7 @@ class BookingService {
         } else {
           responsePayload.description = `¡${amountLeft} ${
             amountLeft === 1 ? `turno` : `turnos`
-          } más para un turno gratis!`;
+            } más para un turno gratis!`;
           responsePayload.isFree = false;
           return resolve(responsePayload);
         }
@@ -73,36 +73,34 @@ class BookingService {
     });
   }
 
-  getNotificationAdminPayload(bookingAction, bookingDate) {
-    return new Promise((resolve, reject) => {
-      const usersRef = this.firebaseDB.ref('/users');
+  getNotificationDescription(bookingAction, bookingDate, callback) {
+    const usersRef = this.firebaseDB.ref('/users');
 
-      // SEND NOTIFICATION TO ADMIN
-      usersRef.once('value', (usersSnapshot) => {
-        usersSnapshot.forEach((user) => {
-          const { isAdmin, notificationToken } = user.val();
-          let notificationMessage = '';
-          if (isAdmin) {
-            const description =
-              bookingAction === 'create' ? 'Reservaron' : 'Se liberó';
+    // SEND NOTIFICATION TO ADMIN
+    usersRef.once('value', (usersSnapshot) => {
+      usersSnapshot.forEach((user) => {
+        const { isAdmin, notificationToken } = user.val();
+        let notificationMessage = '';
+        if (isAdmin) {
+          const description =
+            bookingAction === 'create' ? 'Reservaron' : 'Se liberó';
 
-            if (isToday(bookingDate)) {
-              notificationMessage = `${description} un turno para hoy a las ${getHours(
-                bookingDate,
-              )} horas`;
-            } else if (isTomorrow(bookingDate)) {
-              notificationMessage = `${description} un turno para mañana a las ${getHours(
-                bookingDate,
-              )} horas`;
-            } else {
-              notificationMessage = `${description} un turno para el ${format(
-                bookingDate,
-                'dd/MM',
-              )} a las ${getHours(bookingDate)} horas`;
-            }
-            resolve({ message: notificationMessage, notificationToken });
+          if (isToday(bookingDate)) {
+            notificationMessage = `${description} un turno para hoy a las ${getHours(
+              bookingDate,
+            )} horas`;
+          } else if (isTomorrow(bookingDate)) {
+            notificationMessage = `${description} un turno para mañana a las ${getHours(
+              bookingDate,
+            )} horas`;
+          } else {
+            notificationMessage = `${description} un turno para el ${format(
+              bookingDate,
+              'dd/MM',
+            )} a las ${getHours(bookingDate)} horas`;
           }
-        });
+          callback({ message: notificationMessage, notificationToken });
+        }
       });
     });
   }

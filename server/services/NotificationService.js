@@ -175,8 +175,8 @@ class NotificationService {
         },
       })
         .then((response) => response.json())
-        .then(() => {
-          resolve({ status: 'notification dispatched!' });
+        .then((data) => {
+          resolve({ status: 'notification dispatched!', data });
         })
         .catch((error) =>
           reject({

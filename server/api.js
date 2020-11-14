@@ -561,6 +561,21 @@ router.post('/getScheduleForDate', (request, response) => {
   });
 });
 
+router.post('/sendNotification', async (request, response) => {
+  const { token: notificationToken, message } = request.body;
+  try {
+    const notificationResponse = await notificationService.sendNotificationToUser(
+      {
+        message,
+        notificationToken,
+      },
+    );
+    response.json({ notificationResponse });
+  } catch (error) {
+    response.json({ error });
+  }
+});
+
 router.post('/createBooking', (request, response) => {
   const { userId, type, duration, date, isFree } = request.body;
   const bookingRef = firebaseDB.ref('bookings');
@@ -576,8 +591,7 @@ router.post('/createBooking', (request, response) => {
 
   // SEND NOTIFICATION TO ADMIN
   bookingService
-    .getNotificationAdminPayload('create', date)
-    .then((payload) => notificationService.sendNotificationToUser(payload));
+    .getNotificationDescription('create', date, (payload) => notificationService.sendNotificationToUser(payload));
 
   response.json({ status: 'booking created!', bookingId });
 });
@@ -589,8 +603,7 @@ router.post('/deleteBooking', async (request, response) => {
   // SEND NOTIFICATION TO ADMIN BEFORE DELETING BOOKING
   await bookingRef.once('value', (bookingSnapshot) =>
     bookingService
-      .getNotificationAdminPayload('delete', bookingSnapshot.val().date)
-      .then((payload) => notificationService.sendNotificationToUser(payload)),
+      .getNotificationDescription('delete', bookingSnapshot.val().date, (payload) => notificationService.sendNotificationToUser(payload))
   );
 
   bookingRef.remove();

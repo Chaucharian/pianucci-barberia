@@ -8,6 +8,7 @@ import {
   END_DATE,
   dateToUnix,
   isDateDisabled,
+  isHolidays
 } from "../utils/dates";
 
 const styles = {
@@ -71,6 +72,7 @@ export const DaysListSelector = (props) => {
     date < new Date().getTime() ||
     date > END_DATE ||
     date < START_DATE ||
+    isHolidays(date) ||
     isDateDisabled(daysOff, date);
 
   return (

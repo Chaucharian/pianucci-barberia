@@ -31,6 +31,7 @@ export function useUserLoggedIn() {
   useEffect(() => {
     if (data) {
       dispatch(appActions.userLoggedIn(data.user));
+      dispatch(appActions.setDaysOff(data.daysOff));
       setLoading(false);
     }
   }, [data]);

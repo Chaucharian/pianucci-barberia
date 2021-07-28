@@ -1,6 +1,9 @@
 const fetch = require('node-fetch');
 const luxon = require('luxon');
-
+const {
+  isSameDay,
+  isSameHour,
+} = require('date-fns');
 class NotificationService {
   constructor(firebaseDB) {
     this.firebaseDB = firebaseDB;

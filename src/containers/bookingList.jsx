@@ -90,7 +90,7 @@ const BookingList = (props) => {
       <div className={classes.bookingButton}>
         <RealBarberButton
           text={'reservar turno'}
-          disabled={hasBookings()}
+          disabled={true}
           clicked={() => bookBooking()}
         ></RealBarberButton>
       </div>
